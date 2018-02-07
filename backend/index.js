@@ -1,3 +1,4 @@
+require('dotenv').load();
 const app = require("express")();
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
@@ -6,10 +7,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 /***** Start of db code *******/
-let mongoDB = 'mongodb://127.0.0.1/bazaar';
+let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.mlab.com:25048/bazaar`;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise; // not sure we need promises yet
-let db = mongoose.connectionl;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // from here to stars just testing, should be in separate file probably
