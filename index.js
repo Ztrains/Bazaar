@@ -57,16 +57,16 @@ app.post("/auth/signin", (req, res) => {
 	//LOOKS FOR USERNAME SENT IN REQUEST IN THE DATABASE, THEN RETURNS THE USER INFO IF IT EXISTS
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
-	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
-	User.findOne(({'username': req.body.username}), (err, user) => {
+	if (!req.params.username) return res.status(400).json({message: 'Username required in URL'})
+	User.findOne(({'username': req.params.username}), (err, user) => {
 		if (err) return console.error('ERROR:', err)
 		if (!user) return res.json({message : 'user not found'})
 		console.log('User is: ', user);
         return res.json(user)
 	})
-	//COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
+	//BASICALLY COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
 });
 
 app.get("/calendar", (req, res) => {
