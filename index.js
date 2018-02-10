@@ -96,10 +96,12 @@ app.get("/calendar", (req, res) => {
 
 app.get("/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
+	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
 });
 
 app.get("/recipes", (req, res) => {
 	// Return JSON of user's submitted/saved recipes, requires valid auth middleware
+	return res.json({"name": "Spaghet", "description": "Spaghetti with Marinana sauce", "ingredients": [ "spaghetti", "tomato sauce", "parmesan sauce", "fresh basil" ], "time": "20 minutes"});
 });
 
 app.get("/search/:query", (req, res) => {
