@@ -14,14 +14,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var User = require('./models/User');
-
-
-// from here to stars just testing, should be in separate file probably
-let recipeSchema = new mongoose.Schema({
-	test_string: String,
-	test_num: Number
-});
-let recipeModel = mongoose.model('Recipes', recipeSchema);
+var Recipe = require('./models/Recipe');
 /******************************/
 
 app.all('/*', (req, res, next) => {
