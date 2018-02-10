@@ -13,6 +13,9 @@ mongoose.Promise = global.Promise; // not sure we need promises yet
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+var User = require('./models/User');
+
+
 // from here to stars just testing, should be in separate file probably
 let recipeSchema = new mongoose.Schema({
 	test_string: String,
@@ -21,12 +24,29 @@ let recipeSchema = new mongoose.Schema({
 let recipeModel = mongoose.model('Recipes', recipeSchema);
 /******************************/
 
+app.all('/*', (req, res, next) => {
+    //console.log(req)
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+    next();
+ });
+
 app.get("/", (req, res) => {
 	return res.send("Welcome to Bazaar!");
 });
 
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
+	console.log(req.body);
+	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
+	if (!req.body.email) return res.status(400).json({message: 'Email required in request'})
+	if (!req.body.password) return res.status(400).json({message: 'Password required in request'}) //maybe not?
+	User.create(req.body, (err, result) => {
+		if (err) {
+			return console.error(err);
+		}
+		res.json(result);
+	})
 });
 
 app.post("/auth/signin", (req, res) => {
