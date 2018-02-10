@@ -4,6 +4,11 @@ import './index.css'
 export default class recipeEntry extends React.Component {
   constructor(props) {
     super(props);
+    this.addFavorite = this.addFavorite.bind(this);
+  }
+  addFavorite() {
+    
+    //add to database
   }
   render() {
     return(
@@ -13,7 +18,7 @@ export default class recipeEntry extends React.Component {
             <div className="card">
               <h5 className="card-title">{this.props.name} <button className="btn btn-danger float-md-right" id="rdelbut">Delete</button></h5>
               <p className="card-text">sjkdhfksjdhflskhfsdhlfkjhfl</p>
-              <a href="#" className="card-link"> Add to favorites</a>
+              <button className="card-link" onClick={this.addFavorite}> Add to favorites</button>
               <a href="#" className="card-link"> Add to List</a>
             </div>
           </div>

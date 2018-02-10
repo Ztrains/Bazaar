@@ -8,6 +8,7 @@ export default class SearchPage extends React.Component {
     super(props);
     this.state = {
       resultsList: [],
+      terms: '',
     }
   }
   renderList() {
@@ -16,16 +17,22 @@ export default class SearchPage extends React.Component {
       list.push(
         <RecipeEntry name={this.state.resultsList[i].name} description={this.state.resultsList[i].description}/>
       );
+      return list;
     }
   }
   componentDidMount(){
-    let terms = this.props.terms;
+    console.log(this.props.match.params.terms);
     //make database search call
   }
   render() {
     return(
         <div>
-          {this.renderList()}
+          <h1>dsf</h1>
+          <h1>sdfsd</h1>
+          <h1>{this.props.match.params.terms}</h1>
+          //<div>
+          //  {this.renderList()}
+          //</div>
         </div>
     );
   }
