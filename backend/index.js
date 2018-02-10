@@ -47,15 +47,33 @@ app.post("/auth/signup", (req, res) => {
 		}
 		res.json(result);
 	})
+	//LOOKS TO MAKE SURE THERE IS USERNAME/EMAIL/PASS IN REQ, THEN ADDS TO DB IF SO
+	//VERY BASIC
 });
 
 app.post("/auth/signin", (req, res) => {
 	// Retrieve user from DB given info, return error if not found
 	// assign a timed token to user's session
+	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
+	User.findOne(({'username': req.body.username}), (err, user) => {
+		if (err) return console.error('ERROR:', err)
+		if (!user) return res.json({message : 'user not found'})
+		console.log('User is: ', user);
+        return res.json(user)
+	})
+	//LOOKS FOR USERNAME SENT IN REQUEST IN THE DATABASE, THEN RETURNS THE USER INFO IF IT EXISTS
 });
 
 app.get("/profile", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
+	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
+	User.findOne(({'username': req.body.username}), (err, user) => {
+		if (err) return console.error('ERROR:', err)
+		if (!user) return res.json({message : 'user not found'})
+		console.log('User is: ', user);
+        return res.json(user)
+	})
+	//COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
 });
 
 app.get("/calendar", (req, res) => {
