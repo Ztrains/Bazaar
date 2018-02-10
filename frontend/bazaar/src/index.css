@@ -1,5 +1,15 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.list-group {
+  width: 80%;
+}
+
+.card {
+  height: 110%;
+}
+.form-signin {
+  margin-top: 120px;
+  margin-right: 50px;
+  margin-left: 60px;
+}
+.nav-item {
+  background-color: green;
 }
