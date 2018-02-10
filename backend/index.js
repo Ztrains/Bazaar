@@ -22,7 +22,7 @@ app.all('/*', (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
     next();
- });
+});
 
 app.get("/", (req, res) => {
 	return res.send("Welcome to Bazaar!");
@@ -31,15 +31,22 @@ app.get("/", (req, res) => {
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
 	console.log(req.body);
-	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
-	if (!req.body.email) return res.status(400).json({message: 'Email required in request'})
-	if (!req.body.password) return res.status(400).json({message: 'Password required in request'}) //maybe not?
+	if (!req.body.username) {
+		return res.status(400).json({message: 'Username required in request'});
+	}
+	if (!req.body.email) {
+		return res.status(400).json({message: 'Email required in request'});
+	}
+	if (!req.body.password) {
+		return res.status(400).json({message: 'Password required in request'}); //maybe not?
+	}
+	
 	User.create(req.body, (err, result) => {
 		if (err) {
 			return console.error(err);
 		}
 		res.json(result);
-	})
+	});
 	//LOOKS TO MAKE SURE THERE IS USERNAME/EMAIL/PASS IN REQ, THEN ADDS TO DB IF SO
 	//VERY BASIC
 });
@@ -47,25 +54,39 @@ app.post("/auth/signup", (req, res) => {
 app.post("/auth/signin", (req, res) => {
 	// Retrieve user from DB given info, return error if not found
 	// assign a timed token to user's session
-	if (!req.body.username) return res.status(400).json({message: 'Username required in request'})
+	if (!req.body.username) {
+		return res.status(400).json({message: 'Username required in request'});
+	}
+	
 	User.findOne(({'username': req.body.username}), (err, user) => {
-		if (err) return console.error('ERROR:', err)
-		if (!user) return res.json({message : 'user not found'})
+		if (err) {
+			return console.error('ERROR:', err);
+		}
+		if (!user) {
+			return res.json({message : 'user not found'});
+		}
 		console.log('User is: ', user);
-        return res.json(user)
-	})
+        return res.json(user);
+	});
 	//LOOKS FOR USERNAME SENT IN REQUEST IN THE DATABASE, THEN RETURNS THE USER INFO IF IT EXISTS
 });
 
 app.get("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
-	if (!req.params.username) return res.status(400).json({message: 'Username required in URL'})
+	if (!req.params.username) {
+		return res.status(400).json({message: 'Username required in URL'});
+	}
+	
 	User.findOne(({'username': req.params.username}), (err, user) => {
-		if (err) return console.error('ERROR:', err)
-		if (!user) return res.json({message : 'user not found'})
+		if (err) {
+			return console.error('ERROR:', err);
+		}
+		if (!user) {
+			return res.json({message : 'user not found'});
+		}
 		console.log('User is: ', user);
-        return res.json(user)
-	})
+        return res.json(user);
+	});
 	//BASICALLY COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
 });
 
