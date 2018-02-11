@@ -26,7 +26,7 @@ export default class NavBar extends React.Component {
             <Link className="navbar-brand" to="/">Bazaar</Link>
             <form className="form-inline">
               <input className="form-control" type="search" placeholder="Search" value={this.state.searchBoxValue} onChange={this.handleChange}/>
-              <Link to={"/search/" + this.state.searchBoxValue}>Submit</Link>
+              <Link to={"/search/" + this.state.searchBoxValue} className="btn btn-secondary">Submit</Link>
             </form>
             <div className="nav-item">
               <Link className="nav-link" to="/signin">{this.props.loggedInState ? "Sign Out" : "Sign In / Sign Up"} </Link>
