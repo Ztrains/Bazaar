@@ -1,11 +1,15 @@
 require('dotenv').load();
 const app 			= require("express")();
+const passport		= require("passport");
+const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
 const fs 			= require("fs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
@@ -21,6 +25,50 @@ var User = require('./models/User');
 var Recipe = require('./models/Recipe');
 /******************************/
 
+passport.use(new GoogleStrat({
+	clientID: process.env.CLIENT_ID,
+	clientSecret: process.env.CLIENT_SEC,
+	callbackURL: "http://localhost:8000/auth/google/callback"
+},
+	(accessToken, refreshToken, profile, callback) => {
+		User.findOne({
+			googleId: profile.id
+		}, (err, user) => {
+			if (err) {
+				return callback(err);
+			}
+
+			if (!user) {
+				// register user
+				user = new User({
+					name: profile.displayName,
+					email: profile.emails[0].value,
+					username: profile.username,
+					googleId: profile.id
+				});
+
+				user.save((err) => {
+					if (err) {
+						console.log(err);
+					}
+					return callback(err, user);
+				});
+			} else {
+				// we found the user
+				return callback(err, user);
+			}
+		});
+	}
+));
+
+passport.serializeUser((user, callback) => {
+	callback(null, user);
+});
+
+passport.deserializeUser((obj, callback) => {
+	callback(null, obj);
+});
+
 app.all('/*', (req, res, next) => {
     //console.log(req)
     res.header("Access-Control-Allow-Origin", "*");
@@ -31,6 +79,9 @@ app.all('/*', (req, res, next) => {
 app.get("/", (req, res) => {
 	return res.send("Welcome to Bazaar!");
 });
+
+app.get("/auth/google", passport.authenticate("google", { scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/plus.profile.emails.read']}));
+app.get("/auth/google/callback", passport.authenticate("google", { successRedirect: "/", failureRedirect: "/auth/signup" }));
 
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
