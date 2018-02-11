@@ -104,15 +104,23 @@ app.get("/preferences", (req, res) => {
 });
 
 app.get("/recipes", (req, res) => {
-	// Return JSON of user's submitted/saved recipes, requires valid auth middleware
+	// For now we're just reading and returning recipes from a JSON file
+	// In the future, add recipes to DB and work with it from there
 	return res.json(parsed_recipes);
 });
 
-app.get("/search/:query", (req, res) => {
+app.get("/search/:search_query", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
+	let search = req.query.search_query;
+	for (var key in parsed_recipes) {
+		if (parsed_recipes.hasOwnProperty(key)) {
+			console.log("key is: " + key);
+			return res.json({"key": key});
+		}
+	}
 });
 
 var port = process.env.PORT || 8000;
