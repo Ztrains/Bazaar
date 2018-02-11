@@ -31,7 +31,7 @@ input[type=email]:focus, input[type=password]:focus {
 }
 
 .nav-item {
-  background-color: green;
+  display: inline-block;
 }
 
 .container {
