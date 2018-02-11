@@ -47,8 +47,10 @@ export default class accountPage extends React.Component {
             <li>{prefValue}</li>
           ))}
             <select id="preferencesSelect" value={this.state.value} onChange={this.addPref}>
-              <option value="others">otheres</option>
-              <option value="thigns">thigns</option>
+              <option value="Beans">Beans</option>
+              <option value="Tomatoes">Tomatoes</option>
+              <option value="Lemon">Lemon</option>
+              <option value="Cheese">Cheese</option>
             </select>
         </ul>
         <p>a lot of recipes can go here</p>
