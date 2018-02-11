@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import axios from 'axios'
 
 
 export default class accountPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "username",
+      username: "",
       preferences: ["Meat", "Pork", "Potatoes", "Eggs"],
       value: "",
       newName: '',
@@ -15,6 +16,15 @@ export default class accountPage extends React.Component {
     this.addPref = this.addPref.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
+  }
+  componentDidMount() {
+    var _this = this;
+    axios.get("http://localhost:8000/profile/" + this.props.match.params.username)
+    .then(function(results) {
+      _this.setState({
+        username: results.data.username,
+      });
+    });
   }
   addPref(event) {
     console.log(event.target.value);
