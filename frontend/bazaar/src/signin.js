@@ -34,10 +34,34 @@ export default class Login extends React.Component {
     .then(function(result) {
       console.log(result);
     });
-    this.props.logInCallBack();
+    this.props.logInCallBack(this.state.username);
   }
   render() {
     return (
+<<<<<<< HEAD
+      <div class="container">
+		    <h1>Sign In</h1>
+          <label for="loginEmail"><b>Email</b></label>
+          <input type="email" placeholder="Enter Email" className="form-control" id="loginEmail" placeholder="Enter Email" />
+          <label for="loginPass"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" className="form-control" id="loginPass" placeholder="Enter Password" />
+
+          <div class="clearfix">
+		        <Link to="/SignIn">
+		  	       <button type="button" class="cancelbtn">Cancel</button>
+		        </Link>
+		        <Link to="/profile">
+			         <button type="submit" class="signinbtn" onClick={this.logon}>Submit</button>
+		        </Link>
+		     </div>
+
+		    <div class="container2">
+		      <Link to="/signup">
+			       <button type="signin" class="signupbtn">Do not have an account? <font color="#000080"> Sign Up </font></button>
+		      </Link>
+		   </div>
+	  </div>
+=======
         <div class="container">
 		         <h1>Sign In</h1>
                     <label for="loginUsername"><b>Email</b></label>
@@ -48,7 +72,7 @@ export default class Login extends React.Component {
 		  <Link to="/SignIn">
 		  	<button type="button" class="cancelbtn">Cancel</button>
 		  </Link>
-		  <Link to="/profile">
+		  <Link to={"/profile/" + this.state.username}>
 			<button type="submit" class="signinbtn" onClick={this.logon}>Submit</button>
 		  </Link>
 		</div>
@@ -58,6 +82,7 @@ export default class Login extends React.Component {
 		</Link>
 		</div>
 	</div>
+>>>>>>> c14af860615c173c71ee9f6d36bc59396eda43b3
     );
   }
 }
