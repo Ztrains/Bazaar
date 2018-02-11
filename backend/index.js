@@ -1,10 +1,14 @@
 require('dotenv').load();
-const app = require("express")();
-const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
+const app 			= require("express")();
+const bodyParser 	= require("body-parser");
+const mongoose 		= require('mongoose');
+const fs 			= require("fs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+let raw_recipes = fs.readFileSync("recipes.json");
+let parsed_recipes = JSON.parse(raw_recipes);
 
 /***** Start of db code *******/
 let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.mlab.com:25048/bazaar`;
@@ -101,7 +105,7 @@ app.get("/preferences", (req, res) => {
 
 app.get("/recipes", (req, res) => {
 	// Return JSON of user's submitted/saved recipes, requires valid auth middleware
-	return res.json({"name": "Spaghet", "description": "Spaghetti with Marinana sauce", "ingredients": [ "spaghetti", "tomato sauce", "parmesan sauce", "fresh basil" ], "time": "20 minutes"});
+	return res.json(parsed_recipes);
 });
 
 app.get("/search/:query", (req, res) => {
