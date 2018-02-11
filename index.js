@@ -19,7 +19,7 @@ let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise; // not sure we need promises yet
 let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('error', console.error.bind(consovimle, 'MongoDB connection error:'));
 
 var User = require('./models/User');
 var Recipe = require('./models/Recipe');
@@ -28,7 +28,7 @@ var Recipe = require('./models/Recipe');
 passport.use(new GoogleStrat({
 	clientID: process.env.CLIENT_ID,
 	clientSecret: process.env.CLIENT_SEC,
-	callbackURL: "http://localhost:8000/auth/google/callback"
+	callbackURL: "https://bazaar-408.herokuapp.com/auth/google/callback"
 },
 	(accessToken, refreshToken, profile, callback) => {
 		User.findOne({
