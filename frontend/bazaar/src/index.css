@@ -19,6 +19,7 @@ input[type=email]:focus, input[type=password]:focus {
 }
 
 .card {
+  margin-top: 50px;
   height: 110%;
 }
 .form-signin {
@@ -26,6 +27,7 @@ input[type=email]:focus, input[type=password]:focus {
   margin-right: 50px;
   margin-left: 60px;
 }
+
 .nav-item {
   background-color: green;
 }
