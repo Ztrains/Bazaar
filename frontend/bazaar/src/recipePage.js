@@ -20,7 +20,9 @@ export default class recipePage extends React.Component {
   }
 
   handleClickD() {
-
+    this.setState({
+      count: this.state.count - 1
+    });
   }
   
   
