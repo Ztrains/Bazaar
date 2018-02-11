@@ -32,8 +32,7 @@ class App extends React.Component {
             <NavBar loggedInState={this.state.loggedIn}/>
               <Switch>
                 <Route exact path={"/"} component={SignIn} />
-		<Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>
-	
+		            <Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>
                 <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
                 <Route path={"/profile"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
