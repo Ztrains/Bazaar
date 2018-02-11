@@ -109,12 +109,15 @@ app.get("/recipes", (req, res) => {
 	return res.json(parsed_recipes);
 });
 
-app.get("/search/:q", (req, res) => {
+app.get("/search", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
 	let search_q = req.query.q.toLowerCase();
+	if (!search_q) {
+		return res.status(400).json({"message": "No query specified"});
+	}
 	//let dat = parsed_recipes.data;
 	let ret_data = [];
 	for (var i in parsed_recipes) {
@@ -130,3 +133,6 @@ var port = process.env.PORT || 8000;
 app.listen(port, () => {
 	console.log("Running server on port " + port);
 });
+
+
+
