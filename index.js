@@ -19,7 +19,7 @@ let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise; // not sure we need promises yet
 let db = mongoose.connection;
-db.on('error', console.error.bind(consovimle, 'MongoDB connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var User = require('./models/User');
 var Recipe = require('./models/Recipe');
