@@ -34,7 +34,7 @@ export default class Login extends React.Component {
     .then(function(result) {
       console.log(result);
     });
-    this.props.logInCallBack();
+    this.props.logInCallBack(this.state.username);
   }
   render() {
     return (
@@ -48,7 +48,7 @@ export default class Login extends React.Component {
 		  <Link to="/SignIn">
 		  	<button type="button" class="cancelbtn">Cancel</button>
 		  </Link>
-		  <Link to="/profile">
+		  <Link to={"/profile/" + this.state.username}>
 			<button type="submit" class="signinbtn" onClick={this.logon}>Submit</button>
 		  </Link>
 		</div>

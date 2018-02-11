@@ -59,7 +59,7 @@ export default class Signup extends React.Component {
         console.log(result);
       });
     }
-    this.props.logInCallBack();
+    this.props.logInCallBack(this.state.username);
   }
   render() {
     return (
@@ -79,7 +79,7 @@ export default class Signup extends React.Component {
 		  <Link to="/signin">
 		  	<button type="button" class="cancelbtn">Cancel</button>
 		  </Link>
-		  <Link to="/profile">
+		  <Link to={"/profile/" + this.state.username}>
 			<button type="submit" class="signinbtn" onClick={this.logon}>Sign Up</button>
 		  </Link>
 		</div>

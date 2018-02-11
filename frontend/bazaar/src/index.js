@@ -16,9 +16,10 @@ import {Route, Redirect} from 'react-router';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loggedIn: false,searchTerms: ''};
+    this.state = {loggedIn: false,searchTerms: '', loggedInUser: ''};
   }
-  loggingIn = () => {
+  loggingIn = (user) => {
+    this.setState({loggedInUser: user});
     console.log(this.state.loggedIn);
     this.setState({loggedIn: true});
     console.log(this.state.loggedIn);
@@ -34,7 +35,7 @@ class App extends React.Component {
                 <Route exact path={"/"} component={SignIn} />
 		            <Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>
                 <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
-                <Route path={"/profile"} component={Account} />
+                <Route path={"/profile/:username"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
                 <Route path={"/recipes"} render={(props)=><RecipeViwer/>}/>
                 <Route path={"/recipeEntry"} component={RecipeEntry} />
