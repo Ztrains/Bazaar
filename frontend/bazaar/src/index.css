@@ -31,11 +31,12 @@ input[type=email]:focus, input[type=password]:focus {
 }
 
 .nav-item {
-  background-color: green;
+  display: inline-block;
 }
 
 .container {
   padding: 16px;
+  max-width: 100px;
 }
 
 .container2 {
@@ -78,4 +79,3 @@ button:hover {
     clear: both;
     display: table;
 }
-
