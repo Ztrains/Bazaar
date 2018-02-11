@@ -149,6 +149,32 @@ app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
 });
 
+app.post("/profile/update_username", (req, res) => {
+	// for now we're updating the username by getting the frontend
+	// to pass the user's email so we can do a lookup in the db
+	// by email, and change the username for the user whose email corresponds
+	// to that email. Later on, do this by checking user session to find user
+	let newUsername = req.body.username;
+	let userEmail = req.body.email;
+
+	User.findOne(({ 'email': userEmail }), (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found' });
+		}
+
+		user.username = newUsername;
+		user.save((err) => {
+			if (err) {
+				return res.status(400).json({ message: "internal server error" });
+			}
+			return res.status(200).json({ message: "successfully updated username" });
+		});
+	});
+});
+
 app.get("/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
