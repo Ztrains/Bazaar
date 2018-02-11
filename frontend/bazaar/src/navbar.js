@@ -33,8 +33,8 @@ export default class NavBar extends React.Component {
 		</Link>
             </form>
             <div className="nav-item">
-              <Link className="nav-link" to="/signin">{this.props.loggedInState ? "Sign Out" : "Sign In / Sign Up"} </Link>
-              <Link className="nav-link" to="/profile">{this.props.loggedInState ? "Profile" : ""} </Link>
+              <Link className="nav-link" to="/signin"> <button type="button" class="btn btn-default"> {this.props.loggedInState ? "Sign Out" : "Sign In / Sign Up"} </button> </Link>
+              <Link className="nav-link" to="/profile"> <button type="button" class="btn btn-link">{this.props.loggedInState ? "Profile" : ""} </button></Link>
 	    </div>
         </nav>
         <br/>
