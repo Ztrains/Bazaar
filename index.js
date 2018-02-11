@@ -109,18 +109,21 @@ app.get("/recipes", (req, res) => {
 	return res.json(parsed_recipes);
 });
 
-app.get("/search/:search_query", (req, res) => {
+app.get("/search/:q", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
-	let search = req.query.search_query;
-	for (var key in parsed_recipes) {
-		if (parsed_recipes.hasOwnProperty(key)) {
-			console.log("key is: " + key);
-			return res.json({"key": key});
+	let search_q = req.query.q.toLowerCase();
+	//let dat = parsed_recipes.data;
+	let ret_data = [];
+	for (var i in parsed_recipes) {
+		if (parsed_recipes[i].name.toLowerCase().indexOf(search_q) !== -1) {
+			ret_data.push(parsed_recipes[i]);
 		}
 	}
+
+	return res.json(ret_data);
 });
 
 var port = process.env.PORT || 8000;
