@@ -5,6 +5,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import NavBar from './navbar.js';
 import RecipeViwer from './recipeViewer.js';
 import RecipeEntry from './recipeEntry.js';
+import SignIn from './signin.js';
 import SignUp from './signup.js';
 import Account from './account.js';
 import RecipePage from './recipePage.js';
@@ -30,8 +31,10 @@ class App extends React.Component {
           <div>
             <NavBar loggedInState={this.state.loggedIn}/>
               <Switch>
-                <Route exact path={"/"} component={SignUp} />
-                <Route path={"/signin"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
+                <Route exact path={"/"} component={SignIn} />
+		<Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>
+	
+                <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
                 <Route path={"/profile"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
                 <Route path={"/recipes"} render={(props)=><RecipeViwer/>}/>
