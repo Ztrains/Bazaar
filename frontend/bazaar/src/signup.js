@@ -1,10 +1,11 @@
 import React from 'react';
 import "./index.css";
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 
 
 export default class LoginSignup extends React.Component {
-  logon = () => {
+  logon = (event) => {
     this.props.logInCallBack();
   }
   render() {
@@ -18,7 +19,7 @@ export default class LoginSignup extends React.Component {
                   <input type="email" className="form-control" id="loginEmail" placeholder="Enter Email" />
                   <label for="loginPass">Password</label>
                   <input type="password" className="form-control" id="loginPass" placeholder="Enter Password" />
-                  <a className="btn btn-primary" onClick={this.logon}>Submit</a>
+                  <Link to="/user" className="btn btn-primary" onClick={this.logon}>Submit</Link>
                 </div>
               </form>
             </div>
