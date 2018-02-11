@@ -35,6 +35,7 @@ class App extends React.Component {
                 <Route path={"/profile"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
                 <Route path={"/recipes"} render={(props)=><RecipeViwer/>}/>
+                <Route path={"/recipeEntry"} component={RecipeEntry} />
             </Switch>
           </div>
         </BrowserRouter>

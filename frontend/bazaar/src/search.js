@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import RecipeEntry from './recipeEntry.js';
+import axios from 'axios';
 
 
 export default class SearchPage extends React.Component {
@@ -22,6 +23,10 @@ export default class SearchPage extends React.Component {
   }
   componentDidMount(){
     console.log(this.props.match.params.terms);
+    axios.get("http://localhost:8000/search?q=" + this.props.match.params.terms)
+    .then(function(result) {
+      console.log(result);
+    });
     //make database search call
   }
   render() {

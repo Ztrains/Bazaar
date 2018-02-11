@@ -11,28 +11,38 @@ export default class RecipeViewer extends React.Component {
     }
   }
   componentDidMount() {
-    axios.get("/recipes")
+    var _this = this;
+    axios.get("http://localhost:8000/recipes")
     .then(function(result) {
-      this.setState({
+      console.log(result);
+      _this.setState({
         list: result.data,
       });
-      console.log(this.state.list);
-    })
+
+    });
+    console.log(this.state.list);
   }
   createList() {
     let newList = [];
     for (var i = 0; i < this.state.list.length; i++) {
+      console.log(this.state.list[i]);
       newList.push(
-        <RecipeEntry name={this.state.resultsList[i].name} description={this.state.resultsList[i].description}/>
+        <div><RecipeEntry name={this.state.list[i].name} description={this.state.list[i].description}/></div>
       );
     }
     return newList;
   }
   render() {
     return(
-      <div className="list-group">
-        {this.createList}
-      </div>
+      <div>
+      
+
+        <div>
+          {this.state.list.map((item, index) => {
+            return <RecipeEntry name={item.name} />
+          })}
+        </div>
+        </div>
     );
   }
 }
