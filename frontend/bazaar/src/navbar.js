@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
+//import ReactDOM from 'react-dom';
+import {Link, Router} from 'react-router-dom';
 
 export default class NavBar extends React.Component {
   constructor(props) {

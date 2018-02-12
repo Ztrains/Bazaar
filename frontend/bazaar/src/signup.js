@@ -39,6 +39,12 @@ export default class Signup extends React.Component {
         secondPass: event.target.value,
       });
   }
+  googin() {
+    axios.get("https://bazaar-408.herokuapp.com/auth/google/")
+    .then(function(results) {
+      console.log(results);
+    });
+  }
   logon = (event) => {
     if (this.state.firstPass != this.state.secondPass) {
       alert("Passwords do not match");
@@ -58,9 +64,9 @@ export default class Signup extends React.Component {
       .then(function(result) {
         console.log(result);
       });
-    }
     this.props.logInCallBack(this.state.username);
   }
+}
   render() {
     return (
             <div class="container">
@@ -79,6 +85,9 @@ export default class Signup extends React.Component {
 		  <Link to="/signin">
 		  	<button type="button" class="cancelbtn">Cancel</button>
 		  </Link>
+
+       <button type="button" className="cancelbtn" onClick={this.googin}>Google Signin</button>
+
 		  <Link to={"/profile/" + this.state.username}>
 			<button type="submit" class="signinbtn" onClick={this.logon}>Sign Up</button>
 		  </Link>

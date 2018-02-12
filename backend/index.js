@@ -5,11 +5,13 @@ const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
 const fs 			= require("fs");
+//const cors		= require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use(cors());
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
