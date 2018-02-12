@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     password: String, //not sure if needed cause google log in?
     email: String,
     updatedAt: {type: Date, default: Date.now},
-    googleId: String
+    googleId: String,
+    savedRecipes: [String]
 });
 
 module.exports = mongoose.model('User', UserSchema);

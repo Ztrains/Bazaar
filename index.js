@@ -147,11 +147,12 @@ app.get("/profile/:username", (req, res) => {
 
 app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
+	res.status(200).json({ "message": "send back calendar information here" });
 });
 
 app.post("/profile/update_username", (req, res) => {
 	// for now we're updating the username by getting the frontend
-	// to pass the user's email so we can do a lookup in the db
+	// to pass the user's email in the request body so we can do a lookup in the db
 	// by email, and change the username for the user whose email corresponds
 	// to that email. Later on, do this by checking user session to find user
 	let newUsername = req.body.username;
@@ -191,10 +192,11 @@ app.get("/search", (req, res) => {
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
-	let search_q = req.query.q.toLowerCase();
-	if (!search_q) {
+	if (!req.query.q) {
 		return res.status(400).json({"message": "No query specified"});
 	}
+
+	let search_q = req.query.q.toLowerCase();
 	//let dat = parsed_recipes.data;
 	let ret_data = [];
 	for (var i in parsed_recipes) {
@@ -207,9 +209,10 @@ app.get("/search", (req, res) => {
 });
 
 var port = process.env.PORT || 8000;
-app.listen(port, () => {
+var server = app.listen(port, () => {
 	console.log("Running server on port " + port);
 });
 
+module.exports = server;
 
 

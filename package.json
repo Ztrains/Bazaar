@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/mocha tests/tester.js",
     "start": "nodemon index.js"
   },
   "author": "",
@@ -19,6 +19,8 @@
     "passport-google-oauth20": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.12"
+    "nodemon": "^1.14.12",
+    "mocha": "^5.0.0",
+    "supertest": "^3.0.0"
   }
 }
