@@ -30,4 +30,7 @@ describe("loading express module", () => {
 	it("GET calendar information about user", function getCalendar(done) {
 		req(server).get("/calendar").expect(200, done);
 	})
+	after (function() {
+		server.stop();
+	})
 })
