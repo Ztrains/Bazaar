@@ -210,6 +210,13 @@ app.get("/search", (req, res) => {
 	return res.json(ret_data);
 });
 
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/");
+}
+
 var port = process.env.PORT || 8000;
 var server = app.listen(port, () => {
 	console.log("Running server on port " + port);
