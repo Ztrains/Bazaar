@@ -223,6 +223,13 @@ var server = app.listen(port, () => {
 	console.log("Running server on port " + port);
 });
 
-module.exports = server;
+function stop() {
+	console.log('Closing server...')
+	server.close();
+	process.exit();
+	return 0;
+}
 
+module.exports = server;
+module.exports.stop = stop;
 
