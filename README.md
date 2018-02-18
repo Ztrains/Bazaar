@@ -1,4 +1,4 @@
-# Bazaar
+# Bazaar [![Build Status](https://travis-ci.com/Ztrains/Bazaar.svg?token=CBGqqyrQU6gjKpy3TLkL&branch=master)](https://travis-ci.com/Ztrains/Bazaar)
 
 ## CS408 project - Team 12
 
