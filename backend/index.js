@@ -1,10 +1,10 @@
 require('dotenv').load();
-const app 			= require("express")();
+const app 		= require("express")();
 const passport		= require("passport");
 const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
-const fs 			= require("fs");
+const fs 		= require("fs");
 //const cors		= require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
