@@ -22,9 +22,11 @@ export default class SearchPage extends React.Component {
     }
   }
   componentDidMount(){
+    var _this = this;
     console.log(this.props.match.params.terms);
-    axios.get("http://localhost:8000/search?q=" + this.props.match.params.terms)
+    axios.get("https://bazaar-408.herokuapp.com/search?q=" + this.props.match.params.terms)
     .then(function(result) {
+      _this.setState({resultsList: result.data});
       console.log(result);
     });
     //make database search call
@@ -32,12 +34,11 @@ export default class SearchPage extends React.Component {
   render() {
     return(
         <div>
-          <h1>dsf</h1>
-          <h1>sdfsd</h1>
-          <h1>{this.props.match.params.terms}</h1>
-          //<div>
-          //  {this.renderList()}
-          //</div>
+          <br/>
+          <br/>
+          <h1>{"Search Query = " + this.props.match.params.terms}</h1>
+
+          {this.renderList()}
         </div>
     );
   }

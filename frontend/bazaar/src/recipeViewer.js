@@ -12,7 +12,7 @@ export default class RecipeViewer extends React.Component {
   }
   componentDidMount() {
     var _this = this;
-    axios.get("http://localhost:8000/recipes")
+    axios.get("https://bazaar-408.herokuapp.com/recipes")
     .then(function(result) {
       console.log(result);
       _this.setState({
@@ -21,6 +21,9 @@ export default class RecipeViewer extends React.Component {
 
     });
     console.log(this.state.list);
+    if (this.state.list.length < 1) {
+      alert("there is no data. sorry");
+    }
   }
   createList() {
     let newList = [];
@@ -35,7 +38,7 @@ export default class RecipeViewer extends React.Component {
   render() {
     return(
       <div>
-      
+
 
         <div>
           {this.state.list.map((item, index) => {

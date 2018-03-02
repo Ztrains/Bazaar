@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-//import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import {Link, Router} from 'react-router-dom';
 
 export default class NavBar extends React.Component {
@@ -17,31 +17,32 @@ export default class NavBar extends React.Component {
       searchBoxValue: event.target.value
     });
 
+
   }
 
   render() {
+    let link = '';
+    if (this.props.loggedInState === true) {
+      link = <Link className="nav-link" to={"/profile/" + this.props.currUser}> <button type="button" id="profileButton" className="btn btn-info">{this.props.loggedInState ? "Profile" : ""} </button></Link>
+    }
+
     return(
       <div>
         <nav className="navbar fixed-top navbar-dark bg-primary">
             <Link className="navbar-brand" to="/">Bazaar</Link>
             <form className="form-inline">
-              <input className="form-control" type="search" placeholder="" value={this.state.searchBoxValue} onChange={this.handleChange}/>
-              <Link to={"/search/" + this.state.searchBoxValue}>
-		<button type="button" class="btn btn-secondary">
-			<span class="glyphicon glyphicon-search"></span> Search
-		</button>
-		</Link>
+              <input className="form-control" id='searchInput' type="search" placeholder="" value={this.state.searchBoxValue} onChange={this.handleChange}/>
+              {this.state.searchBoxValue.length > 0 ? (<Link to={"/search/" + this.state.searchBoxValue}>
+              		            <button type="button" id='searchButton' className="btn btn-secondary" >Search</button>
+              		           </Link>) : (<div id="noButton"></div>)}
             </form>
             <div className="nav-item">
-	    <div class="row">
-              <Link className="nav-link" to="/signin"> <button type="button" class="btn btn-default"> {this.props.loggedInState ? "Sign Out" : "Sign In / Sign Up"} </button> </Link>
-              <Link className="nav-link" to="/profile"> <button type="button" class="btn btn-info">{this.props.loggedInState ? "Profile" : " "} </button></Link>
-	    </div>
-	    </div>
+	             <div className="row">
+                  {link}
+                  <Link className="nav-link"  to="/signin" id="loginButton"> {this.props.loggedInState ? "Sign Out" : "Sign In / Sign Up"} </Link>
+	             </div>
+	          </div>
         </nav>
-        <br/>
-        <br/>
-        <br/>
       </div>
     );
   }
