@@ -183,7 +183,30 @@ app.post("/profile/update_username", (req, res) => {
 	});
 });
 
-app.get("/preferences", (req, res) => {
+app.post("/profile/update_preferences", (req, res) => {
+	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
+
+	let newPrefs = req.body.prefs;
+	let userEmail = req.body.userEmail;
+
+	if (!newPrefs) {
+		return res.status(400).json({message: "No preferences to save in request"});
+	}
+	if (!userEmail) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+
+	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new:true}, (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found'});
+		}
+	})
+});
+
+app.get("/profile/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
 });
