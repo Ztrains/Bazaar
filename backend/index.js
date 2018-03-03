@@ -80,6 +80,9 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
+	if (req.body) {
+		console.log(req.body);
+	}
 	return res.send("Welcome to Bazaar!");
 });
 
@@ -211,6 +214,11 @@ app.post("/recipes/save", (req,res) => {
 			return res.status(400).json({ message: 'user not found'});
 		}
 	})
+});
+
+// ML route - temporary
+app.get("/chini", (req, res) => {
+	res.json({message: "Like"});
 });
 
 app.get("/search", (req, res) => {
