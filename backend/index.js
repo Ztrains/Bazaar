@@ -5,12 +5,21 @@ const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
 const fs 		= require("fs");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 //const cors		= require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cookieSession({
+	name: "bazaar-session",
+	keys: ['mayonaisse'],
+	maxAge: 24 * 60 * 60 * 1000
+}));
+app.use(cookieParser());
 //app.use(cors());
 
 let raw_recipes = fs.readFileSync("recipes.json");
