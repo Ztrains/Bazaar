@@ -41,6 +41,7 @@ passport.use(new GoogleStrat({
 				return callback(err);
 			}
 
+			console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
 			if (!user) {
 				// register user
 				user = new User({
