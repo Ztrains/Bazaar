@@ -8,7 +8,8 @@ var UserSchema = new mongoose.Schema({
     updatedAt: {type: Date, default: Date.now},
     googleId: String,
     savedRecipes: [Number],
-    preferences: [String]
+    preferences: [String],
+    token: String
 });
 
 module.exports = mongoose.model('User', UserSchema);

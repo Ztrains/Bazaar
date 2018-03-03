@@ -41,14 +41,15 @@ passport.use(new GoogleStrat({
 				return callback(err);
 			}
 
-			console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
+			// console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
 			if (!user) {
 				// register user
 				user = new User({
 					name: profile.name.givenName + " " + profile.name.familyName,
 					email: profile.emails[0].value,
 					username: profile.emails[0].value,
-					googleId: profile.id
+					googleId: profile.id,
+					token: accessToken
 				});
 
 				user.save((err) => {
@@ -58,8 +59,17 @@ passport.use(new GoogleStrat({
 					return callback(err, user);
 				});
 			} else {
-				// we found the user
-				return callback(err, user);
+				// we found the user, so update the db with new access token and return
+				User.findOneAndUpdate({googleId: profile.id}, {$set: {token: accessToken}}, {new: true}, (err, user) => {
+					if (err) {
+						return console.error('ERROR: ', err);
+					}
+					if (!user) {
+						return res.status(400).json({ message: 'user not found'});
+					}
+
+					return callback(err, user);
+				});
 			}
 		});
 	}
@@ -193,14 +203,14 @@ app.post("/profile/update_preferences", (req, res) => {
 		return res.status(400).json({message: "No email specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new:true}, (err, user) => {
+	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
 		if (!user) {
 			return res.status(400).json({ message: 'user not found'});
 		}
-	})
+	});
 });
 
 app.get("/profile/preferences", (req, res) => {
