@@ -44,9 +44,9 @@ passport.use(new GoogleStrat({
 			if (!user) {
 				// register user
 				user = new User({
-					name: profile.displayName,
+					name: profile.name,
 					email: profile.emails[0].value,
-					username: profile.username,
+					username: profile.emails[0].value,
 					googleId: profile.id
 				});
 
