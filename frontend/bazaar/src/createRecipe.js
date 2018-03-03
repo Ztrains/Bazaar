@@ -12,6 +12,8 @@ export default class viewRecipe extends React.Component {
       ingredients: [{name: ''}],
       steps: [{step: ''}],
       imageURL: '',
+      calories: '',
+      servingSize: '',
     };
     this.nameHandle = this.nameHandle.bind(this);
     this.descriptionHandle = this.descriptionHandle.bind(this);
@@ -28,6 +30,16 @@ export default class viewRecipe extends React.Component {
   descriptionHandle(event) {
     this.setState({
       description: event.target.value,
+    });
+  }
+  servingChangeHandle(event) {
+    this.setState({
+      serviingSize: event.target.value,
+    });
+  }
+  calorieChangeHandle(event) {
+    this.setState({
+      calories: event.target.value,
     });
   }
   handleIngredientChange = (i) => (evt) => {
@@ -108,6 +120,12 @@ export default class viewRecipe extends React.Component {
          )
           })}
           <button onClick={this.handleAddStep} className="btn">Add Step</button>
+          <label id="servingSizeInputLabel"><b>Recommended Serving Size:</b></label>
+          <input type="text" placeholder="Enter Recommended Serving Size" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
+          <button className="btn">Create Recipe</button>
+          <label id="calorieInputLabel"><b>Calories per Serving</b></label>
+          <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
+
           <button className="btn">Create Recipe</button>
       </div>
     );

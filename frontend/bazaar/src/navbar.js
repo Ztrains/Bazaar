@@ -23,7 +23,9 @@ export default class NavBar extends React.Component {
   render() {
     let link = '';
     if (this.props.loggedInState === true) {
-      link = <Link className="nav-link" to={"/profile/" + this.props.currUser}> <button type="button" id="profileButton" className="btn btn-info">{this.props.loggedInState ? "Profile" : ""} </button></Link>
+      link = <span><Link className="nav-link" to={"/" + this.props.currUser + "/list"}><button type="button" id='listButton' className="btn btn-secondary" >My List</button></Link>
+      <Link className="nav-link" to={"/" + this.state.currUser + "/calendar"}><button type="button" id='calendarButton' className="btn btn-secondary" >My Calendar</button></Link>
+      <Link className="nav-link" to={"/profile/" + this.props.currUser}> <button type="button" id="profileButton" className="btn btn-info">{this.props.loggedInState ? "Profile" : ""} </button></Link></span>
     }
 
     return(

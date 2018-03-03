@@ -46,7 +46,7 @@ export default class App extends React.Component {
                 <Route path={"/recipeEntry"} component={RecipeEntry} />
                 <Route path={'/create'} component={CreateRecipe} />
                 <Route path={'/recipe/:id'} component={ViewRecipe} />
-                <Route path={'/list'} component={ShoppingList} />
+                <Route path={'/:username/list'} component={ShoppingList} />
             </Switch>
           </div>
         </Router>
