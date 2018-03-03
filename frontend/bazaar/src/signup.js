@@ -3,6 +3,7 @@ import "./index.css";
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import history from './history.js';
 
 
 export default class Signup extends React.Component {
@@ -57,6 +58,15 @@ export default class Signup extends React.Component {
       alert("Passwords do not match");
       return false
     }
+    else if (this.state.username < 1) {
+      alert("Username field must be filled");
+    }
+    else if (this.state.email < 1) {
+      alert("An email address must be entered");
+    }
+    else if (this.state.firstPass < 1 || this.state.secondPass < 1) {
+      alert("Both password fields must be filled in and match");
+    }
     else {
       console.log(this.state.username);
       console.log(this.state.email);
@@ -66,12 +76,19 @@ export default class Signup extends React.Component {
         username: this.state.username,
         email: this.state.email,
         password: this.state.firstPass
-      }
+      };
+      var _this = this
       axios.post("http://localhost:8000/auth/signup", tempObj)
       .then(function(result) {
-        console.log(result);
+        if (result.data.message == "user not found") {
+          alert("username or password is incorrect");
+          return false;
+        }
+        else {
+        _this.props.logInCallBack(_this.state.username);
+        history.push('/profile/' + _this.state.username);
+      }
       });
-    this.props.logInCallBack(this.state.username);
   }
 }
   render() {
@@ -95,9 +112,9 @@ export default class Signup extends React.Component {
 
        <button type="button" className="cancelbtn" onClick={this.googin}>Google Signin</button>
 
-		  <Link to={"/profile/" + this.state.username}>
+
 			<button type="submit" className="signinbtn" onClick={this.logon}>Sign Up</button>
-		  </Link>
+
 		</div>
 	</div>
     );

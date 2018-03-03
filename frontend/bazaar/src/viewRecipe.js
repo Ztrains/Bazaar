@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import axios from 'axios'
+import axios from 'axios';
+import { FacebookShareButton, FacebookIcon} from 'react-share';
 
 export default class viewRecipe extends React.Component {
   constructor(props) {
@@ -42,6 +43,14 @@ export default class viewRecipe extends React.Component {
         <h2>Description</h2>
         <button onclick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
         <button onclick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
+        <FacebookShareButton
+          url="reddit.com"
+          quote="Reddit">
+          <FacebookIcon
+            size={32}
+            round
+          />
+          </FacebookShareButton>
         <ul>
           <li>"3 potatoes"</li>
           <li>"2 eggs"</li>
