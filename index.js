@@ -17,7 +17,7 @@ let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
 
 /***** Start of db code *******/
-console.log('DB USERNAME: ', process.env.DB_USER)
+// console.log('DB USERNAME: ', process.env.DB_USER)
 let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.mlab.com:25048/bazaar`;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise; // not sure we need promises yet
@@ -81,9 +81,6 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-	if (req.body) {
-		console.log(req.body);
-	}
 	return res.send("Welcome to Bazaar!");
 });
 
