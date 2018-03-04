@@ -125,9 +125,3 @@ button:hover {
   height: 35px;
   text-align: center;
 }
-
-.btn {
-  margin-top: 10px;
-  background-color: grey;
-  width: 55%;
-}
