@@ -34,10 +34,8 @@ export default class SearchPage extends React.Component {
   render() {
     return(
         <div>
-          <br/>
-          <br/>
-          <h1>{"Search Query = " + this.props.match.params.terms}</h1>
-
+          <h1 id="center">{"Search Query = " + this.props.match.params.terms}</h1>
+          <br></br>
           {this.renderList()}
         </div>
     );

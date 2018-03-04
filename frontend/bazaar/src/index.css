@@ -37,6 +37,10 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
   color:
 }
 
+#center {
+  text-align: center;
+}
+
 h1 {
   padding-bottom: 5px;
 }
