@@ -95,7 +95,7 @@ passport.deserializeUser((obj, callback) => {
 app.all('/*', (req, res, next) => {
     //console.log(req)
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 

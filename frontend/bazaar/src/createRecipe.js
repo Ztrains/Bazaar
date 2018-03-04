@@ -108,7 +108,8 @@ export default class viewRecipe extends React.Component {
           </div>
         )
          })}
-         <button onClick={this.handleAddIngredient} className="btn">Add Ingredient</button>
+         <br></br>
+         <button onClick={this.handleAddIngredient} className="btnsmall">Add Ingredient</button>
          <br></br><br></br>
          <label> <b>Steps: </b></label>
          <br></br>
@@ -124,7 +125,8 @@ export default class viewRecipe extends React.Component {
            </div>
          )
           })}
-          <button onClick={this.handleAddStep} className="btn">Add Step</button>
+          <br></br>
+          <button onClick={this.handleAddStep} className="btnsmall">Add Step</button>
           <br></br>
           <br></br>
           <label id="servingSizeInputLabel"><b>Recommended Serving Size </b></label>
