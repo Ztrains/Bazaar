@@ -89,16 +89,18 @@ export default class viewRecipe extends React.Component {
       <div className="container">
 
         <h1>Create Recipe</h1>
-        <label id="nameInput">Name</label>
+        <label id="nameInput"><b>Name</b></label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInput"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
+        <br></br>
         <label> <b>Ingredients</b></label>
+        <br></br>
         {this.state.ingredients.map((ingredient, i) => {
           return(
           <div className="ingredientList">
             <input
-               type="text"
+               type="string"
                placeholder="Enter Next Ingredient"
                value={ingredient.name}
                onChange={this.handleIngredientChange(i)} />
@@ -107,11 +109,14 @@ export default class viewRecipe extends React.Component {
         )
          })}
          <button onClick={this.handleAddIngredient} className="btn">Add Ingredient</button>
+         <br></br><br></br>
+         <label> <b>Steps</b></label>
+         <br></br>
          {this.state.steps.map((step, i) => {
            return(
            <div className="ingredientList">
            <input
-                type="text"
+                type="string"
                 placeholder="Enter Next Step"
                 value={step.step}
                 onChange={this.handleStepChange(i)} />
@@ -121,13 +126,15 @@ export default class viewRecipe extends React.Component {
           })}
           <button onClick={this.handleAddStep} className="btn">Add Step</button>
           <br></br>
+          <br></br>
           <label id="servingSizeInputLabel"><b>Recommended Serving Size: </b></label>
           <input type="text" placeholder="Enter Recommended Serving Size" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
           <br></br>
           <label id="calorieInputLabel"><b>Calories per Serving: </b></label>
           <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
           <br></br>
-          <button className="btn">Create Recipe</button>
+          <br></br>
+          <button type="submit" className="btn-success">Create Recipe</button>
       </div>
     );
   }
