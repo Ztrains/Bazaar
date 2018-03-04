@@ -36,6 +36,9 @@ export default class App extends React.Component {
         <Router history={history}>
           <div>
             <NavBar loggedInState={this.state.loggedIn} currUser={this.state.loggedInUser}/>
+            <br/>
+            <br/>
+            <br/>
               <Switch>
                 <Route exact path={"/"} component={Home} />
 		            <Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>

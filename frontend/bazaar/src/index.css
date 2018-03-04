@@ -2,17 +2,17 @@
 
 body {font-family: Arial, Helvetica, sans-serif;}
 
-input[type=email], input[type=password] {
+input[type=username], input[type=email], input[type=password] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
     display: inline-block;
     border: none;
-    background: #f1f1f1;
+    background: white;
 }
 
-input[type=email]:focus, input[type=password]:focus {
-    background-color: #ddd;
+input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
+    background-color: #F0F7FA;
     outline: none;
 }
 
@@ -30,13 +30,16 @@ input[type=email]:focus, input[type=password]:focus {
   margin-left: 60px;
 }
 
+
 .nav-item {
   display: inline-block;
 }
 
 .container {
-  padding: 16px;
-  max-width: 100px;
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    padding: 20px;
+    max-width: 50%;
 }
 
 .container2 {
@@ -78,4 +81,8 @@ button:hover {
     content: "";
     clear: both;
     display: table;
+}
+
+.minusbtn {
+  width:
 }

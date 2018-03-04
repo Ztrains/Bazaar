@@ -96,7 +96,7 @@ export default class Signup extends React.Component {
             <div className="container">
 		<h1>Sign Up</h1>
                     <label id="username"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
+                    <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
                     <label id="loginEmail"><b>Email</b></label>
                     <input type="email" placeholder="Enter Email" className="form-control" id="loginEmail" placeholder="Enter Email" value={this.state.email} onChange={this.eMailHandle}/>
                   <label id="loginPass"><b>Password</b></label>
