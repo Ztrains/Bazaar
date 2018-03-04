@@ -32,7 +32,7 @@ it ('goes to search page', () => {
   const wrapper = shallow(<NavBar />);
   wrapper.find('#searchInput').first().prop('onChange')({target: {value: 'things'}});
   console.log(wrapper.state('searchBoxValue'));
-  wrapper.find('button').simulate('click');
+  wrapper.find('#loginButton').simulate('click');
   expect(wrapper.exists(<h1>dsf</h1>));
 });
 
