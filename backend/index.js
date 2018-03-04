@@ -7,7 +7,7 @@ const mongoose 		= require('mongoose');
 const fs 		= require("fs");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
-//const cors		= require("cors");
+const cors		= require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -20,7 +20,15 @@ app.use(cookieSession({
 	maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(cookieParser());
-//app.use(cors());
+
+var corsOption = {
+	origin: true,
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	credentials: true,
+	exposedHeaders: ['x-auth-token']
+  };
+
+  app.use(cors(corsOption));
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
@@ -92,12 +100,12 @@ passport.deserializeUser((obj, callback) => {
 	callback(null, obj);
 });
 
-app.all('/*', (req, res, next) => {
-    //console.log(req)
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.all('/*', (req, res, next) => {
+//     //console.log(req)
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 app.get("/", (req, res) => {
 	if (req.session.token) {
