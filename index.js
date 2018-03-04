@@ -100,11 +100,21 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-	return res.send("Welcome to Bazaar!");
+	if (req.session.token) {
+		res.cookie('token', req.session.token);
+		return res.json("Welcome to Bazaar! You're logged in!");
+	} else {
+		res.cookie('token', '');
+		return res.json("Welcome to Bazaar! Please log in.");
+	}
 });
 
 app.get("/auth/google", passport.authenticate("google", { scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/plus.profile.emails.read']}));
-app.get("/auth/google/callback", passport.authenticate("google", { successRedirect: "/", failureRedirect: "/auth/signup" }));
+app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/auth/signup" }),
+	(req, res) => {
+		req.session.token = req.user.token;
+		res.redirect("/");
+});
 
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
@@ -280,6 +290,12 @@ app.get("/search", (req, res) => {
 	}
 
 	return res.json(ret_data);
+});
+
+app.get("/logout", (req, res) => {
+	req.logout();
+	req.session = null;
+	res.redirect("/");
 });
 
 function ensureAuthenticated(req, res, next) {
