@@ -16,7 +16,7 @@ app.use(passport.session());
 
 app.use(cookieSession({
 	name: "bazaar-session",
-	keys: ['mayonaisse'],
+	keys: ['keanureeves'],
 	maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(cookieParser());
