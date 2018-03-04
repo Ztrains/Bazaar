@@ -5,19 +5,28 @@ const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
 const fs 		= require("fs");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 //const cors		= require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cookieSession({
+	name: "bazaar-session",
+	keys: ['mayonaisse'],
+	maxAge: 24 * 60 * 60 * 1000
+}));
+app.use(cookieParser());
 //app.use(cors());
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
 
 /***** Start of db code *******/
-console.log('DB USERNAME: ', process.env.DB_USER)
+// console.log('DB USERNAME: ', process.env.DB_USER)
 let mongoDB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds125048.mlab.com:25048/bazaar`;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise; // not sure we need promises yet
@@ -41,13 +50,15 @@ passport.use(new GoogleStrat({
 				return callback(err);
 			}
 
+			// console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
 			if (!user) {
 				// register user
 				user = new User({
-					name: profile.displayName,
+					name: profile.name.givenName + " " + profile.name.familyName,
 					email: profile.emails[0].value,
-					username: profile.username,
-					googleId: profile.id
+					username: profile.emails[0].value,
+					googleId: profile.id,
+					token: accessToken
 				});
 
 				user.save((err) => {
@@ -57,8 +68,17 @@ passport.use(new GoogleStrat({
 					return callback(err, user);
 				});
 			} else {
-				// we found the user
-				return callback(err, user);
+				// we found the user, so update the db with new access token and return
+				User.findOneAndUpdate({googleId: profile.id}, {$set: {token: accessToken}}, {new: true}, (err, user) => {
+					if (err) {
+						return console.error('ERROR: ', err);
+					}
+					if (!user) {
+						return res.status(400).json({ message: 'user not found'});
+					}
+
+					return callback(err, user);
+				});
 			}
 		});
 	}
@@ -75,16 +95,26 @@ passport.deserializeUser((obj, callback) => {
 app.all('/*', (req, res, next) => {
     //console.log(req)
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
 app.get("/", (req, res) => {
-	return res.send("Welcome to Bazaar!");
+	if (req.session.token) {
+		res.cookie('token', req.session.token);
+		return res.json("Welcome to Bazaar! You're logged in!");
+	} else {
+		res.cookie('token', '');
+		return res.json("Welcome to Bazaar! Please log in.");
+	}
 });
 
 app.get("/auth/google", passport.authenticate("google", { scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/plus.profile.emails.read']}));
-app.get("/auth/google/callback", passport.authenticate("google", { successRedirect: "/", failureRedirect: "/auth/signup" }));
+app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/auth/signup" }),
+	(req, res) => {
+		req.session.token = req.user.token;
+		res.redirect("/");
+});
 
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
@@ -179,7 +209,30 @@ app.post("/profile/update_username", (req, res) => {
 	});
 });
 
-app.get("/preferences", (req, res) => {
+app.post("/profile/update_preferences", (req, res) => {
+	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
+
+	let newPrefs = req.body.prefs;
+	let userEmail = req.body.userEmail;
+
+	if (!newPrefs) {
+		return res.status(400).json({message: "No preferences to save in request"});
+	}
+	if (!userEmail) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+
+	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found'});
+		}
+	});
+});
+
+app.get("/profile/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
 });
@@ -188,6 +241,34 @@ app.get("/recipes", (req, res) => {
 	// For now we're just reading and returning recipes from a JSON file
 	// In the future, add recipes to DB and work with it from there
 	return res.json(parsed_recipes);
+});
+
+app.post("/recipes/save", (req,res) => {
+	// Saves a recipe into a user's favorites based on recipe ID
+
+	let idToSave = req.body.recipeID;
+	let userEmail = req.body.userEmail;
+
+	if (!idToSave) {
+		return res.status(400).json({message: "No ID to save in request"});
+	}
+	if (!userEmail) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+
+	User.findOneAndUpdate({email: userEmail}, {$push:{savedRecipes:idToSave}}, {new:true}, (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found'});
+		}
+	})
+});
+
+// ML route - temporary
+app.get("/chini", (req, res) => {
+	res.json({message: "Like"});
 });
 
 app.get("/search", (req, res) => {
@@ -209,6 +290,12 @@ app.get("/search", (req, res) => {
 	}
 
 	return res.json(ret_data);
+});
+
+app.get("/logout", (req, res) => {
+	req.logout();
+	req.session = null;
+	res.redirect("/");
 });
 
 function ensureAuthenticated(req, res, next) {

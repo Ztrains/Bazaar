@@ -30,7 +30,7 @@ export default class NavBar extends React.Component {
 
     return(
       <div>
-        <nav className="navbar fixed-top navbar-dark bg-primary">
+        <nav className="navbar navbar-default fixed-top navbar-dark navbar-offset bg-primary">
             <Link className="navbar-brand" to="/">Bazaar</Link>
             <form className="form-inline">
               <input className="form-control" id='searchInput' type="search" placeholder="" value={this.state.searchBoxValue} onChange={this.handleChange}/>

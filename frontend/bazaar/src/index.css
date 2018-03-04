@@ -1,19 +1,48 @@
 
 
-body {font-family: Arial, Helvetica, sans-serif;}
+body {font-family: arial, sans-serif;}
 
-input[type=email], input[type=password] {
+
+input[type=username], input[type=email], input[type=text], input[type=password] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
     display: inline-block;
     border: none;
-    background: #f1f1f1;
+    background: white;
 }
 
-input[type=email]:focus, input[type=password]:focus {
-    background-color: #ddd;
+input[type=text2] {
+  width: 60%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: white;
+}
+
+input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
+    background-color: #F0F7FA;
     outline: none;
+    width: 100%;
+}
+
+#title {
+  text-align: center;
+  color: #black;
+}
+
+#warning {
+  text-align: center;
+  color:
+}
+
+#center {
+  text-align: center;
+}
+
+h1 {
+  padding-bottom: 5px;
 }
 
 .list-group {
@@ -30,17 +59,31 @@ input[type=email]:focus, input[type=password]:focus {
   margin-left: 60px;
 }
 
+
 .nav-item {
   display: inline-block;
 }
 
 .container {
-  padding: 16px;
-  max-width: 100px;
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    padding: 20px;
 }
 
 .container2 {
-  padding-top: 16px;
+  padding-top: 5px;
+}
+
+.container4 {
+  border-radius: 5px;
+  background-color: #FFFFF0;
+  padding: 35px;
+  padding-bottom: 85px;
+}
+
+.signUpClass {
+  text-align: center;
+  float: none;
 }
 
 button {
@@ -68,14 +111,55 @@ button:hover {
   width: 50%;
 }
 
+.googlebtn {
+   padding-top: 16px;
+   background-color: #dd4b39;
+   width: 38%;
+}
+
 .signupbtn {
   width: 100%;
   padding: 14px 20px;
-  background-color: #696969;
+  background-color: grey;
 }
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
+    padding-top: 15px;
+}
+
+.ingredientList {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.minusbtn {
+  padding-top: 0px;
+  font-size: 30px;
+  font-weight: bolder;
+  width: 5%;
+  padding-right: 30px;
+  background-color: grey;
+  height: 35px;
+  text-align: center;
+}
+
+.btnsmall {
+  width: 55%;
+  height:20%;
+  padding-top: 7px;
+  background-color: grey;
+}
+
+.btnsmallgreen {
+  width: 60%;
+  height:20%;
+  padding-top: 7px;
+}
+
+.btnsmall2 {
+  width: 60px;
+  background-color: grey;
 }

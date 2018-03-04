@@ -58,7 +58,7 @@ export default class Login extends React.Component {
         <div className="container">
 		       <h1>Sign In</h1>
            <label id="loginUsername"><b>Email</b></label>
-           <input type="username" placeholder="Enter UserName" className="form-control" id="loginUsername" value={this.state.username} onChange={this.usernameHandle}/>
+           <input type="username" placeholder="Enter Usename" className="form-control" id="loginUsername" value={this.state.username} onChange={this.usernameHandle}/>
            <label id="loginPass"><b>Password</b></label>
            <input type="password" placeholder="Enter Password" className="form-control" id="loginPass" value={this.state.password} onChange={this.passHandle}/>
         	 <div className="clearfix">

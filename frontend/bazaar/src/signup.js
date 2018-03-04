@@ -94,7 +94,7 @@ export default class Signup extends React.Component {
             <div className="container">
 		<h1>Sign Up</h1>
                     <label id="username"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
+                    <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
                     <label id="loginEmail"><b>Email</b></label>
                     <input type="email" placeholder="Enter Email" className="form-control" id="loginEmail" placeholder="Enter Email" value={this.state.email} onChange={this.eMailHandle}/>
                   <label id="loginPass"><b>Password</b></label>
@@ -102,13 +102,11 @@ export default class Signup extends React.Component {
         	  <label id="loginPass"><b>Enter Password Again</b></label>
                   <input type="password" placeholder="Repeat Password" className="form-control" id="loginPass" placeholder="Enter Password" value={this.state.secondPass} onChange={this.secondPassHandle}/>
 
-		<p>By creating an account you agree to our Terms and Privacy.</p>
+		<p id="warning">By creating an account you agree to our Terms and Privacy.</p>
 		<div className="clearfix">
 		  <Link to="/signin">
 		  	<button type="button" className="cancelbtn">Cancel</button>
 		  </Link>
-
-       <button type="button" className="cancelbtn" onClick={this.googin}>Google Signin</button>
 
 
 			<button type="submit" className="signinbtn" onClick={this.logon}>Sign Up</button>
@@ -118,7 +116,10 @@ export default class Signup extends React.Component {
 
 
 		</div>
-	</div>
+    <div className="signUpClass">
+      <button type="button" className="googlebtn" onClick={this.googin}>Google Sign Up</button>
+    </div>
+  </div>
     );
   }
 }
