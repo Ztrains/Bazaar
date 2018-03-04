@@ -94,7 +94,7 @@ export default class viewRecipe extends React.Component {
         <label id="descriptionInput"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
         <br></br>
-        <label> <b>Ingredients</b></label>
+        <label> <b>Ingredients: </b></label>
         <br></br>
         {this.state.ingredients.map((ingredient, i) => {
           return(
@@ -110,7 +110,7 @@ export default class viewRecipe extends React.Component {
          })}
          <button onClick={this.handleAddIngredient} className="btn">Add Ingredient</button>
          <br></br><br></br>
-         <label> <b>Steps</b></label>
+         <label> <b>Steps: </b></label>
          <br></br>
          {this.state.steps.map((step, i) => {
            return(
@@ -127,10 +127,10 @@ export default class viewRecipe extends React.Component {
           <button onClick={this.handleAddStep} className="btn">Add Step</button>
           <br></br>
           <br></br>
-          <label id="servingSizeInputLabel"><b>Recommended Serving Size: </b></label>
+          <label id="servingSizeInputLabel"><b>Recommended Serving Size </b></label>
           <input type="text" placeholder="Enter Recommended Serving Size" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
           <br></br>
-          <label id="calorieInputLabel"><b>Calories per Serving: </b></label>
+          <label id="calorieInputLabel"><b>Calories per Serving </b></label>
           <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
           <br></br>
           <br></br>
