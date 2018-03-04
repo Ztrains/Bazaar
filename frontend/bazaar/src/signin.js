@@ -56,7 +56,7 @@ export default class Login extends React.Component {
   render() {
     return (
         <div className="container">
-		       <h1 id="title">Sign In</h1>
+		       <h1>Sign In</h1>
            <label id="loginUsername"><b>Email</b></label>
            <input type="username" placeholder="Enter UserName" className="form-control" id="loginUsername" value={this.state.username} onChange={this.usernameHandle}/>
            <label id="loginPass"><b>Password</b></label>

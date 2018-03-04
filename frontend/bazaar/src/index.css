@@ -110,5 +110,21 @@ button:hover {
     padding-top: 15px;
 }
 
+.ingredientList {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 .minusbtn {
+  padding-top: 0px;
+  font-size: 30px;
+  font-weight: bolder;
+  width: 5%;
+  padding-right: 30px;
+  background-color: grey;
+  height: 35px;
+  text-align: center;
+}
+.btn {
+  width: 50%;
 }

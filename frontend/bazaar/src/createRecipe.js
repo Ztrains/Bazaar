@@ -88,44 +88,45 @@ export default class viewRecipe extends React.Component {
     return(
       <div className="container">
 
-        <h1>"Submit a new recipe"</h1>
+        <h1>Create Recipe</h1>
         <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInput"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
-        <label> <b>Inregdients</b></label>
+        <label> <b>Ingredients</b></label>
         {this.state.ingredients.map((ingredient, i) => {
           return(
-          <div>
-          <input
+          <div className="ingredientList">
+            <input
                type="text"
-               placeholder="Ingredient #{i} name"
+               placeholder="Enter Next Ingredient"
                value={ingredient.name}
                onChange={this.handleIngredientChange(i)} />
-             <button onClick={this.handleRemoveIngredient(i)} className="btn">-</button>
+             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn">-</button>
           </div>
         )
          })}
          <button onClick={this.handleAddIngredient} className="btn">Add Ingredient</button>
          {this.state.steps.map((step, i) => {
            return(
-           <div>
+           <div className="ingredientList">
            <input
                 type="text"
-                placeholder="next Step"
+                placeholder="Enter Next Step"
                 value={step.step}
                 onChange={this.handleStepChange(i)} />
-              <button onClick={this.handleRemoveStep(i)} className="btn">-</button>
+              <button onClick={this.handleRemoveStep(i)} className="minusbtn">-</button>
            </div>
          )
           })}
           <button onClick={this.handleAddStep} className="btn">Add Step</button>
-          <label id="servingSizeInputLabel"><b>Recommended Serving Size:</b></label>
+          <br></br>
+          <label id="servingSizeInputLabel"><b>Recommended Serving Size: </b></label>
           <input type="text" placeholder="Enter Recommended Serving Size" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
-          <button className="btn">Create Recipe</button>
-          <label id="calorieInputLabel"><b>Calories per Serving</b></label>
+          <br></br>
+          <label id="calorieInputLabel"><b>Calories per Serving: </b></label>
           <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
-
+          <br></br>
           <button className="btn">Create Recipe</button>
       </div>
     );
