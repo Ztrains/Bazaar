@@ -1,6 +1,7 @@
 
 
-body {font-family: Arial, Helvetica, sans-serif;}
+body {font-family: arial, sans-serif;}
+
 
 input[type=username], input[type=email], input[type=password] {
     width: 100%;
@@ -14,6 +15,21 @@ input[type=username], input[type=email], input[type=password] {
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;
     outline: none;
+    width: 100%;
+}
+
+#title {
+  text-align: center;
+  color: #black;
+}
+
+#warning {
+  text-align: center;
+  color:
+}
+
+h1 {
+  padding-bottom: 5px;
 }
 
 .list-group {
@@ -39,11 +55,15 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
     border-radius: 5px;
     background-color: #F0F0F0;
     padding: 20px;
-    max-width: 50%;
 }
 
 .container2 {
-  padding-top: 16px;
+  padding-top: 5px;
+}
+
+.signUpClass {
+  text-align: center;
+  float: none;
 }
 
 button {
@@ -71,18 +91,24 @@ button:hover {
   width: 50%;
 }
 
+.googlebtn {
+   padding-top: 16px;
+   background-color: #dd4b39;
+   width: 40%;
+}
+
 .signupbtn {
   width: 100%;
   padding: 14px 20px;
-  background-color: #696969;
+  background-color: grey;
 }
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
+    padding-top: 15px;
 }
 
 .minusbtn {
-  width:
 }

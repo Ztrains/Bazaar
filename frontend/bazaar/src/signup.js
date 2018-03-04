@@ -104,19 +104,20 @@ export default class Signup extends React.Component {
         	  <label id="loginPass"><b>Enter Password Again</b></label>
                   <input type="password" placeholder="Repeat Password" className="form-control" id="loginPass" placeholder="Enter Password" value={this.state.secondPass} onChange={this.secondPassHandle}/>
 
-		<p>By creating an account you agree to our Terms and Privacy.</p>
+		<p id="warning">By creating an account you agree to our Terms and Privacy.</p>
 		<div className="clearfix">
 		  <Link to="/signin">
 		  	<button type="button" className="cancelbtn">Cancel</button>
 		  </Link>
 
-       <button type="button" className="cancelbtn" onClick={this.googin}>Google Signin</button>
-
 
 			<button type="submit" className="signinbtn" onClick={this.logon}>Sign Up</button>
 
 		</div>
-	</div>
+    <div className="signUpClass">
+      <button type="button" className="googlebtn" onClick={this.googin}>Google Sign Up</button>
+    </div>
+  </div>
     );
   }
 }
