@@ -12,6 +12,15 @@ input[type=username], input[type=email], input[type=text], input[type=password] 
     background: white;
 }
 
+input[type=text2] {
+  width: 60%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: white;
+}
+
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;
     outline: none;
@@ -129,6 +138,17 @@ button:hover {
 .btnsmall {
   width: 55%;
   height:20%;
-  padding-top: 5px;
+  padding-top: 7px;
+  background-color: grey;
+}
+
+.btnsmallgreen {
+  width: 60%;
+  height:20%;
+  padding-top: 7px;
+}
+
+.btnsmall2 {
+  width: 60px;
   background-color: grey;
 }

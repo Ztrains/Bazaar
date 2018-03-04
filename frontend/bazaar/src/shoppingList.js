@@ -32,19 +32,18 @@ export default class shoppingList extends React.Component {
   render() {
     return(
         <div className="container">
-        <br/>
-        <br/>
-        <h1>Shopping List</h1>
+        <h1>  Shopping List</h1>
+        <br></br>
         <ul>
         {this.state.List.map((prefValue, key) => (
-          <div>
+          <div className="ingredientList">
             <li>{prefValue}</li>
-            <button className="btn" onClick={this.handleRemoveItem(key)}>-</button>
+            <button className="minusbtn" onClick={this.handleRemoveItem(key)}>-</button>
           </div>
         ))}
         </ul>
-          <input type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
-          <button className="btn" onClick={this.addItem}>Add Item</button>
+          <input type="text2" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
+          <button className="btnsmallgreen" onClick={this.addItem}>Add Item</button>
         </div>
     );
   }
