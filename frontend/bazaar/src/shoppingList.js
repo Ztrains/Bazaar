@@ -25,6 +25,10 @@ export default class shoppingList extends React.Component {
     this.setState({newItem: event.target.value});
   }
   addItem = () => {
+    if (this.state.newItem.length < 1) {
+      alert('Box must be full');
+      return;
+    }
     var newList = this.state.List;
     newList.push(this.state.newItem);
     this.setState({List: newList, newItem: ''});

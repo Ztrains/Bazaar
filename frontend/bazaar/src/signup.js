@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import history from './history.js';
+import renderHTML from 'react-render-html'
 
 
 export default class Signup extends React.Component {
@@ -13,7 +14,8 @@ export default class Signup extends React.Component {
       email: '',
       firstPass: '',
       secondPass: '',
-      username: ''
+      username: '',
+      google: '',
     }
     this.eMailHandle = this.eMailHandle.bind(this);
     this.firstPassHandle = this.firstPassHandle.bind(this);
@@ -40,17 +42,12 @@ export default class Signup extends React.Component {
         secondPass: event.target.value,
       });
   }
-  googin() {
-    axios.get("https://bazaar-408.herokuapp.com/auth/google/", { method: 'GET',
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': 'https://bazaar-408.herokuapp.com',
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-      credentials: 'same-origin'})
+  googin = () => {
+    var _this = this;
+    axios.get("https://bazaar-408.herokuapp.com/auth/google/")
     .then(function(results) {
-      console.log(results);
+      console.log(results.data);
+      _this.setState({google: results.data});
     });
   }
   logon = (event) => {
@@ -78,7 +75,7 @@ export default class Signup extends React.Component {
         password: this.state.firstPass
       };
       var _this = this
-      axios.post("http://localhost:8000/auth/signup", tempObj)
+      axios.post("https://bazaar-408.herokuapp.com/auth/signup/", tempObj)
       .then(function(result) {
         if (result.data.message == "user not found") {
           alert("username or password is incorrect");
@@ -92,6 +89,7 @@ export default class Signup extends React.Component {
   }
 }
   render() {
+
     return (
             <div className="container">
 		<h1>Sign Up</h1>
@@ -114,6 +112,10 @@ export default class Signup extends React.Component {
 
 
 			<button type="submit" className="signinbtn" onClick={this.logon}>Sign Up</button>
+
+
+      <div>{renderHTML(this.state.google)}></div>
+
 
 		</div>
 	</div>

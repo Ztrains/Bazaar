@@ -15,15 +15,16 @@ export default class RecipeViewer extends React.Component {
     axios.get("https://bazaar-408.herokuapp.com/recipes")
     .then(function(result) {
       console.log(result);
+      if (result === null) {
+        alert("there is no data");
+
+      }
+      else {
       _this.setState({
         list: result.data,
       });
-
-    });
-    console.log(this.state.list);
-    if (this.state.list.length < 1) {
-      alert("there is no data. sorry");
     }
+    });
   }
   createList() {
     let newList = [];

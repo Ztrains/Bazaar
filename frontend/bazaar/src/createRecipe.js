@@ -52,6 +52,9 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddIngredient = () => {
+    if (this.state.ingredients[this.state.ingredients.length - 1].name == '') {
+      return;
+    }
     this.setState({
       ingredients: this.state.ingredients.concat([{ name: '' }])
     });
@@ -73,6 +76,9 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
+    if (this.state.steps[this.state.steps.length - 1].step == '') {
+      return;
+    }
     this.setState({
       steps: this.state.steps.concat([{ step: '' }])
     });
@@ -93,7 +99,7 @@ export default class viewRecipe extends React.Component {
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInput"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
-        <label> <b>Inregdients</b></label>
+        <label><b>Inregdients</b></label>
         {this.state.ingredients.map((ingredient, i) => {
           return(
           <div>

@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios';
+import YouTube from 'react-youtube';
 import { FacebookShareButton, FacebookIcon} from 'react-share';
+import ReactDisqusComments from 'react-disqus-comments';
 
 export default class viewRecipe extends React.Component {
   constructor(props) {
@@ -35,6 +37,13 @@ export default class viewRecipe extends React.Component {
     this.setState({votes: temp});
     //send this to server
   }
+  _onReady(event) {
+   // access to player in all event handlers via event.target
+   event.target.pauseVideo();
+ }
+ handleNewComment(comment) {
+   console.log(comment.text);
+ }
   render() {
     return(
       <div className="container">
@@ -61,6 +70,20 @@ export default class viewRecipe extends React.Component {
         </ul>
 
         <p>This is where a video get embedded</p>
+        <YouTube
+          videoId="7pSmhZFbCy0"
+          opts={{height: '480', width:'720',playerVars:{autoplay: 0}}}
+          onReady={this._onReady}
+        />
+        <h3>"Comment/Review this recipe"</h3>\
+        <ReactDisqusComments
+          shortname="example"
+          identifier="something-unique-12345"
+          title="Example Thread"
+          url="http://www.example.com/example-thread"
+          category_id="123456"
+          onNewComment={this.handleNewComment}
+        />
       </div>
     );
   }

@@ -13,7 +13,8 @@ import SearchPage from './search.js';
 import ViewRecipe from './viewRecipe.js';
 import ShoppingList from './shoppingList.js'
 import Home from './home.js';
-import CreateRecipe from './createRecipe.js'
+import CreateRecipe from './createRecipe.js';
+import Calendar from './calendar.js';
 import history from './history.js';
 import {Router, Switch} from 'react-router-dom';
 import {Route, Redirect} from 'react-router';
@@ -47,6 +48,7 @@ export default class App extends React.Component {
                 <Route path={'/create'} component={CreateRecipe} />
                 <Route path={'/recipe/:id'} component={ViewRecipe} />
                 <Route path={'/:username/list'} component={ShoppingList} />
+                <Route path={'/calendar'} component={Calendar}/>
             </Switch>
           </div>
         </Router>
