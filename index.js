@@ -17,7 +17,7 @@ app.use(passport.session());
 
 app.use(cookieSession({
 	name: "bazaar-session",
-	keys: ['keanureeves'],
+	keys: [process.env.COOKIE_KEY],
 	maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(cookieParser());
@@ -225,20 +225,20 @@ app.post("/profile/update_username", (req, res) => {
 	let newUsername = req.body.username;
 	let userEmail = req.body.email;
 
-	User.findOne(({ 'email': userEmail }), (err, user) => {
+	User.findOne(({'email': userEmail}), (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found' });
+			return res.status(400).json({ message: 'User not found' });
 		}
 
 		user.username = newUsername;
 		user.save((err) => {
 			if (err) {
-				return res.status(400).json({ message: "internal server error" });
+				return res.status(400).json({ message: "Internal server error" });
 			}
-			return res.status(200).json({ message: "successfully updated username" });
+			return res.status(200).json({ message: "Successfully updated username" });
 		});
 	});
 });
