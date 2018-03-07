@@ -165,7 +165,7 @@ app.post("/auth/signup", (req, res) => {
 
 app.post("/auth/signin", (req, res) => {
 	if (!req.body.accessToken) {
-		return res.status(400).json({message: "Access token in request"});
+		return res.status(400).json({message: "Missing access token in request"});
 	}
 	if (!req.body.googleId) {
 		return res.status(400).json({message: "Missing Google ID in request"});
@@ -223,9 +223,10 @@ app.post("/profile/update_username", (req, res) => {
 	// by email, and change the username for the user whose email corresponds
 	// to that email. Later on, do this by checking user session to find user
 	let newUsername = req.body.username;
-	let userEmail = req.body.email;
+	let token = req.body.accessToken;
+	
 
-	User.findOne(({'email': userEmail}), (err, user) => {
+	User.findOne(({token: token}), (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
@@ -247,16 +248,16 @@ app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
 
 	let newPrefs = req.body.prefs;
-	let userEmail = req.body.userEmail;
+	let token = req.body.accessToken;
 
 	if (!newPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
 	}
-	if (!userEmail) {
-		return res.status(400).json({message: "No email specified in request"});
+	if (!token) {
+		return res.status(400).json({message: "No token specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
@@ -266,10 +267,34 @@ app.post("/profile/update_preferences", (req, res) => {
 	});
 });
 
-app.get("/profile/preferences", (req, res) => {
+app.post("/profile/update_dish_prefs", (req, res) => {
+	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
+
+	let newDishPrefs = req.body.prefs;
+	let token = req.body.accessToken;
+
+	if (!newDishPrefs) {
+		return res.status(400).json({message: "No preferences to save in request"});
+	}
+	if (!token) {
+		return res.status(400).json({message: "No token specified in request"});
+	}
+
+	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found'});
+		}
+		return res.json({'updatedUser': user});
+	});
+});
+
+/*app.get("/profile/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
-});
+});*/
 
 app.get("/recipes", (req, res) => {
 	// For now we're just reading and returning recipes from a JSON file
