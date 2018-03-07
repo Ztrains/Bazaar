@@ -125,25 +125,17 @@ app.get("/auth/google/callback", passport.authenticate("google", { failureRedire
 });
 
 app.post("/auth/signup", (req, res) => {
-	// Get user information from request body and create new account in DB
-	// console.log(req.body);
 	if (!req.body.username) {
-		return res.status(400).json({message: 'Username missing'});
+		return res.status(400).json({message: "Username missing"});
 	}
 	if (!req.body.accessToken) {
-		return res.status(400).json({message: 'Internal server error'});
+		return res.status(400).json({message: "Internal server error"});
 	}
 	if (!req.body.userObj) {
-		return res.status(500).json({message: 'Internal server error'});
+		return res.status(500).json({message: "Internal server error"});
 	}
 	
-	// User.create(req.body, (err, result) => {
-	// 	if (err) {
-	// 		return console.error(err);
-	// 	}
-	// 	res.json(result);
-	// });
-	User.findOne({'username': req.body.username}, (err, user) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -163,30 +155,44 @@ app.post("/auth/signup", (req, res) => {
 					return res.status(500).json({message: "Internal server error"});
 				}
 
-				return res.status(200).json(newUser);
+				return res.status(200).json({message: "Success", user: newUser});
 			});
 		}
+
+		return res.status(400).json({message: "User already exists"});
 	});
 });
 
 app.post("/auth/signin", (req, res) => {
-	// Retrieve user from DB given info, return error if not found
-	// assign a timed token to user's session
-	if (!req.body.username) {
-		return res.status(400).json({message: 'Username required in request'});
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Access token in request"});
+	}
+	if (!req.body.googleId) {
+		return res.status(400).json({message: "Missing Google ID in request"});
 	}
 	
-	User.findOne(({'username': req.body.username}), (err, user) => {
+	User.findOne(({googleId: req.body.googleId}), (err, user) => {
 		if (err) {
-			return console.error('ERROR:', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
+
 		if (!user) {
-			return res.json({message : 'user not found'});
+			return res.status(400).json({message : "User not found"});
 		}
-		console.log('User is: ', user);
-        return res.json(user);
+		
+		// we could also look up by username
+		User.findOneAndUpdate({googleId: req.body.googleId}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			if (!user) {
+				return res.status(400).json({message: "User not found"});
+			}
+
+			return res.status(200).json({message: "Success"});
+		});
 	});
-	//LOOKS FOR USERNAME SENT IN REQUEST IN THE DATABASE, THEN RETURNS THE USER INFO IF IT EXISTS
 });
 
 app.get("/profile/:username", (req, res) => {
