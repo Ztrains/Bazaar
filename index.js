@@ -22,14 +22,7 @@ app.use(cookieSession({
 }));
 app.use(cookieParser());
 
-var corsOption = {
-	origin: true,
-	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-	credentials: true,
-	exposedHeaders: ['x-auth-token']
-  };
-
-  app.use(cors(corsOption));
+app.use(cors());
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
@@ -130,23 +123,44 @@ app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
 	console.log(req.body);
 	if (!req.body.username) {
-		return res.status(400).json({message: 'Username required in request'});
+		return res.status(400).json({message: 'Username missing'});
 	}
-	if (!req.body.email) {
-		return res.status(400).json({message: 'Email required in request'});
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: 'Internal server error'});
 	}
-	if (!req.body.password) {
-		return res.status(400).json({message: 'Password required in request'}); //maybe not?
+	if (!req.body.userObj) {
+		return res.status(500).json({message: 'Internal server error'});
 	}
 	
-	User.create(req.body, (err, result) => {
+	// User.create(req.body, (err, result) => {
+	// 	if (err) {
+	// 		return console.error(err);
+	// 	}
+	// 	res.json(result);
+	// });
+	User.findOne({'username': req.body.username}, (err, user) => {
 		if (err) {
-			return console.error(err);
+			return res.status(500).json({message: "Internal server error"});
 		}
-		res.json(result);
+
+		if (!user) {
+			var data = {
+				name: userObj.givenName + " " + userObj.familyName,
+				email: userObj.email,
+				googleId: userObj.googleId,
+				imageUrl: userObj.imageUrl,
+				token: accessToken
+			};
+
+			User.create(data, (err, newUser) => {
+				if (err) {
+					return res.status(500).json({message: "Internal server error"});
+				}
+
+				return res.status(200).json(newUser);
+			});
+		}
 	});
-	//LOOKS TO MAKE SURE THERE IS USERNAME/EMAIL/PASS IN REQ, THEN ADDS TO DB IF SO
-	//VERY BASIC
 });
 
 app.post("/auth/signin", (req, res) => {
