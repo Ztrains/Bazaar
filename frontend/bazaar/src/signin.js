@@ -37,7 +37,8 @@ export default class Login extends React.Component {
     this.setState({accessTok: responce.accessToken});
     var tempObj = {
       email: this.state.email,
-
+      accessToken: this.state.accessTok,
+      googleId: responce.profileObj.googleId
     };
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
