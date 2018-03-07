@@ -197,25 +197,24 @@ app.post("/auth/signin", (req, res) => {
 app.get("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
 	if (!req.params.username) {
-		return res.status(400).json({message: 'Username required in URL'});
+		return res.status(400).json({message: "Username required in URL"});
 	}
 	
 	User.findOne(({'username': req.params.username}), (err, user) => {
 		if (err) {
-			return console.error('ERROR:', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.json({message : 'user not found'});
+			return res.status(400).json({message : "User not found"});
 		}
-		console.log('User is: ', user);
+
         return res.json(user);
 	});
-	//BASICALLY COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
 });
 
 app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
-	res.status(200).json({ "message": "send back calendar information here" });
+	res.status(200).json({"message": "send back calendar information here"});
 });
 
 app.post("/profile/update_username", (req, res) => {
