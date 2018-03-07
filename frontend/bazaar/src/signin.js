@@ -12,19 +12,15 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      accessTok: '',
+      accessToken: '',
+      googleId: '',
 
     }
     //this.usernameHandle = this.usernameHandle.bind(this);
     //this.passHandle = this.passHandle.bind(this);
   }
-  /*usernameHandle(event) {
-    this.setState({
-      username: event.target.value,
-    });
-  }
-   passHandle(event) {
+
+   /*passHandle(event) {
     this.setState({
       password: event.target.value,
     });
@@ -33,11 +29,11 @@ export default class Login extends React.Component {
   googSuccess = (responce) => {
     console.log(responce);
     console.log(responce.profileObj);
-    this.setState({email: responce.profileObj.email});
-    this.setState({accessTok: responce.accessToken});
+    this.setState({googleId: responce.googleId});
+    this.setState({accessToken: responce.accessToken});
     var tempObj = {
-      email: this.state.email,
-
+      accessToken: this.state.accessToken,
+      googleId: this.state.googleId,
     };
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
@@ -48,7 +44,7 @@ export default class Login extends React.Component {
         return false;
       }
       else {
-      _this.props.logInCallBack(result.data.username);
+      _this.props.logInCallBack(result.data.username, _this.state.accessToken);
       history.push('/profile/' + result.data.username);
     }
     });
@@ -62,7 +58,6 @@ export default class Login extends React.Component {
         <div className="container">
 		       <h1>Sign In</h1>
            <h3>This website uses google to handle authentication. To Use the site, you must first have a google account. Then you can link your google account to Bazaar</h3>
-
         	 <div className="clearfix">
 		         <Link to="/">
 		  	        <button type="button" className="cancelbtn">Cancel</button>

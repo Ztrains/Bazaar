@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+//import './index.css';
 import axios from 'axios';
 import {Link, Router} from 'react-router-dom'
 
@@ -24,14 +24,18 @@ export default class recipeEntry extends React.Component {
       <div className="container flex">
         <div className="row justify-content-md-center">
           <div className="col-md-8">
-            <div className="container4">
-              <h5 className="card-title"><Link to={'/recipe/' + this.props.id}><b>{this.props.name}</b></Link>
-              <br></br><br></br>
-              <p className="card-text">This is a description of the recipe.</p>
-              <br></br>
-              <button className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
-              <br></br><br></br>
-              <button className="btn btn-danger float-md-right" id="rdelbut">Delete</button></h5>
+            <div className="card">
+
+    
+              <div className="card-stacked">
+                <div className="card-content">
+                  <h3 className="card-title"><Link to={'/recipe/' + this.props.id}><b>{this.props.name}</b></Link></h3>
+                  <p>This is a description of the recipe.</p>
+                </div>
+                <div className="card-action">
+                  <button className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

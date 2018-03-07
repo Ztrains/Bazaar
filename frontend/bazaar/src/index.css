@@ -3,7 +3,7 @@
 body {font-family: arial, sans-serif;}
 
 
-input[type=username], input[type=email], input[type=text], input[type=password] {
+input[type=username], input[type=email], input[type=password] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -11,15 +11,48 @@ input[type=username], input[type=email], input[type=text], input[type=password] 
     border: none;
     background: white;
 }
+#quantField {
+  width: 50%;
+  font-size: 16px;
+  color: black;
+}
+#nameField {
+  margin-left: -150px ;
+  font-size: 16px;
+}
+#shopListValue {
+  width: 60%;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+#shopListAdd {
+  font-size: 18px;
+  color: black;
+  width: 60%;
+}
+#shopQuantAdd {
+  font-size: 18px;
+  width: 30%;
+}
+#shopListQuant {
+  font-size: 18px;
+  width: 30%;
+  color: black;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+    color: #4d4d4d;
+    opacity: 1 !important;
+}
 
-input[type=text2] {
+/*input[type=text2] {
   width: 60%;
   padding: 15px;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
   background: white;
-}
+}*/
 
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;
@@ -141,9 +174,11 @@ button:hover {
   font-weight: bolder;
   width: 5%;
   padding-right: 30px;
+  margin-left: 30px;
   background-color: grey;
   height: 35px;
   text-align: center;
+
 }
 
 .btnsmall {

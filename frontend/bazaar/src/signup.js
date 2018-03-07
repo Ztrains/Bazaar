@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import history from './history.js';
 import GoogleLogin from 'react-google-login';
+import {Card} from 'react-materialize'
 
 
 export default class Signup extends React.Component {
@@ -46,8 +47,9 @@ export default class Signup extends React.Component {
       var _this = this
       axios.post("https://bazaar-408.herokuapp.com/auth/signup/", tempObj)
       .then(function(result) {
+        console.log(result);
         if (result.data.message == "user not found") {
-          alert("username or password is incorrect");
+          alert("username is already in database. Please try again");
           return false;
         }
         else {
@@ -66,33 +68,30 @@ export default class Signup extends React.Component {
   render() {
 
     return (
-            <div className="container">
-		<h1>Sign Up</h1>
-                    <label id="username"><b>Username</b></label>
-                    <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
+      <div className="container">
+        <div className="card">
+          <div className="card-content">
+  		    <h1 className="card-title">Sign Up</h1>
+          <label id="username"><b>Username</b></label>
+          <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
+          <p id="warning">By creating an account you agree to our Terms and Privacy.</p>
+  		    <div className="clearfix">
+  		      <Link to="/signin">
+  		  	     <button type="button" className="cancelbtn">Cancel</button>
+  		      </Link>
+
+            <GoogleLogin
+              clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
+              buttonText="Signup with Google"
+              onSuccess={this.googSuccess}
+              onFailure={this.googFailure}
+            />
 
 
-		<p id="warning">By creating an account you agree to our Terms and Privacy.</p>
-		<div className="clearfix">
-		  <Link to="/signin">
-		  	<button type="button" className="cancelbtn">Cancel</button>
-		  </Link>
-
-      <GoogleLogin
-        clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
-        buttonText="Signup with Google"
-        onSuccess={this.googSuccess}
-        onFailure={this.googFailure}
-      />
-
-
-		</div>
-    <div className="signUpClass">
-
-
-
-    </div>
-  </div>
+  		       </div>
+         </div>
+        </div>
+      </div>
     );
   }
 }

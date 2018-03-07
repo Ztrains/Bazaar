@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 import NavBar from './navbar.js';
 import RecipeViwer from './recipeViewer.js';
 import RecipeEntry from './recipeEntry.js';

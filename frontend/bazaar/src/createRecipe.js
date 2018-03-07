@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
+import {Row} from 'react-materialize'
 
 export default class viewRecipe extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class viewRecipe extends React.Component {
     this.state = {
       name: "",
       description: "",
-      ingredients: [{name: ''}],
+      ingredients: [{name: '', quantity: ''}],
       steps: [{step: ''}],
       imageURL: '',
       calories: '',
@@ -50,13 +51,21 @@ export default class viewRecipe extends React.Component {
 
     this.setState({ ingredients: newIngredients });
   }
+  handleQuantityChange = (i) => (evt) => {
+    const newIngredients = this.state.ingredients.map((ingredient, sidx) => {
+      if (i !== sidx) return ingredient;
+      return { ...ingredient, quantity: evt.target.value };
+    });
+
+    this.setState({ ingredients: newIngredients });
+  }
 
   handleAddIngredient = () => {
     if (this.state.ingredients[this.state.ingredients.length - 1].name == '') {
       return;
     }
     this.setState({
-      ingredients: this.state.ingredients.concat([{ name: '' }])
+      ingredients: this.state.ingredients.concat([{ name: '', quantity: '' }])
     });
     console.log(this.state.ingredients);
   }
@@ -93,9 +102,10 @@ export default class viewRecipe extends React.Component {
   render() {
     return(
       <div className="container">
-
-        <h1>Create Recipe</h1>
-        <label id="nameInput"><b>Name</b></label>
+        <div className="card">
+        <div className="card-content">
+        <h3>Create Recipe</h3>
+        <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInput"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
@@ -104,13 +114,25 @@ export default class viewRecipe extends React.Component {
         <br></br>
         {this.state.ingredients.map((ingredient, i) => {
           return(
-          <div className="ingredientList">
+          <div className="ingredientList" id="ingredientList">
+            <div className="input-field">
             <input
-               type="string"
+              type="text"
+              id="quantField"
+              placeholder="enter quanity of ingredient"
+              value={ingredient.quantity}
+              onChange={this.handleQuantityChange(i)}
+            />
+            </div>
+            <div className="input-field">
+            <input
+               type="text"
+               id="nameField"
                placeholder="Enter Next Ingredient"
                value={ingredient.name}
                onChange={this.handleIngredientChange(i)} />
-             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn">-</button>
+            </div>
+             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn" id="nimusbtn">-</button>
           </div>
         )
          })}
@@ -122,12 +144,14 @@ export default class viewRecipe extends React.Component {
          {this.state.steps.map((step, i) => {
            return(
            <div className="ingredientList">
+           <div className="input-field">
            <input
-                type="string"
+                type="text"
                 placeholder="Enter Next Step"
                 value={step.step}
                 onChange={this.handleStepChange(i)} />
               <button onClick={this.handleRemoveStep(i)} className="minusbtn">-</button>
+              </div>
            </div>
          )
           })}
@@ -143,6 +167,8 @@ export default class viewRecipe extends React.Component {
           <br></br>
           <br></br>
           <button type="submit" className="btn-success">Create Recipe</button>
+          </div>
+        </div>
       </div>
     );
   }

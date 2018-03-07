@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.css'
+//import './index.css'
 import RecipeEntry from './recipeEntry';
 import axios from 'axios';
 
@@ -41,7 +41,7 @@ export default class RecipeViewer extends React.Component {
       <div>
 
 
-        <div>
+        <div className="card">
           {this.state.list.map((item, index) => {
             return <RecipeEntry name={item.name} />
           })}

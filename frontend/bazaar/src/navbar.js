@@ -3,6 +3,7 @@ import './index.css';
 import ReactDOM from 'react-dom';
 import history from './history.js';
 import {Link, Router} from 'react-router-dom';
+import {Navbar, NavItem, Row, Input, Icon} from 'react-materialize'
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class NavBar extends React.Component {
   componentDidMount() {
     console.log(this.props.currUser);
   }
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       searchBoxValue: event.target.value
     });
@@ -25,36 +26,48 @@ export default class NavBar extends React.Component {
     this.props.logOutCallback();
 
   }
-
+  search = () => {
+    history.push('/search/' + this.state.searchBoxValue);
+  }
+  handleKey = (e) => {
+    if (e.key == 'Enter') {
+      history.push('/search/' + this.state.searchBoxValue);
+    }
+  }
   render() {
     let link = '';
     if (this.props.loggedInState === false) {
-      link = <span><Link className="nav-link" to={'/signin'} id="loginButton"> Sign In </Link></span>
+      link = <li><a href='/signin' id="loginButton"> Sign In </a></li>
     }
     if (this.props.loggedInState === true) {
-      link = <span><Link className="nav-link" to={"/" + this.props.currUser + "/list"}><button type="button" id='listButton' className="btn btn-secondary" >My List</button></Link>
-      <Link className="nav-link" to={"/" + this.state.currUser + "/calendar"}><button type="button" id='calendarButton' className="btn btn-secondary" >My Calendar</button></Link>
-      <Link className="nav-link" to={"/profile/" + this.props.currUser}> <button type="button" id="profileButton" className="btn btn-info">{this.props.loggedInState ? "Profile" : ""} </button></Link>
-      <button className="nav-link" onClick={this.logUserOut} id="logoutButton"> "Sign Out"</button> </span>
+      link = <div>
+      <li><a href={"/" + this.props.currUser + "/list"}>My Shopping List</a></li>
+      <li><a href={"/" + this.props.currUser + "/calendar"}>My Calendar</a></li>
+      <li><a href={"/profile/" + this.props.currUser}>My Profile</a></li>
+      <li><a onClick={this.logUserOut} id="logoutButton">Sign Out</a></li></div>
     }
 
     return(
       <div>
-        <nav className="navbar navbar-default fixed-top navbar-dark navbar-offset bg-primary">
-            <Link className="navbar-brand" to="/">Bazaar</Link>
-            <form className="form-inline">
-              <input className="form-control" id='searchInput' type="search" placeholder="" value={this.state.searchBoxValue} onChange={this.handleChange}/>
-              {this.state.searchBoxValue.length > 0 ? (<Link to={"/search/" + this.state.searchBoxValue}>
-              		            <button type="button" id='searchButton' className="btn btn-secondary" >Search</button>
-              		           </Link>) : (<div id="noButton"></div>)}
-            </form>
-            <div className="nav-item">
-	             <div className="row">
-                  {link}
 
-	             </div>
-	          </div>
-        </nav>
+<nav>
+  <div className="nav-wrapper">
+  <ul id="nav-mobile" className="left ">
+    {link}
+  </ul>
+    <a href="/" className="brand-logo center">Bazaar</a>
+
+    <form className="right">
+        <div className="input-field">
+          <input id="search" type="search" placeholder="search" value={this.state.searchBoxValue} onChange={this.handleChange} onKeyPress={this.handleKey} required />
+          <label className="label-icon" forName="search"><i className="material-icons">search</i></label>
+          <i className="material-icons">close</i>
+        </div>
+      </form>
+
+  </div>
+</nav>
+
       </div>
     );
   }

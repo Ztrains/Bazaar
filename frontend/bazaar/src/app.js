@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import NavBar from './navbar.js';
+
 import RecipeViwer from './recipeViewer.js';
 import RecipeEntry from './recipeEntry.js';
 import SignIn from './signin.js';
@@ -46,9 +46,10 @@ export default class App extends React.Component {
     window.sessionStorage.removeItem('loggedInName');
     history.push('/');
   }
-  loggingIn = (user) => {
+  loggingIn = (user, token) => {
     this.setState({loggedInUser: user});
     this.setState({loggedIn: true});
+    window.sessionStorage.setItem('token', token);
 
     var newObj = {
       username: this.state.loggedInUser,
