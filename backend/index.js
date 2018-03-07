@@ -180,7 +180,6 @@ app.post("/auth/signin", (req, res) => {
 			return res.status(400).json({message : "User not found"});
 		}
 		
-		// we could also look up by username
 		User.findOneAndUpdate({googleId: req.body.googleId}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
 			if (err) {
 				return res.status(500).json({message: "Internal server error"});
