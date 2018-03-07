@@ -17,19 +17,17 @@ app.use(passport.session());
 
 app.use(cookieSession({
 	name: "bazaar-session",
-	keys: ['keanureeves'],
+	keys: [process.env.COOKIE_KEY],
 	maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(cookieParser());
 
-var corsOption = {
+var corsOpts = {
 	origin: true,
-	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-	credentials: true,
-	exposedHeaders: ['x-auth-token']
-  };
-
-  app.use(cors(corsOption));
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	credentials: true
+}
+app.use(cors(corsOpts));
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
@@ -127,70 +125,96 @@ app.get("/auth/google/callback", passport.authenticate("google", { failureRedire
 });
 
 app.post("/auth/signup", (req, res) => {
-	// Get user information from request body and create new account in DB
-	console.log(req.body);
 	if (!req.body.username) {
-		return res.status(400).json({message: 'Username required in request'});
+		return res.status(400).json({message: "Username missing"});
 	}
-	if (!req.body.email) {
-		return res.status(400).json({message: 'Email required in request'});
+	if (!req.body.accessToken) {	//We're just now signing up, there won't be a token yet?
+		return res.status(400).json({message: "Internal server error"});
 	}
-	if (!req.body.password) {
-		return res.status(400).json({message: 'Password required in request'}); //maybe not?
+	if (!req.body.userObj) {
+		return res.status(500).json({message: "Internal server error"});
 	}
 	
-	User.create(req.body, (err, result) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
-			return console.error(err);
+			return res.status(500).json({message: "Internal server error"});
 		}
-		res.json(result);
+
+		if (!user) {
+			var data = {
+				name: req.body.userObj.givenName + " " + req.body.userObj.familyName,
+				username: req.body.username,
+				email: req.body.userObj.email,
+				googleId: req.body.userObj.googleId,
+				imageUrl: req.body.userObj.imageUrl,
+				token: req.body.accessToken
+			};
+
+			User.create(data, (err, newUser) => {
+				if (err) {
+					return res.status(500).json({message: "Internal server error"});
+				}
+
+				return res.status(200).json({message: "Success", user: newUser});
+			});
+		}
+
+		return res.status(400).json({message: "User already exists"});
 	});
-	//LOOKS TO MAKE SURE THERE IS USERNAME/EMAIL/PASS IN REQ, THEN ADDS TO DB IF SO
-	//VERY BASIC
 });
 
 app.post("/auth/signin", (req, res) => {
-	// Retrieve user from DB given info, return error if not found
-	// assign a timed token to user's session
-	if (!req.body.username) {
-		return res.status(400).json({message: 'Username required in request'});
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token in request"});
+	}
+	if (!req.body.googleId) {
+		return res.status(400).json({message: "Missing Google ID in request"});
 	}
 	
-	User.findOne(({'username': req.body.username}), (err, user) => {
+	User.findOne(({googleId: req.body.googleId}), (err, user) => {
 		if (err) {
-			return console.error('ERROR:', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
+
 		if (!user) {
-			return res.json({message : 'user not found'});
+			return res.status(400).json({message : "User not found"});
 		}
-		console.log('User is: ', user);
-        return res.json(user);
+		
+		User.findOneAndUpdate({googleId: req.body.googleId}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			if (!user) {
+				return res.status(400).json({message: "User not found"});
+			}
+
+			return res.status(200).json({message: "Success", username: user.username});
+		});
 	});
-	//LOOKS FOR USERNAME SENT IN REQUEST IN THE DATABASE, THEN RETURNS THE USER INFO IF IT EXISTS
 });
 
 app.get("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
 	if (!req.params.username) {
-		return res.status(400).json({message: 'Username required in URL'});
+		return res.status(400).json({message: "Username required in URL"});
 	}
 	
 	User.findOne(({'username': req.params.username}), (err, user) => {
 		if (err) {
-			return console.error('ERROR:', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.json({message : 'user not found'});
+			return res.status(400).json({message : "User not found"});
 		}
-		console.log('User is: ', user);
+
         return res.json(user);
 	});
-	//BASICALLY COPY-PASTED FROM /auth/signin CAUSE IT DOES BASICALLY THE SAME FOR NOW
 });
 
 app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
-	res.status(200).json({ "message": "send back calendar information here" });
+	res.status(200).json({"message": "send back calendar information here"});
 });
 
 app.post("/profile/update_username", (req, res) => {
@@ -199,22 +223,23 @@ app.post("/profile/update_username", (req, res) => {
 	// by email, and change the username for the user whose email corresponds
 	// to that email. Later on, do this by checking user session to find user
 	let newUsername = req.body.username;
-	let userEmail = req.body.email;
+	let token = req.body.accessToken;
+	
 
-	User.findOne(({ 'email': userEmail }), (err, user) => {
+	User.findOne(({token: token}), (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found' });
+			return res.status(400).json({ message: 'User not found' });
 		}
 
 		user.username = newUsername;
 		user.save((err) => {
 			if (err) {
-				return res.status(400).json({ message: "internal server error" });
+				return res.status(400).json({ message: "Internal server error" });
 			}
-			return res.status(200).json({ message: "successfully updated username" });
+			return res.status(200).json({ message: "Successfully updated username" });
 		});
 	});
 });
@@ -223,16 +248,16 @@ app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
 
 	let newPrefs = req.body.prefs;
-	let userEmail = req.body.userEmail;
+	let token = req.body.accessToken;
 
 	if (!newPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
 	}
-	if (!userEmail) {
-		return res.status(400).json({message: "No email specified in request"});
+	if (!token) {
+		return res.status(400).json({message: "No token specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
 			return console.error('ERROR: ', err);
 		}
@@ -242,10 +267,34 @@ app.post("/profile/update_preferences", (req, res) => {
 	});
 });
 
-app.get("/profile/preferences", (req, res) => {
+app.post("/profile/update_dish_prefs", (req, res) => {
+	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
+
+	let newDishPrefs = req.body.prefs;
+	let token = req.body.accessToken;
+
+	if (!newDishPrefs) {
+		return res.status(400).json({message: "No preferences to save in request"});
+	}
+	if (!token) {
+		return res.status(400).json({message: "No token specified in request"});
+	}
+
+	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
+		if (err) {
+			return console.error('ERROR: ', err);
+		}
+		if (!user) {
+			return res.status(400).json({ message: 'user not found'});
+		}
+		return res.json({'updatedUser': user});
+	});
+});
+
+/*app.get("/profile/preferences", (req, res) => {
 	// Return JSON of user's preferences as read from the DB, requires valid auth middleware
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
-});
+});*/
 
 app.get("/recipes", (req, res) => {
 	// For now we're just reading and returning recipes from a JSON file
