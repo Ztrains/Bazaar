@@ -10,7 +10,8 @@ var UserSchema = new mongoose.Schema({
     savedRecipes: [Number],
     preferences: [String],
     token: String,
-    imageUrl: String
+    imageUrl: String,
+    dishPrefs: [String]
 });
 
 module.exports = mongoose.model('User', UserSchema);
