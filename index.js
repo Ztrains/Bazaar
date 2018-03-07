@@ -126,7 +126,7 @@ app.get("/auth/google/callback", passport.authenticate("google", { failureRedire
 
 app.post("/auth/signup", (req, res) => {
 	// Get user information from request body and create new account in DB
-	console.log(req.body);
+	// console.log(req.body);
 	if (!req.body.username) {
 		return res.status(400).json({message: 'Username missing'});
 	}
@@ -150,11 +150,11 @@ app.post("/auth/signup", (req, res) => {
 
 		if (!user) {
 			var data = {
-				name: userObj.givenName + " " + userObj.familyName,
-				email: userObj.email,
-				googleId: userObj.googleId,
-				imageUrl: userObj.imageUrl,
-				token: accessToken
+				name: req.body.userObj.givenName + " " + req.body.userObj.familyName,
+				email: req.body.userObj.email,
+				googleId: req.body.userObj.googleId,
+				imageUrl: req.body.userObj.imageUrl,
+				token: req.body.accessToken
 			};
 
 			User.create(data, (err, newUser) => {
