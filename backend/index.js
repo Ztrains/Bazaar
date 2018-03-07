@@ -128,9 +128,9 @@ app.post("/auth/signup", (req, res) => {
 	if (!req.body.username) {
 		return res.status(400).json({message: "Username missing"});
 	}
-	if (!req.body.accessToken) {
+	/*if (!req.body.accessToken) {	We're just now signing up, there won't be a token yet.
 		return res.status(400).json({message: "Internal server error"});
-	}
+	}*/
 	if (!req.body.userObj) {
 		return res.status(500).json({message: "Internal server error"});
 	}
