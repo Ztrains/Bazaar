@@ -3,6 +3,7 @@ import "./index.css";
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 import history from './history.js';
+import GoogleLogin from 'react-google-login';
 
 import axios from 'axios';
 
@@ -11,13 +12,14 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      email: '',
+      accessTok: '',
+
     }
-    this.usernameHandle = this.usernameHandle.bind(this);
-    this.passHandle = this.passHandle.bind(this);
+    //this.usernameHandle = this.usernameHandle.bind(this);
+    //this.passHandle = this.passHandle.bind(this);
   }
-  usernameHandle(event) {
+  /*usernameHandle(event) {
     this.setState({
       username: event.target.value,
     });
@@ -26,16 +28,15 @@ export default class Login extends React.Component {
     this.setState({
       password: event.target.value,
     });
-  }
-  logon = (event) => {
+  }*/
 
-    console.log(this.state.username);
-    if (this.state.username.length < 1 || this.state.password.length < 1) {
-      alert("Input fields were not filled out");
-      return false;
-    }
+  googSuccess = (responce) => {
+    console.log(responce);
+    console.log(responce.profileObj);
+    this.setState({email: responce.profileObj.email});
+    this.setState({accessTok: responce.accessToken});
     var tempObj = {
-      username: this.state.username,
+      email: this.state.email,
 
     };
     var _this = this;
@@ -47,28 +48,34 @@ export default class Login extends React.Component {
         return false;
       }
       else {
-      _this.props.logInCallBack(_this.state.username);
-      history.push('/profile/' + _this.state.username);
+      _this.props.logInCallBack(result.data.username);
+      history.push('/profile/' + result.data.username);
     }
     });
-
   }
+
+
+
+
   render() {
     return (
         <div className="container">
 		       <h1>Sign In</h1>
-           <label id="loginUsername"><b>Email</b></label>
-           <input type="username" placeholder="Enter Usename" className="form-control" id="loginUsername" value={this.state.username} onChange={this.usernameHandle}/>
-           <label id="loginPass"><b>Password</b></label>
-           <input type="password" placeholder="Enter Password" className="form-control" id="loginPass" value={this.state.password} onChange={this.passHandle}/>
+           <h3>This website uses google to handle authentication. To Use the site, you must first have a google account. Then you can link your google account to Bazaar</h3>
+
         	 <div className="clearfix">
-		         <Link to="/SignIn">
+		         <Link to="/">
 		  	        <button type="button" className="cancelbtn">Cancel</button>
 		              </Link>
-
-			           <button type="submit" id="okButton" className="signinbtn" onClick={this.logon}>Submit</button>
+                  <GoogleLogin
+                    clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
+                    buttonText="Signup with Google"
+                    onSuccess={this.googSuccess}
+                    onFailure={this.googSuccess}
+                  />
 
 		       </div>
+
 		       <div className="container2">
 		          <Link to="/signup">
 			           <button type="signin" className="signupbtn">Dont have an account?<font color="#000080"> Sign Up </font></button>

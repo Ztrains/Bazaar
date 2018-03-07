@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import history from './history.js';
-import renderHTML from 'react-render-html'
+import GoogleLogin from 'react-google-login';
 
 
 export default class Signup extends React.Component {
@@ -12,14 +12,12 @@ export default class Signup extends React.Component {
     super(props);
     this.state= {
       email: '',
-      firstPass: '',
-      secondPass: '',
+      accessTok: '',
       username: '',
       google: '',
+      userObj: {},
     }
-    this.eMailHandle = this.eMailHandle.bind(this);
-    this.firstPassHandle = this.firstPassHandle.bind(this);
-    this.secondPassHandle = this.secondPassHandle.bind(this);
+
     this.usernameHandle = this.usernameHandle.bind(this);
   }
   usernameHandle(event) {
@@ -27,52 +25,23 @@ export default class Signup extends React.Component {
       username: event.target.value,
     });
   }
-  eMailHandle(event) {
-    this.setState({
-      email: event.target.value,
-    });
-  }
-  firstPassHandle(event) {
-    this.setState({
-      firstPass: event.target.value,
-    });
-  }
-    secondPassHandle(event) {
-      this.setState({
-        secondPass: event.target.value,
-      });
-  }
-  googin = () => {
-    var _this = this;
-    axios.get("https://bazaar-408.herokuapp.com/auth/google/")
-    .then(function(results) {
-      console.log(results.data);
-      _this.setState({google: results.data});
-    });
-  }
-  logon = (event) => {
-    if (this.state.firstPass != this.state.secondPass) {
-      alert("Passwords do not match");
-      return false
-    }
-    else if (this.state.username < 1) {
+
+
+  googSuccess = (responce) => {
+    console.log(responce);
+
+    this.setState({userObj: responce.profileObj});
+    this.setState({accessTok: responce.accessToken});
+
+    if (this.state.username < 1) {
       alert("Username field must be filled");
     }
-    else if (this.state.email < 1) {
-      alert("An email address must be entered");
-    }
-    else if (this.state.firstPass < 1 || this.state.secondPass < 1) {
-      alert("Both password fields must be filled in and match");
-    }
+
     else {
-      console.log(this.state.username);
-      console.log(this.state.email);
-      console.log(this.state.firstPass);
-      console.log(this.state.secondPass);
       var tempObj = {
         username: this.state.username,
-        email: this.state.email,
-        password: this.state.firstPass
+        accessToken: this.state.accessTok,
+        userObj: this.state.userObj,
       };
       var _this = this
       axios.post("https://bazaar-408.herokuapp.com/auth/signup/", tempObj)
@@ -87,7 +56,13 @@ export default class Signup extends React.Component {
       }
       });
   }
-}
+    //logon();
+  }
+  googFailure = (responce) => {
+    alert('Failure to authenticate with Google. Please try again.');
+    return;
+  }
+
   render() {
 
     return (
@@ -95,12 +70,7 @@ export default class Signup extends React.Component {
 		<h1>Sign Up</h1>
                     <label id="username"><b>Username</b></label>
                     <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
-                    <label id="loginEmail"><b>Email</b></label>
-                    <input type="email" placeholder="Enter Email" className="form-control" id="loginEmail" placeholder="Enter Email" value={this.state.email} onChange={this.eMailHandle}/>
-                  <label id="loginPass"><b>Password</b></label>
-                  <input type="password" placeholder="Enter Password" className="form-control" id="loginPass" placeholder="Enter Password" value={this.state.firstPass} onChange={this.firstPassHandle}/>
-        	  <label id="loginPass"><b>Enter Password Again</b></label>
-                  <input type="password" placeholder="Repeat Password" className="form-control" id="loginPass" placeholder="Enter Password" value={this.state.secondPass} onChange={this.secondPassHandle}/>
+
 
 		<p id="warning">By creating an account you agree to our Terms and Privacy.</p>
 		<div className="clearfix">
@@ -108,16 +78,19 @@ export default class Signup extends React.Component {
 		  	<button type="button" className="cancelbtn">Cancel</button>
 		  </Link>
 
-
-			<button type="submit" className="signinbtn" onClick={this.logon}>Sign Up</button>
-
-
-      <div>{renderHTML(this.state.google)}></div>
+      <GoogleLogin
+        clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
+        buttonText="Signup with Google"
+        onSuccess={this.googSuccess}
+        onFailure={this.googFailure}
+      />
 
 
 		</div>
     <div className="signUpClass">
-      <button type="button" className="googlebtn" onClick={this.googin}>Google Sign Up</button>
+
+
+
     </div>
   </div>
     );

@@ -31,7 +31,7 @@ export default class RecipeViewer extends React.Component {
     for (var i = 0; i < this.state.list.length; i++) {
       console.log(this.state.list[i]);
       newList.push(
-        <div><RecipeEntry name={this.state.list[i].name} description={this.state.list[i].description}/></div>
+        <div><RecipeEntry name={this.state.list[i].name} description={this.state.list[i].description} id={this.state.list[i].id}/></div>
       );
     }
     return newList;

@@ -19,14 +19,17 @@ export default class viewRecipe extends React.Component {
   componentDidMount() {
     //get recipe from id passed in through path
   }
-  upvote() {
+  upvote()  {
+    console.log(this.state.buttonDisabled);
     if (this.state.buttonDisabled == true) {
       return;
     }
     let temp = this.state.votes;
-    temp = temp + 1;
-    this.setState({votes: temp});
-    //send this to server
+    this.setState({votes: temp + 1});
+    this.setState({buttonDisabled: true});
+    //send to server
+    return;
+
   }
   downvote() {
     if (this.state.buttonDisabled == true) {
@@ -35,6 +38,8 @@ export default class viewRecipe extends React.Component {
     let temp = this.state.votes;
     temp = temp - 1;
     this.setState({votes: temp});
+    this.setState({buttonDisabled: true});
+    return;
     //send this to server
   }
   _onReady(event) {
@@ -50,8 +55,9 @@ export default class viewRecipe extends React.Component {
         <p>image can go here</p>
         <h1>Recipe title</h1>
         <h2>Description</h2>
-        <button onclick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
-        <button onclick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
+        <p>{this.state.votes}</p>
+        <button onClick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
+        <button onClick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
         <FacebookShareButton
           url="reddit.com"
           quote="Reddit">

@@ -22,13 +22,38 @@ import {Route, Redirect} from 'react-router';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loggedIn: false,searchTerms: '', loggedInUser: ''};
+    this.state = {
+      loggedIn: false,
+      searchTerms: '',
+      loggedInUser: '',
+    };
+  }
+  componentDidMount() {
+    var temp = window.sessionStorage.getItem('loggedInName');
+    if (temp) {
+      this.setState({
+        loggedIn: true,
+      });
+      this.setState({loggedInUser: temp});
+    }
+  }
+  loggingOut = () => {
+    if (this.state.loggedInUser == '') {
+      return;
+    }
+    this.setState({loggedIn: false});
+    this.setState({loggedInUser: ''});
+    window.sessionStorage.removeItem('loggedInName');
+    history.push('/');
   }
   loggingIn = (user) => {
     this.setState({loggedInUser: user});
-    console.log(this.state.loggedIn);
     this.setState({loggedIn: true});
-    console.log(this.state.loggedIn);
+
+    var newObj = {
+      username: this.state.loggedInUser,
+    }
+    window.sessionStorage.setItem('loggedInName', this.state.loggedInUser);
   }
 
   render() {
@@ -36,7 +61,7 @@ export default class App extends React.Component {
       <div>
         <Router history={history}>
           <div>
-            <NavBar loggedInState={this.state.loggedIn} currUser={this.state.loggedInUser}/>
+            <NavBar loggedInState={this.state.loggedIn} currUser={this.state.loggedInUser} logOutCallback={this.loggingOut}/>
             <br/>
             <br/>
             <br/>
@@ -46,7 +71,7 @@ export default class App extends React.Component {
                 <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
                 <Route path={"/profile/:username"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
-                <Route path={"/recipes"} render={(props)=><RecipeViwer/>}/>
+                <Route path={"/recipes"} render={(props)=><RecipeViwer />}/>
                 <Route path={"/recipeEntry"} component={RecipeEntry} />
                 <Route path={'/create'} component={CreateRecipe} />
                 <Route path={'/recipe/:id'} component={ViewRecipe} />
