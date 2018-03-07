@@ -151,6 +151,7 @@ app.post("/auth/signup", (req, res) => {
 		if (!user) {
 			var data = {
 				name: req.body.userObj.givenName + " " + req.body.userObj.familyName,
+				username: req.body.username,
 				email: req.body.userObj.email,
 				googleId: req.body.userObj.googleId,
 				imageUrl: req.body.userObj.imageUrl,
