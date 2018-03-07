@@ -22,7 +22,12 @@ app.use(cookieSession({
 }));
 app.use(cookieParser());
 
-app.use(cors());
+var corsOpts = {
+	origin: true,
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	credentials: true
+}
+app.use(cors(corsOpts));
 
 let raw_recipes = fs.readFileSync("recipes.json");
 let parsed_recipes = JSON.parse(raw_recipes);
