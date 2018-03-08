@@ -356,6 +356,7 @@ app.post("/recipes/new", (req, res) => {
 	// before saving recipe
 	Recipe.create(newRecipe, (err, recipe) => {
 		if (err) {
+			console.log(err);
 			return res.status(500).json({message: "Internal server error"});
 		}
 
