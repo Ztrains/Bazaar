@@ -333,12 +333,27 @@ app.post("/recipes/save", (req, res) => {
 
 	User.findOneAndUpdate({email: userEmail}, {$push:{savedRecipes:idToSave}}, {new:true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({ message: "User not found"});
 		}
 	})
+});
+
+app.post("/recipes/:id", (req, res) => {
+	if (!req.params.id) {
+		return res.status(400).json({message: "Missing recipe ID"});
+	}
+
+	// This should be only one recipe but...
+	Recipe.find({_id: req.params.id}, (err, recipes) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", data: recipes});
+	});
 });
 
 app.post("/recipes/new", (req, res) => {
@@ -364,7 +379,7 @@ app.post("/recipes/new", (req, res) => {
 	});
 });
 
-// ML route - temporary
+// TODO(Vedant): ML route - temporary
 app.get("/chini", (req, res) => {
 	res.json({message: "Like"});
 });
@@ -378,10 +393,10 @@ app.post("/search", (req, res) => {
 		return res.status(400).json({message: "No query specified"});
 	}
 
-	let search_q = req.body.q.toLowerCase();
+	let search_q = req.query.q.toLowerCase();
 
 	// TODO(Vedant): add all recipes from recipes.json to the database so
-	// we don't have to do this ugly ass query
+	// we don't have to do this ugly ass query, also search by id
 	// //let dat = parsed_recipes.data;
 	// let ret_data = [];
 	// for (var i in parsed_recipes) {
