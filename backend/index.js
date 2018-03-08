@@ -283,6 +283,50 @@ app.post("/profile/update_preferences", (req, res) => {
 	});
 });
 
+app.post("/getShoppingList", (req, res) => {
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "Missing username"});
+	}
+
+	User.findOne({username: req.body.username}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "User not found"});
+		}
+
+		return res.status(200).json({message: "Success", data: user.shoppingList});
+	});
+});
+
+app.post("/updateShoppingList", (req, res) => {
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "Missing username"});
+	}
+	if (!req.body.shoppingList) {
+		return res.status(400).json({message: "Missing updated shopping list"});
+	}
+
+	User.findOneAndUpdate({username: req.body.username}, {$set: {shoppingList: req.body.shoppingList}}, {new: true}, 
+		(err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "User not found"});
+		}
+
+		return res.status(200).json({message: "Success"});
+	});
+});
+
 app.post("/profile/update_dish_prefs", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
 
@@ -363,23 +407,15 @@ app.post("/recipes/updateVote", (req, res) => {
 		return res.status(400).json({message: "No recipe ID specified"});
 	}
 
-	Recipe.findOne({_id: req.body.recipeId}, (err, recipe) => {
+	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: req.body.voteCount}}, {new: true}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
-
 		if (!recipe) {
-			return res.status(400).json({message: "Recipe with ID " + req.body.recipeId + " not found."});
+			return res.status(400).json({message: "Recipe not found"});
 		}
 
-		recipe.upvotes = req.body.voteCount;
-		recipe.save((err) => {
-			if (err) {
-				return res.status(500).json({message: "Internal server error"});
-			}
-
-			return res.status(200).json({message: "Success"});
-		});
+		return res.status(200).json({message: "Success", data: recipe});
 	});
 });
 
