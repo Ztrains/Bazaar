@@ -194,13 +194,16 @@ app.post("/auth/signin", (req, res) => {
 	});
 });
 
-app.get("/profile/:username", (req, res) => {
+app.post("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
 	if (!req.params.username) {
 		return res.status(400).json({message: "Username required in URL"});
 	}
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
 	
-	User.findOne(({'username': req.params.username}), (err, user) => {
+	User.findOne(({username: req.params.username, token: req.body.accessToken}), (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
