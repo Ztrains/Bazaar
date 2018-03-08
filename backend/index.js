@@ -128,7 +128,7 @@ app.post("/auth/signup", (req, res) => {
 	if (!req.body.username) {
 		return res.status(400).json({message: "Username missing"});
 	}
-	if (!req.body.accessToken) {	//We're just now signing up, there won't be a token yet?
+	if (!req.body.accessToken) {
 		return res.status(400).json({message: "Internal server error"});
 	}
 	if (!req.body.userObj) {
@@ -208,7 +208,7 @@ app.get("/profile/:username", (req, res) => {
 			return res.status(400).json({message : "User not found"});
 		}
 
-        return res.json(user);
+        return res.status(200).json(user);
 	});
 });
 
@@ -218,28 +218,34 @@ app.get("/calendar", (req, res) => {
 });
 
 app.post("/profile/update_username", (req, res) => {
-	// for now we're updating the username by getting the frontend
-	// to pass the user's email in the request body so we can do a lookup in the db
-	// by email, and change the username for the user whose email corresponds
-	// to that email. Later on, do this by checking user session to find user
 	let newUsername = req.body.username;
 	let token = req.body.accessToken;
-	
+	let email = req.body.email;
 
-	User.findOne(({token: token}), (err, user) => {
+	if (!newUsername) {
+		res.status(400).json({message: "Missing new username"}});
+	}
+	if (!token) {
+		res.status(400).json({message: "Missing authentication token"}});
+	}
+	if (!email) {
+		res.status(400).json({message: "Missing email"}});
+	}
+
+	User.findOne(({email: email, token: token}), (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'User not found' });
+			return res.status(400).json({message: "User not found"});
 		}
 
 		user.username = newUsername;
 		user.save((err) => {
 			if (err) {
-				return res.status(400).json({ message: "Internal server error" });
+				return res.status(500).json({message: "Internal server error"});
 			}
-			return res.status(200).json({ message: "Successfully updated username" });
+			return res.status(200).json({message: "Successfully updated username"});
 		});
 	});
 });
@@ -259,10 +265,10 @@ app.post("/profile/update_preferences", (req, res) => {
 
 	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({message: "User not found"});
 		}
 	});
 });
@@ -282,12 +288,12 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 
 	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({message: "User not found"});
 		}
-		return res.json({'updatedUser': user});
+		return res.status(200).json({updatedUser: user});
 	});
 });
 
