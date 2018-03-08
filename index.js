@@ -341,7 +341,7 @@ app.post("/recipes/save", (req, res) => {
 	})
 });
 
-app.post("/recipes/:id", (req, res) => {
+app.get("/recipes/:id", (req, res) => {
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
