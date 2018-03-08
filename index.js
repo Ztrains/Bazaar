@@ -355,6 +355,34 @@ app.get("/recipes/:id", (req, res) => {
 	});
 });
 
+app.post("/recipes/updateVote", (req, res) => {
+	if (!req.body.voteCount) {
+		return res.status(400).json({message: "No vote count specified"});
+	}
+	if (!req.body.recipeId) {
+		return res.status(400).json({message: "No recipe ID specified"});
+	}
+
+	Recipe.findOne({_id: req.body.recipeId}, (err, recipe) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		if (!recipe) {
+			return res.status(400).json({message: "Recipe with ID " + req.body.recipeId + " not found."});
+		}
+
+		recipe.upvotes = req.body.voteCount;
+		recipe.save((err) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			return res.status(200).json({message: "Success"});
+		});
+	});
+});
+
 app.post("/recipes/new", (req, res) => {
 	let accessToken = req.body.accessToken;
 	let newRecipe = req.body.recipe;
