@@ -129,7 +129,7 @@ export default class accountPage extends React.Component {
         <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
         <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
         <input type="text" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
-        <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Username</button>
+        <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Phone Number</button>
         <p>{this.state.email}</p>
         <ul>
           {this.state.preferences.map((prefValue, key) => (
