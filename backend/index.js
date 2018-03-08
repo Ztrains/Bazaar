@@ -405,7 +405,7 @@ app.post("/search", (req, res) => {
 	// 	}
 	// }
 
-	Recipe.find({$or: [{name: {$regex: search_q, $options: "i"}}, {description: {$regex: search_q, $options: "i"}}, {ingredients.name: {$regex: search_q, $options: "i"}}]}, 
+	Recipe.find({$or: [{name: {$regex: search_q, $options: "i"}}, {description: {$regex: search_q, $options: "i"}}, {ingredients: {$elemMatch: {name: {$regex: search_q, $options: "i"}}}}]}, 
 		(err, recipes) => {
 		if (!err) {
 			console.log(err);
