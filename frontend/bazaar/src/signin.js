@@ -64,7 +64,7 @@ export default class Login extends React.Component {
 		              </Link>
                   <GoogleLogin
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
-                    buttonText="Signup with Google"
+                    buttonText="Sign In with Google"
                     onSuccess={this.googSuccess}
                     onFailure={this.googSuccess}
                   />

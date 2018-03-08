@@ -21,6 +21,7 @@ export default class accountPage extends React.Component {
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
   }
   componentDidMount() {
+    console.log(window.sessionStorage.getItem('token'));
     var Obj =  {
       accessToken: window.sessionStorage.getItem('token'),
     }
@@ -40,7 +41,15 @@ export default class accountPage extends React.Component {
     var newList = this.state.preferences;
     newList.push(this.state.value);
     this.setState({preferences: newList});
+    var Obj = {
+      prefs: this.state.preferences,
+      accessToken: window.sessionStorage.getItem('token'),
+    }
     //send to database
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
+    .then(function(result) {
+      alert("Dish preferences successfully updated");
+    })
   };
   handleNameChange(event) {
     if (this.state.username === '' || this.state.username === " ") {
@@ -51,17 +60,6 @@ export default class accountPage extends React.Component {
     this.setState({
       newName: event.target.value
     });
-    var newObj = {
-      username: this.state.newName,
-      email: this.state.email,
-
-    }
-    axios.post("https://bazaar-408.herokuapp.com/auth/signin/", newObj)
-    .then(function(result) {
-      alert("username successfully changed");
-    }).catch(function(error) {
-      alert("username change unsuccessful");
-    });
   }
   changeNameButtonActivate() {
     var temp = this.state.newName;
@@ -69,6 +67,22 @@ export default class accountPage extends React.Component {
       username: temp,
     });
     //send it to database
+    var Obj = {
+      username: this.state.newName,
+      email: this.state.email,
+      accessToken: window.sessionStorage.getItem('token'),
+    }
+    var _this = this;
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
+    .then(function(result) {
+      if (result.data.message == "User Not Found") {
+        alert("User not found");
+        return;
+      }
+      else {
+        alert("username successfully changed");
+      }
+    })
     console.log(this.state.username);
   }
   render() {
