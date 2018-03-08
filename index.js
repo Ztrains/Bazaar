@@ -170,8 +170,11 @@ app.post("/auth/signin", (req, res) => {
 	if (!req.body.googleId) {
 		return res.status(400).json({message: "Missing Google ID in request"});
 	}
+	if (!req.body.email) {
+		return res.status(400).json({message: "Missing email in request"});
+	}
 	
-	User.findOne(({googleId: req.body.googleId}), (err, user) => {
+	User.findOne({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -180,7 +183,7 @@ app.post("/auth/signin", (req, res) => {
 			return res.status(400).json({message : "User not found"});
 		}
 		
-		User.findOneAndUpdate({googleId: req.body.googleId}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
+		User.findOneAndUpdate({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
 			if (err) {
 				return res.status(500).json({message: "Internal server error"});
 			}
@@ -189,7 +192,7 @@ app.post("/auth/signin", (req, res) => {
 				return res.status(400).json({message: "User not found"});
 			}
 
-			return res.status(200).json({message: "Success", username: user.username});
+			return res.status(200).json({message: "Success", username: user.username, email: user.email});
 		});
 	});
 });
