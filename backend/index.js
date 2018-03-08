@@ -212,9 +212,9 @@ app.post("/profile/:username", (req, res) => {
 		}
 
 		// TODO(Vedant): try this later when we make sure signin works
-		if (user.accessToken !== req.body.accessToken) {
-			return res.status(400).json({message: "Not signed in"});
-		}
+		// if (user.accessToken !== req.body.accessToken) {
+		// 	return res.status(400).json({message: "Not signed in"});
+		// }
 
         return res.status(200).json({message: "Success", user: user});
 	});
