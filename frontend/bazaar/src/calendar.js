@@ -15,8 +15,8 @@ export default class Calendar extends React.Component {
   render() {
     return(
       <div>
-      <table class="table">
-      <thead class="thead-dark">
+      <table className="table">
+      <thead className="thead-dark">
       <tr>
         <th scope="col">Meal</th>
         <th scope="col">Monday</th>
@@ -69,7 +69,7 @@ export default class Calendar extends React.Component {
         <td>Cory Laker</td>
         <td>More Food</td>
       </tr>
-      <tr class="table-info">
+      <tr className="table-info">
         <th scope="row">Total Calories: </th>
         <td>2000</td>
         <td>2000</td>
