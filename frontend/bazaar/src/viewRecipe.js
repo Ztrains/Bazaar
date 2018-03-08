@@ -10,13 +10,33 @@ export default class viewRecipe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      votes: 20,
+      votes: 0,
       buttonDisabled: false,
+      recipe: {
+        name: "",
+        description: "",
+        ingredients: [],
+        steps: [],
+        imageURL: '',
+        calories: '',
+        servingSize: '',
+        tags: [],
+        value: '',
+        createdBy: ''
+      },
     };
     this.upvote = this.upvote.bind(this);
     this.downvote = this.downvote.bind(this);
   }
   componentDidMount() {
+    var _this = this;
+    axios.get("https://bazaar-408.herokuapp.com/recipes/" + this.props.match.params.id)
+    .then(function(result) {
+      console.log(result.data.data);
+      _this.setState({recipe: result.data.data});
+      console.log(result.data.data.votes);
+      _this.setState({votes: result.data.data.votes});
+    })
     //get recipe from id passed in through path
   }
   upvote()  {
@@ -27,6 +47,14 @@ export default class viewRecipe extends React.Component {
     let temp = this.state.votes;
     this.setState({votes: temp + 1});
     this.setState({buttonDisabled: true});
+    var Obj = {
+      voteCount: this.state.votes,
+      recipeId: this.props.match.params.id,
+    }
+    axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
+    .then(function(result) {
+      console.log(result);
+    });
     //send to server
     return;
 
@@ -39,6 +67,14 @@ export default class viewRecipe extends React.Component {
     temp = temp - 1;
     this.setState({votes: temp});
     this.setState({buttonDisabled: true});
+    var Obj = {
+      voteCount: this.state.votes,
+      recipeId: this.props.match.params.id,
+    }
+    axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
+    .then(function(result) {
+      console.log(result);
+    });
     return;
     //send this to server
   }
@@ -53,27 +89,37 @@ export default class viewRecipe extends React.Component {
     return(
       <div className="container">
         <p>image can go here</p>
-        <h1>Recipe title</h1>
-        <h2>Description</h2>
+        <h1>{this.state.recipe.name}</h1>
+        <h2>{this.state.recipe.description}</h2>
         <p>{this.state.votes}</p>
         <button onClick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
         <button onClick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
         <FacebookShareButton
           url="reddit.com"
-          quote="Reddit">
+          quote="Look at this tasty recipe!!">
           <FacebookIcon
             size={32}
             round
           />
           </FacebookShareButton>
+
         <ul>
-          <li>"3 potatoes"</li>
-          <li>"2 eggs"</li>
-          <li>"1 onion"</li>
+        {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
+          <li>{prefValue.quantity} {prefValue.name}</li>
+        ))}
         </ul>
         <ul>
-          <li>"Step 1"</li>
+        {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
+          <li>{prefValue.step}</li>
+        ))}
         </ul>
+        <ul>
+        {this.state.recipe && this.state.recipe.tags.map((prefValue, key) => (
+          <li>{prefValue}</li>
+        ))}
+        </ul>
+        <p>{this.state.recipe.servingSize}</p>
+        <p>{this.state.recipe.calories}</p>
 
         <p>This is where a video get embedded</p>
         <YouTube
@@ -90,6 +136,7 @@ export default class viewRecipe extends React.Component {
           category_id="123456"
           onNewComment={this.handleNewComment}
         />
+        <p>Created by {this.state.recipe.createdBy}</p>
       </div>
     );
   }

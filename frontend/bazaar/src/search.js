@@ -14,9 +14,10 @@ export default class SearchPage extends React.Component {
   }
   renderList() {
     let list = [];
+    console.log(this.state.resultsList);
     for (var i = 0; i < this.state.resultsList.length; i++) {
       list.push(
-        <RecipeEntry name={this.state.resultsList[i].name} description={this.state.resultsList[i].description}/>
+        <RecipeEntry id={this.state.resultsList[i].id} name={this.state.resultsList[i].name} description={this.state.resultsList[i].description}/>
       );
       return list;
     }
@@ -24,10 +25,14 @@ export default class SearchPage extends React.Component {
   componentDidMount(){
     var _this = this;
     console.log(this.props.match.params.terms);
-    axios.get("https://bazaar-408.herokuapp.com/search?q=" + this.props.match.params.terms)
+    axios.post("https://bazaar-408.herokuapp.com/search?q=" + this.props.match.params.terms)
     .then(function(result) {
-      _this.setState({resultsList: result.data});
-      console.log(result);
+      if (!result.data || result.data.length < 1) {
+        alert("No recipes found based on query");
+        return;
+      }
+      _this.setState({resultsList: result.data.data});
+      console.log(result.data.data);
     });
     //make database search call
   }
