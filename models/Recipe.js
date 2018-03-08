@@ -15,7 +15,7 @@ var RecipeSchema = new mongoose.Schema({
     tags: [String],
     createdBy: String,
     videoId: String,
-    upvotes: Number
+    upvotes: Number,
     updatedAt: {type: Date, default: Date.now}
 });
 
