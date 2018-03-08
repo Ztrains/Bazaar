@@ -3,8 +3,13 @@ var mongoose = require('mongoose');
 var RecipeSchema = new mongoose.Schema({
     name: String,
     description: String,
-    ingredients: [Object],
-    steps: [Object],
+    ingredients: [{
+    	name: String,
+    	quantity: String
+    }],
+    steps: [{
+    	step: String,
+    }],
     calories: String,
     servingSize: String,
     tags: [String],
