@@ -223,13 +223,13 @@ app.post("/profile/update_username", (req, res) => {
 	let email = req.body.email;
 
 	if (!newUsername) {
-		res.status(400).json({message: "Missing new username"}});
+		res.status(400).json({message: "Missing new username"});
 	}
 	if (!token) {
-		res.status(400).json({message: "Missing authentication token"}});
+		res.status(400).json({message: "Missing authentication token"});
 	}
 	if (!email) {
-		res.status(400).json({message: "Missing email"}});
+		res.status(400).json({message: "Missing email"});
 	}
 
 	User.findOne(({email: email, token: token}), (err, user) => {
