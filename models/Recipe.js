@@ -14,6 +14,7 @@ var RecipeSchema = new mongoose.Schema({
     servingSize: String,
     tags: [String],
     createdBy: String,
+    videoId: String,
     updatedAt: {type: Date, default: Date.now}
 });
 
