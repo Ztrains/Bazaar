@@ -318,7 +318,7 @@ app.get("/recipes", (req, res) => {
 	return res.json(parsed_recipes);
 });
 
-app.post("/recipes/save", (req,res) => {
+app.post("/recipes/save", (req, res) => {
 	// Saves a recipe into a user's favorites based on recipe ID
 
 	let idToSave = req.body.recipeID;
@@ -339,6 +339,28 @@ app.post("/recipes/save", (req,res) => {
 			return res.status(400).json({ message: 'user not found'});
 		}
 	})
+});
+
+app.post("/recipes/new", (req, res) => {
+	let accessToken = req.body.accessToken;
+	let newRecipe = req.body.recipe;
+
+	if (!accessToken) {
+		return res.status(400).json({message: "No access token in request"});
+	}
+	if (!newRecipe) {
+		return res.status(400).json({message: "No recipe in request"});
+	}
+
+	// TODO(Vedant): do a check for the access token to ensure current user is authenticated
+	// before saving recipe
+	Recipe.create(newRecipe, (err, recipe) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", recipe: recipe});
+	});
 });
 
 // ML route - temporary
