@@ -369,25 +369,34 @@ app.get("/chini", (req, res) => {
 	res.json({message: "Like"});
 });
 
-app.get("/search", (req, res) => {
+app.post("/search", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
 	if (!req.query.q) {
-		return res.status(400).json({"message": "No query specified"});
+		return res.status(400).json({message: "No query specified"});
 	}
 
-	let search_q = req.query.q.toLowerCase();
-	//let dat = parsed_recipes.data;
-	let ret_data = [];
-	for (var i in parsed_recipes) {
-		if (parsed_recipes[i].name.toLowerCase().indexOf(search_q) !== -1) {
-			ret_data.push(parsed_recipes[i]);
+	let search_q = req.body.q.toLowerCase();
+
+	// TODO(Vedant): add all recipes from recipes.json to the database so
+	// we don't have to do this ugly ass query
+	// //let dat = parsed_recipes.data;
+	// let ret_data = [];
+	// for (var i in parsed_recipes) {
+	// 	if (parsed_recipes[i].name.toLowerCase().indexOf(search_q) !== -1) {
+	// 		ret_data.push(parsed_recipes[i]);
+	// 	}
+	// }
+
+	Recipe.find({name: {$regex: search_q, $options: "i"}}, (err, recipes) => {
+		if (!err) {
+			return res.status(500).json({message: "Internal server error"});
 		}
-	}
 
-	return res.json(ret_data);
+		return res.status(200).json({message: "Success", data: recipes});
+	});
 });
 
 app.get("/logout", (req, res) => {
