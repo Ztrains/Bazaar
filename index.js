@@ -126,16 +126,16 @@ app.get("/auth/google/callback", passport.authenticate("google", { failureRedire
 
 app.post("/auth/signup", (req, res) => {
 	if (!req.body.username) {
-		return res.status(400).json({message: "Username missing"});
+		return res.status(400).json({message: "Missing username"});
 	}
 	if (!req.body.accessToken) {
-		return res.status(400).json({message: "Internal server error"});
+		return res.status(400).json({message: "Missing access token"});
 	}
 	if (!req.body.userObj) {
-		return res.status(500).json({message: "Internal server error"});
+		return res.status(400).json({message: "Missing user object"});
 	}
 	
-	User.findOne({username: req.body.username}, (err, user) => {
+	User.findOne({username: req.body.username, email: req.body.userObj.email}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -157,9 +157,9 @@ app.post("/auth/signup", (req, res) => {
 
 				return res.status(200).json({message: "Success", user: newUser});
 			});
+		} else {
+			return res.status(400).json({message: "User already exists"});
 		}
-
-		return res.status(400).json({message: "User already exists"});
 	});
 });
 
