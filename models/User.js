@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
     token: String,
     imageUrl: String,
     dishPrefs: [String],
+    phoneNumber: String
 });
 
 module.exports = mongoose.model('User', UserSchema);
