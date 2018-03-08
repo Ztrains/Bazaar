@@ -18,65 +18,73 @@ export default class Calendar extends React.Component {
       <table className="table">
       <thead className="thead-dark">
       <tr>
-        <th scope="col">Meal</th>
-        <th scope="col">Monday</th>
-        <th scope="col">Tuesday</th>
-        <th scope="col">Wednesday</th>
-        <th scope="col">Thursday</th>
-        <th scope="col">Friday</th>
-        <th scope="col">Saturday</th>
-        <th scope="col">Saturday</th>
+        <th scope="col">Day Of Week</th>
+        <th scope="col">Breakfast</th>
+        <th scope="col">Lunch</th>
+        <th scope="col">Snacks</th>
+        <th scope="col">Dinner</th>
+        <th scope="col" className="table-info">Total Calories:</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <th scope="row">Breakfast</th>
+        <th scope="row">Monday</th>
         <td>Jelly</td>
         <td>Pudding</td>
         <td>Bread</td>
         <td>Ramen</td>
-        <td>Eggs</td>
-        <td>Cory Laker</td>
-        <td>More Food</td>
+        <td>2000</td>
       </tr>
       <tr>
-        <th scope="row">Lunch</th>
+        <th scope="row">Tuesday</th>
         <td>Jelly</td>
         <td>Pudding</td>
         <td>Bread</td>
         <td>Ramen</td>
-        <td>Eggs</td>
-        <td>Cory Laker</td>
-        <td>More Food</td>
+        <td >2000</td>
+
       </tr>
       <tr>
-        <th scope="row">Snacks</th>
+        <th scope="row">Wednesday</th>
         <td>Jelly</td>
         <td>Pudding</td>
         <td>Bread</td>
         <td>Ramen</td>
-        <td>Eggs</td>
-        <td>Cory Laker</td>
-        <td>More Food</td>
+        <td>2000</td>
+
       </tr>
       <tr>
-        <th scope="row">Dinner</th>
+        <th scope="row">Thursday</th>
         <td>Jelly</td>
         <td>Pudding</td>
         <td>Bread</td>
         <td>Ramen</td>
-        <td>Eggs</td>
-        <td>Cory Laker</td>
-        <td>More Food</td>
+        <td>2000</td>
+
       </tr>
-      <tr className="table-info">
-        <th scope="row">Total Calories: </th>
+      <tr>
+        <th scope="row">Friday</th>
+        <td>Jelly</td>
+        <td>Pudding</td>
+        <td>Bread</td>
+        <td>Ramen</td>
         <td>2000</td>
+
+      </tr>
+      <tr>
+        <th scope="row">Saturday</th>
+        <td>Jelly</td>
+        <td>Pudding</td>
+        <td>Bread</td>
+        <td>Ramen</td>
         <td>2000</td>
-        <td>2000</td>
-        <td>2000</td>
-        <td>2000</td>
-        <td>2000</td>
+      </tr>
+      <tr>
+        <th scope="row">Sunday</th>
+        <td>Jelly</td>
+        <td>Pudding</td>
+        <td>Bread</td>
+        <td>Ramen</td>
         <td>2000</td>
       </tr>
       </tbody>
