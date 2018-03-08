@@ -203,13 +203,18 @@ app.post("/profile/:username", (req, res) => {
 		return res.status(400).json({message: "Missing access token"});
 	}
 	
-	User.findOne(({username: req.params.username, token: req.body.accessToken}), (err, user) => {
+	User.findOne(({username: req.params.username}), (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message : "User not found"});
 		}
+
+		// TODO(Vedant): try this later when we make sure signin works
+		// if (user.accessToken !== req.body.accessToken) {
+		// 	return res.status(400).json({message: "Not signed in"});
+		// }
 
         return res.status(200).json(user);
 	});
