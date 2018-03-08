@@ -346,13 +346,12 @@ app.get("/recipes/:id", (req, res) => {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
-	// This should be only one recipe but...
-	Recipe.find({_id: req.params.id}, (err, recipes) => {
+	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 
-		return res.status(200).json({message: "Success", data: recipes});
+		return res.status(200).json({message: "Success", data: recipe});
 	});
 });
 
