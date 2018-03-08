@@ -54,7 +54,7 @@ passport.use(new GoogleStrat({
 			googleId: profile.id
 		}, (err, user) => {
 			if (err) {
-				return callback(err);
+				return res.status(500).json({message: "Internal server error"});
 			}
 
 			// console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
@@ -78,10 +78,10 @@ passport.use(new GoogleStrat({
 				// we found the user, so update the db with new access token and return
 				User.findOneAndUpdate({googleId: profile.id}, {$set: {token: accessToken}}, {new: true}, (err, user) => {
 					if (err) {
-						return console.error('ERROR: ', err);
+						return res.status(500).json({message: "Internal server error"});
 					}
 					if (!user) {
-						return res.status(400).json({ message: 'user not found'});
+						return res.status(400).json({message: "User not found"});
 					}
 
 					return callback(err, user);
@@ -212,11 +212,11 @@ app.post("/profile/:username", (req, res) => {
 		}
 
 		// TODO(Vedant): try this later when we make sure signin works
-		// if (user.accessToken !== req.body.accessToken) {
-		// 	return res.status(400).json({message: "Not signed in"});
-		// }
+		if (user.accessToken !== req.body.accessToken) {
+			return res.status(400).json({message: "Not signed in"});
+		}
 
-        return res.status(200).json(user);
+        return res.status(200).json({message: "Success", user: user});
 	});
 });
 
@@ -260,7 +260,6 @@ app.post("/profile/update_username", (req, res) => {
 
 app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
-
 	let newPrefs = req.body.prefs;
 	let token = req.body.accessToken;
 
