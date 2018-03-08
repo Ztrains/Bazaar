@@ -405,8 +405,10 @@ app.post("/search", (req, res) => {
 	// 	}
 	// }
 
-	Recipe.find({name: {$regex: search_q, $options: "i"}}, (err, recipes) => {
+	Recipe.find({$or: [{name: {$regex: search_q, $options: "i"}}, {description: {$regex: search_q, $options: "i"}}, {ingredients.name: {$regex: search_q, $options: "i"}}]}, 
+		(err, recipes) => {
 		if (!err) {
+			console.log(err);
 			return res.status(500).json({message: "Internal server error"});
 		}
 
