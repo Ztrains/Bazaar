@@ -3,7 +3,7 @@ var KNN = require("ml-knn");
 
 
 function predict(userData,userRatings,dishData) {
-	var knn = new KNN(userPref, userRatings);
+	var knn = new KNN(userData, userRatings);
 	return knn.predict(dishData);
 }
 
