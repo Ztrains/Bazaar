@@ -706,6 +706,7 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
+	
 	let day = req.body.day;
 	let time = req.body.time;
 	let id = req.body.id;
@@ -720,11 +721,13 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
+		console.log("day is " + day + " and time is " + time + "id is " + id);
 		user.calendar[day][time] = id;
+		console.log("new user.calendar[day][time] is " + user.calendar[day][time]);
 
 		user.save((err) => {
 			if (err) {
-				return res.status(500).json({message: "Internal server error"});
+				return res.status(500).json({message: "Internal server error: Unable to save user data"});
 			}
 
 			return res.status(200).json({message: "Successfully updated calendar"});
