@@ -687,11 +687,9 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		var cal = user.calendar;
-		if (cal[day]) {
-			if (cal[day][time]) {
-				cal[day][time] = id;
-				user.calendar = cal;
+		if (user.calendar[day]) {
+			if (user.calendar[day][time]) {
+				user.calendar[day][time] = id;
 			} else {
 				return res.status(400).json({message: "Wrong time entry"});
 			}
