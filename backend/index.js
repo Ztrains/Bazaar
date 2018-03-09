@@ -668,14 +668,14 @@ app.post('/calendar/update', (req, res) => {
 	let em = req.body.email;
 
 	let toSet = `calendar.${day}.${time}`;
-	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {toSet: id}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$update: {toSet: id}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "No user found"});
 		}
-		console.log("USER CALENDAR IS: ", user.calendar);
+		console.log("USER CALENDAR IS: ", user.calendar.sunday);
 		return res.status(200).json({message: "Successfully updated calendar for user", data: user});
 	});
 });
