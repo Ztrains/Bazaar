@@ -267,32 +267,6 @@ app.post("/profile/update_username", (req, res) => {
 	});
 });
 
-app.post("/profile/:username", (req, res) => {
-	// Get profile information about logged in user, requires valid auth middleware
-	if (!req.params.username) {
-		return res.status(400).json({message: "Username required in URL"});
-	}
-	if (!req.body.accessToken) {
-		return res.status(400).json({message: "Missing access token"});
-	}
-	
-	User.findOne(({username: req.params.username}), (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error"});
-		}
-		if (!user) {
-			return res.status(400).json({message : "User not found 4"});
-		}
-
-		// TODO(Vedant): try this later when we make sure signin works
-		// if (user.accessToken !== req.body.accessToken) {
-		// 	return res.status(400).json({message: "Not signed in"});
-		// }
-
-        return res.status(200).json({message: "Success", user: user});
-	});
-});
-
 app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
 	res.status(200).json({"message": "send back calendar information here"});
@@ -322,7 +296,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "Usr naat found"});
+			return res.status(400).json({message: "User not found"});
 		}
 
 		return res.status(200).json({message: "Successfully updated phone number"});
@@ -643,7 +617,33 @@ app.get('/email/test', (req,res) => {
 	});
 
 	//return res.json({message: 'end'});
-})
+});
+
+app.post("/profile/:username", (req, res) => {
+	// Get profile information about logged in user, requires valid auth middleware
+	if (!req.params.username) {
+		return res.status(400).json({message: "Username required in URL"});
+	}
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	
+	User.findOne(({username: req.params.username}), (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message : "User not found 4"});
+		}
+
+		// TODO(Vedant): try this later when we make sure signin works
+		// if (user.accessToken !== req.body.accessToken) {
+		// 	return res.status(400).json({message: "Not signed in"});
+		// }
+
+        return res.status(200).json({message: "Success", user: user});
+	});
+});
 
 //sent obj with day as string (e.g. 'Monday'), meal as string (e.g. "breakfast"), 
 // id as string (e.g. '243786ab4f90e' the hex stuff from the db), and token for auth
