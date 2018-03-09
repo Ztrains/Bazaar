@@ -374,7 +374,7 @@ app.post("/calendar", (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		console.log("Sending back user's calendar: " + user.calendar);
+		// console.log("Sending back user's calendar: " + user.calendar);
 		return res.status(200).json({message: "Success", calendar: user.calendar});
 	});
 });
@@ -811,9 +811,9 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		console.log("meal is " + meal.id + " " + meal.name + " " + meal.calorieCount);
+		// console.log("meal is " + meal.id + " " + meal.name + " " + meal.calorieCount);
 		user.calendar[day][time] = meal;
-		console.log("user calendar is " + user.calendar[day][time]);
+		// console.log("user calendar is " + user.calendar[day][time]);
 
 		user.save((err) => {
 			if (err) {
