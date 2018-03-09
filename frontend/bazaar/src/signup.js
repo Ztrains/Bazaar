@@ -53,7 +53,7 @@ export default class Signup extends React.Component {
           return false;
         }
         else {
-        _this.props.logInCallBack(_this.state.username);
+        _this.props.logInCallBack(_this.state.username, _this.state.accessTok, _this.state.userObj.email);
         history.push('/profile/' + _this.state.username);
       }
       });

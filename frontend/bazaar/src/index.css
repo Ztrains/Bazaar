@@ -44,7 +44,12 @@ input[type=username], input[type=email], input[type=password] {
     color: #4d4d4d;
     opacity: 1 !important;
 }
-
+#commentCard {
+  border-width: 10px;
+}
+#recipeEntryCard {
+  overflow: visible;
+}
 /*input[type=text2] {
   width: 60%;
   padding: 15px;

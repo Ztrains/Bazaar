@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios';
 import YouTube from 'react-youtube';
+import {Form, Row, Select, Input, Button} from 'react-materialize'
 import { FacebookShareButton, FacebookIcon} from 'react-share';
-import ReactDisqusComments from 'react-disqus-comments';
 
 export default class viewRecipe extends React.Component {
   constructor(props) {
@@ -22,8 +22,12 @@ export default class viewRecipe extends React.Component {
         servingSize: '',
         tags: [],
         value: '',
-        createdBy: ''
+        createdBy: '',
+        comments: {},
       },
+      commentBox: '',
+      dayValue: '',
+      timeValue: '',
     };
     this.upvote = this.upvote.bind(this);
     this.downvote = this.downvote.bind(this);
@@ -38,6 +42,14 @@ export default class viewRecipe extends React.Component {
       _this.setState({votes: result.data.data.votes});
     })
     //get recipe from id passed in through path
+  }
+  setTimeValue = (event) => {
+    this.setState({timeValue: event.target.value});
+    console.log(this.state.timeValue);
+  }
+  setDayValue = (event) => {
+    this.setState({dayValue: event.target.value});
+    console.log(this.state.dayValue);
   }
   upvote()  {
     console.log(this.state.buttonDisabled);
@@ -82,11 +94,25 @@ export default class viewRecipe extends React.Component {
    // access to player in all event handlers via event.target
    event.target.pauseVideo();
  }
- handleNewComment(comment) {
-   console.log(comment.text);
+ handleCommentChange = (event) => {
+   this.setState({commentBox: event.target.value});
+ }
+ addComment = () => {
+   console.log(this.state.commentBox);
+ }
+ addMealToCal() {
+   var calObj = {
+     day: this.state.dayValue,
+     time: this.state.timeValue,
+   }
  }
   render() {
+    let button = '';
+    if (this.state.commentBox.length > 0) {
+      button=<Button waves='light' onClick={this.addComment}>Submit</Button>
+    }
     return(
+
       <div className="container">
         <p>image can go here</p>
         <h1>{this.state.recipe.name}</h1>
@@ -95,7 +121,7 @@ export default class viewRecipe extends React.Component {
         <button onClick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
         <button onClick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
         <FacebookShareButton
-          url="reddit.com"
+          url={window.location.href}
           quote="Look at this tasty recipe!!">
           <FacebookIcon
             size={32}
@@ -121,21 +147,52 @@ export default class viewRecipe extends React.Component {
         <p>{this.state.recipe.servingSize}</p>
         <p>{this.state.recipe.calories}</p>
 
-        <p>This is where a video get embedded</p>
+        <Row>
+               <h4>Select Day and Time</h4>
+
+                 <Input type='select' defaultValue='Sunday' onChange={this.setDayValue} >
+                   <option value="Sunday">Sunday</option>
+                   <option value="Monday">Monday</option>
+                   <option value="Tuesday">Tuesday</option>
+                   <option value="Wednesday">Wednesday</option>
+                   <option value="Thursday">Thursday</option>
+                   <option value="Friday">Friday</option>
+                   <option value="Saturday">Saturday</option>
+                 </Input>
+
+
+               <Input type='select' defaultValue='Sunday' onChange={this.setTimeValue} >
+                 <option value="Breakfast">Breakfast</option>
+                 <option value="Lunch">Lunch</option>
+                 <option value="Dinner">Dinner</option>
+               </Input>
+               <button onClick={this.addMealToCal}>Add to Meal Calendar</button>
+             </Row>
+
         <YouTube
           videoId="7pSmhZFbCy0"
           opts={{height: '480', width:'720',playerVars:{autoplay: 0}}}
           onReady={this._onReady}
         />
-        <h3>"Comment/Review this recipe"</h3>\
-        <ReactDisqusComments
-          shortname="example"
-          identifier="something-unique-12345"
-          title="Example Thread"
-          url="http://www.example.com/example-thread"
-          category_id="123456"
-          onNewComment={this.handleNewComment}
-        />
+        <br/><br/>
+        <div className="input-field">
+          <input type="text" placeholder="Leave a public review/comment..." value={this.state.commentBox} onChange={this.handleCommentChange}/>
+          {button}
+        </div>
+        <div id="commentCard" className="card">
+          <div className="card-content">
+            <div id="commentBlock">
+              <h5>ssad said:  </h5>
+              <p>' ' + asdasdasd</p>
+            </div>
+          </div>
+        </div>
+        {/*{this.state.recipe.comments.map((obj, key) => (
+          <div id="commentBlock">
+            <h4>{obj.username}: </h4>
+            <h4>{obj.comment}</h4>
+          </div>
+        ))}*/}
         <p>Created by {this.state.recipe.createdBy}</p>
       </div>
     );
