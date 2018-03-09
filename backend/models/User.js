@@ -39,39 +39,123 @@ var UserSchema = new mongoose.Schema({
     }],
     calendar: {
         sunday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         monday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         tuesday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         wednesday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         thursday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         friday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         },
         saturday: {
-            breakfast: String,
-            lunch: String,
-            dinner: String
+            breakfast: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            lunch: {
+                id: String,
+                name: String,
+                calorieCount: String
+            },
+            dinner: {
+                id: String,
+                name: String,
+                calorieCount: String
+            }
         }
     }
 });

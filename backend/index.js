@@ -151,39 +151,123 @@ app.post("/auth/signup", (req, res) => {
 				token: req.body.accessToken,
 				calendar: {
 					sunday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					monday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					tuesday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					wednesday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					thursday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					friday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					},
 					saturday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: ""
+						}
 					}
 				}
 			};
@@ -702,8 +786,8 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.time) {
 		return res.status(400).json({message: "No time specified in request"});
 	}
-	if (!req.body.id) {
-		return res.status(400).json({message: "No id specified in request"});
+	if (!req.body.meal) {
+		return res.status(400).json({message: "No meal object specified in request"});
 	}
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
@@ -711,7 +795,7 @@ app.post('/calendar/update', (req, res) => {
 	
 	let day = req.body.day;
 	let time = req.body.time;
-	let id = req.body.id;
+	let meal = req.body.meal;
 	let token = req.body.token;
 	let em = req.body.email;
 	
@@ -723,7 +807,7 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		user.calendar[day][time] = id;
+		user.calendar[day][time] = meal;
 
 		user.save((err) => {
 			if (err) {
