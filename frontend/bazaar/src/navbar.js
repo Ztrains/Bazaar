@@ -43,12 +43,8 @@ export default class NavBar extends React.Component {
       link = <div>
       <li><a href={"/" + this.props.currUser + "/list"}>My Shopping List</a></li>
       <li><a href={"/" + this.props.currUser + "/calendar"}>My Calendar</a></li>
-<<<<<<< HEAD
       <li><a href={"/profile/" + this.props.currUser}>My Profile</a></li>
       <li><a href="/create">Create a recipe</a></li>
-=======
-      <li><a href={"/profile/" + this.props.currUser} id="profileButton">My Profile</a></li>
->>>>>>> d09ba8d2d781dab83a7255d44e47652f0e3877b9
       <li><a onClick={this.logUserOut} id="logoutButton">Sign Out</a></li></div>
     }
 
