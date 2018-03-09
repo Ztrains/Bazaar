@@ -474,52 +474,6 @@ app.post("/recipes/remove", (req, res) => {
 	})
 });
 
-app.post("/recipes/:id", (req, res) => {
-	let token = req.body.accessToken;
-	let usrname = req.body.username;
-	let currentUser;
-
-	console.log(`\nTHE ENTIRE REQUEST IS ${req.body.username}\n`)
-
-	if (!req.params.id) {
-		return res.status(400).json({message: "Missing recipe ID"});
-	}
-
-	User.findOne(({username: usrname}), (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error. Unable to process user find"});
-		}
-		if (!user) {
-			console.log('no user found')
-			//return res.status(400).json({message: "No user found"});
-		}
-
-		currentUser = user;
-	});
-
-	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
-			if (err) {
-				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
-			}
-			if (!recipe) {
-				return res.status(400).json({message: "No recipe found"});
-			}
-			
-			// console.log(recipe);
-			// console.log(`\nCURRENTUSER IS ${currentUser}\n`)
-			if (currentUser) {
-				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-				var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
-				
-				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
-			}
-			else {
-				return res.status(200).json({message: "Success without ML", data: recipe});
-			}
-
-	});
-});
-
 app.post("/recipes/updateVote", (req, res) => {
 	let token = req.body.token;
 	var currentUser;
@@ -662,8 +616,6 @@ app.get('/email/test', (req,res) => {
 			// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 		});
 	});
-
-	//return res.json({message: 'end'});
 });
 
 app.post("/profile/:username", (req, res) => {
@@ -689,6 +641,52 @@ app.post("/profile/:username", (req, res) => {
 		// }
 
         return res.status(200).json({message: "Success", user: user});
+	});
+});
+
+app.post("/recipes/:id", (req, res) => {
+	let token = req.body.accessToken;
+	let usrname = req.body.username;
+	let currentUser;
+
+	console.log(`\nTHE ENTIRE REQUEST IS ${req.body.username}\n`)
+
+	if (!req.params.id) {
+		return res.status(400).json({message: "Missing recipe ID"});
+	}
+
+	User.findOne(({username: usrname}), (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error. Unable to process user find"});
+		}
+		if (!user) {
+			console.log('no user found')
+			//return res.status(400).json({message: "No user found"});
+		}
+
+		currentUser = user;
+	});
+
+	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+			}
+			if (!recipe) {
+				return res.status(400).json({message: "No recipe found"});
+			}
+			
+			// console.log(recipe);
+			// console.log(`\nCURRENTUSER IS ${currentUser}\n`)
+			if (currentUser) {
+				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+				var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
+				
+				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
+			}
+			else {
+				return res.status(200).json({message: "Success without ML", data: recipe});
+			}
+
 	});
 });
 
