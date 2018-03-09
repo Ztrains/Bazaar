@@ -42,7 +42,7 @@ export default class Login extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
     .then(function(result) {
       console.log(result);
-      if (result.data.message == "User not found") {
+      if (result.data.message === "User not found") {
         alert("username or password is incorrect");
         return false;
       }

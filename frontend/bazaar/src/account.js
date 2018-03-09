@@ -16,6 +16,8 @@ export default class accountPage extends React.Component {
       email: '',
       phoneNum: '',
       userObj: {},
+      emailDayPref: '',
+      transportMethod: '',
     };
     this.addPref = this.addPref.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -33,9 +35,16 @@ export default class accountPage extends React.Component {
       _this.setState({
         username: results.data.user.username,
         email: results.data.user.email,
+        phoneNum: results.data.user.phoneNumber,
+        emailDayPref: results.data.user.contact.frequency,
+        transportMethod: results.data.user.contact.method,
         userObj: results.data.user,
       });
     });
+  }
+  changeTransportMethod = (event) => {
+    this.setState({transportMethod: event.target.value});
+    //send to database
   }
   addPref(event) {
     console.log(event.target.value);
@@ -119,6 +128,10 @@ export default class accountPage extends React.Component {
     })
     console.log(this.state.username);
   }
+  changeemailDayPref = (event) => {
+    this.setState({emailDayPref: event.target.value});
+    //send to database
+  }
   render() {
     return (
       <div className="container">
@@ -144,6 +157,27 @@ export default class accountPage extends React.Component {
               <option value="Paleo">Paleo</option>
             </Input>
             </Row>
+            <br/>
+            <h3>Edit Preferences</h3>
+          <Row>
+            <p>Change When you recieve your meal plan</p>
+            <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
+              <option value="1">Every Day</option>
+              <option value="2">2 Days</option>
+              <option value="3">3 Days</option>
+              <option value="4">4 Days</option>
+              <option value="5">5 Days</option>
+              <option value="6">6 Days</option>
+              <option value="7">7 Days</option>
+            </Input>
+          </Row>
+          <Row>
+          <p>Change how you get your calendar</p>
+          <Input type='select' value={this.state.transportMethod} onChange={this.changeTransportMethod}>
+            <option value="email">Email</option>
+            <option value="text">Text</option>
+          </Input>
+          </Row>
         </ul>
 
         <p>a lot of recipes can go here</p>

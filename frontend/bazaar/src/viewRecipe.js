@@ -13,6 +13,7 @@ export default class viewRecipe extends React.Component {
       votes: 0,
       buttonDisabled: false,
       recipe: {
+        _id: '',
         name: "",
         description: "",
         ingredients: [],
@@ -24,6 +25,7 @@ export default class viewRecipe extends React.Component {
         value: '',
         createdBy: '',
         comments: {},
+        contact: {},
       },
       commentBox: '',
       dayValue: '',
@@ -34,12 +36,16 @@ export default class viewRecipe extends React.Component {
   }
   componentDidMount() {
     var _this = this;
-    axios.get("https://bazaar-408.herokuapp.com/recipes/" + this.props.match.params.id)
+    var Obj = {
+      accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
+    }
+    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.props.match.params.id, Obj)
     .then(function(result) {
+      console.log(result);
       console.log(result.data.data);
       _this.setState({recipe: result.data.data});
-      console.log(result.data.data.votes);
-      _this.setState({votes: result.data.data.votes});
+      _this.setState({votes: result.data.data.upvotes});
     })
     //get recipe from id passed in through path
   }
@@ -62,6 +68,7 @@ export default class viewRecipe extends React.Component {
     var Obj = {
       voteCount: this.state.votes,
       recipeId: this.props.match.params.id,
+      accessToken: window.sessionStorage.getItem('token'),
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
@@ -102,9 +109,14 @@ export default class viewRecipe extends React.Component {
  }
  addMealToCal() {
    var calObj = {
-     day: this.state.dayValue,
-     time: this.state.timeValue,
+     calUpdate: {
+       day: this.state.dayValue,
+       time: this.state.timeValue,
+       id: this.props.match.params.id,
+     },
+     accessToken: window.sessionStorage.getItem('token'),
    }
+
  }
   render() {
     let button = '';
@@ -114,10 +126,12 @@ export default class viewRecipe extends React.Component {
     return(
 
       <div className="container">
+        <p>We predict you will {} this</p>
         <p>image can go here</p>
         <h1>{this.state.recipe.name}</h1>
         <h2>{this.state.recipe.description}</h2>
-        <p>{this.state.votes}</p>
+        <h5>{this.state.votes}</h5>
+        <br/>
         <button onClick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
         <button onClick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
         <FacebookShareButton
@@ -131,12 +145,12 @@ export default class viewRecipe extends React.Component {
 
         <ul>
         {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
-          <li>{prefValue.quantity} {prefValue.name}</li>
+          <li>Step {key + 1}: {prefValue.quantity} {prefValue.name}</li>
         ))}
         </ul>
         <ul>
         {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
-          <li>{prefValue.step}</li>
+          <li>Step {key + 1}: {prefValue.step}</li>
         ))}
         </ul>
         <ul>
