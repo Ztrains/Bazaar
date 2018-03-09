@@ -789,14 +789,17 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.meal) {
 		return res.status(400).json({message: "No meal object specified in request"});
 	}
-	if (!req.body.token) {
+	if (!req.body.accessToken) {
 		return res.status(400).json({message: "No token specified in request"});
+	}
+	if (!req.body.email) {
+		return res.status(400).json({message: "No email specified in request"});
 	}
 	
 	let day = req.body.day;
 	let time = req.body.time;
 	let meal = req.body.meal;
-	let token = req.body.token;
+	let token = req.body.accessToken;
 	let em = req.body.email;
 	
 	User.findOne({$or: [{email: em}, {token: token}]}, (err, user) => {
@@ -807,7 +810,9 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
+		console.log("meal is " + meal);
 		user.calendar[day][time] = meal;
+		console.log("user calendar is " + user.calendar[day][time]);
 
 		user.save((err) => {
 			if (err) {
