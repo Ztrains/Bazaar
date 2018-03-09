@@ -21,7 +21,11 @@ var UserSchema = new mongoose.Schema({
     },
     updatedAt: {type: Date, default: Date.now},
     googleId: String,
-    savedRecipes: [Number],
+    savedRecipes: [{
+        recipeID: String,
+        recipeName: String,
+        recipeDescription: String,
+    }],
     mlDishData: [[Number]],
     mlDishRatings: [String],
     preferences: [String],
@@ -33,11 +37,43 @@ var UserSchema = new mongoose.Schema({
     	quantity: String,
     	name: String
     }],
-    calendar: [{
-        breakfast: String,
-        lunch: String,
-        dinner: String
-    }]
+    calendar: {
+        sunday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        monday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        tuesday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        wednesday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        thursday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        friday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        },
+        saturday: {
+            breakfast: String,
+            lunch: String,
+            dinner: String
+        }
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
-import {Form, Row, Select, Input} from 'react-materialize'
+import {Form, Row, Select, Input, Button} from 'react-materialize'
 
 
 export default class accountPage extends React.Component {
@@ -19,13 +19,16 @@ export default class accountPage extends React.Component {
       emailDayPref: '',
       transportMethod: '',
     };
-    this.addPref = this.addPref.bind(this);
+
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
     this.changePhoneButtonActivate = this.changePhoneButtonActivate.bind(this);
+<<<<<<< HEAD
     this.changeemailDayPref = this.changeemailDayPref.bind(this);
     this.changeTransportMethod = this.changeTransportMethod.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
+=======
+>>>>>>> d324d2c7c73c3b3806a178b2788af7b57abaec1c
   }
   componentDidMount() {
     console.log(window.sessionStorage.getItem('token'));
@@ -50,15 +53,17 @@ export default class accountPage extends React.Component {
     this.setState({transportMethod: event.target.value});
     //send to database
   }
-  addPref(event) {
+  addPref = (event) => {
     console.log(event.target.value);
     this.setState({value: event.target.value});
     var newList = this.state.preferences;
     newList.push(this.state.value);
     this.setState({preferences: newList});
+
     var Obj = {
       prefs: this.state.preferences,
       accessToken: window.sessionStorage.getItem('token'),
+      email: this.state.email,
     }
     //send to database
     axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
@@ -73,7 +78,7 @@ export default class accountPage extends React.Component {
       newName: event.target.value
     });
   }
-  handlePhoneChange(event) {
+  handlePhoneChange = (event) => {
 
     //console.log(event.target.value);
     this.setState({
@@ -104,10 +109,18 @@ export default class accountPage extends React.Component {
       }
     })
   }
-  changePhoneButtonActivate() {
+  changePhoneButtonActivate = () => {
     if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
       alert("nothing has been written in input box");
       return false;
+    }
+    if (isNaN(this.state.phoneNum)) {
+      alert('Phone contains digits other than numbers. If you have dashes, please remove them');
+      return;
+    }
+    if ( this.state.phoneNum.length != 10) {
+      alert('phone number contains too many or to little digits');
+      return;
     }
     var temp = this.state.phoneNum;
     this.setState({
@@ -116,11 +129,13 @@ export default class accountPage extends React.Component {
     //send it to database
     var Obj = {
       phoneNum: this.state.phoneNum,
-      email: this.userObj.email,
+      email: this.state.email,
       accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
     }
+    console.log(Obj);
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
+    axios.post("https://bazaar-408.herokuapp.com/profile/updatePhoneNumber", Obj)
     .then(function(result) {
       if (result.data.message == "User Not Found") {
         alert("User not found");
@@ -136,23 +151,39 @@ export default class accountPage extends React.Component {
     this.setState({emailDayPref: event.target.value});
     //send to database
   }
+  deletePref = () => {
+    var list = this.state.preferences;
+    list.splice(list.length - 1, 1);
+    this.setState({preferences: list});
+    var Obj = {
+      prefs: this.state.preferences,
+      accessToken: window.sessionStorage.getItem('token'),
+      email: this.state.email,
+    }
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
+    .then(function(result) {
+      alert("Dish preferences successfully updated");
+    });
+
+  }
   render() {
     return (
       <div className="container">
-      <div className="card border-primary text-center">
-        <h2 id="userNameBanner">{this.state.username}</h2>
+        <h1 id="fancytext">{this.state.username}</h1>
+        <br></br>
         <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
         <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
-        <input type="text" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
+        <input type="tel" className="validate" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
         <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Phone Number</button>
         <p>{this.state.email}</p>
+        <h4>Meal Preferences</h4>
         <ul>
           {this.state.preferences.map((prefValue, key) => (
             <li>{prefValue}</li>
           ))}
+
           <Row>
-            <Input type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
-              <option value=""></option>
+            <Input type='select' onChange={this.addPref} >
               <option value="Vegetarian">Vegetarian</option>
               <option value="Vegan">Vegan</option>
               <option value="Gluten-Free">Gluten-Free</option>
@@ -161,10 +192,11 @@ export default class accountPage extends React.Component {
               <option value="Paleo">Paleo</option>
             </Input>
             </Row>
+              <button onClick={this.deletePref}>Remove Last Preference</button>
             <br/>
-            <h3>Edit Preferences</h3>
+            <h4>Notification Options</h4>
           <Row>
-            <p>Change When you recieve your meal plan</p>
+            <p id="padd">Change how often you recieve your meal plan</p>
             <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
               <option value="1">Every Day</option>
               <option value="2">2 Days</option>
@@ -176,7 +208,7 @@ export default class accountPage extends React.Component {
             </Input>
           </Row>
           <Row>
-          <p>Change how you get your calendar</p>
+          <p id="padd">Change how you get your calendar</p>
           <Input type='select' value={this.state.transportMethod} onChange={this.changeTransportMethod}>
             <option value="email">Email</option>
             <option value="text">Text</option>
@@ -185,7 +217,6 @@ export default class accountPage extends React.Component {
         </ul>
 
         <p>a lot of recipes can go here</p>
-      </div>
       </div>
     );
   }

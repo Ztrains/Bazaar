@@ -22,13 +22,21 @@ input[type=username], input[type=email], input[type=password] {
   text-decoration-color: #3b3b3b;
   text-shadow: 2px 2px pink;
 }
+#stepInfo {
+  font-size: 16px;
+  width: 50%;
+  width: 370px;
+
+  color: black;
+  margin-left: 50px;
+}
 #quantField {
   width: 50%;
   font-size: 16px;
+
   color: black;
 }
 #nameField {
-  margin-left: -150px ;
   font-size: 16px;
 }
 #shopListValue {
@@ -61,19 +69,35 @@ input[type=username], input[type=email], input[type=password] {
 #recipeEntryCard {
   overflow: visible;
 }
-/*input[type=text2] {
-  width: 60%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: white;
-}*/
+#fancytext {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Noto Sans";
+  font-size: 4rem;
+  font-weight: bold;
+  pointer-events: none;
+}
 
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;
     outline: none;
     width: 100%;
+}
+
+#pref {
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 5px;
+  border: solid;
+  border-width: medium;
+  border-color: grey;
+  background-color: #d1d1e0;
+  width: 100px;
+}
+
+#signintext {
+  font-size: 1.5rem;
 }
 
 #title {
@@ -83,16 +107,31 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
 
 #warning {
   text-align: center;
-  color:
 }
 
 #center {
   text-align: center;
 }
 
+#signin {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+#signup {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
 h1 {
   padding-bottom: 5px;
 }
+
+#padd{
+  padding-left: 5px;
+}
+
 
 .table-info {
   background-color: rgba(60, 179, 113, .3);
@@ -118,9 +157,15 @@ h1 {
 }
 
 .container {
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #F0F0F0;
     padding: 20px;
+}
+
+.container5 {
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    padding: 40px;
 }
 
 .container2 {
@@ -161,7 +206,6 @@ button:hover {
 
 .cancelbtn, .signinbtn {
   float: left;
-  width: 50%;
 }
 
 .googlebtn {
@@ -181,12 +225,18 @@ button:hover {
     clear: both;
     display: table;
     padding-top: 15px;
+    text-align: center;
 }
 
 .ingredientList {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 50fr 50fr;
+}
+.ingredientList2 {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 100fr;
 }
 .minusbtn {
   padding-top: 0px;
@@ -195,8 +245,8 @@ button:hover {
   width: 5%;
   padding-right: 30px;
   margin-left: 30px;
-  background-color: grey;
-  height: 35px;
+  background-color: pink;
+  height: 45px;
   text-align: center;
 
 }
@@ -217,4 +267,5 @@ button:hover {
 .btnsmall2 {
   width: 60px;
   background-color: grey;
+  float: float;
 }

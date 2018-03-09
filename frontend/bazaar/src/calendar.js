@@ -9,8 +9,19 @@ export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      calendar: {}
     };
+  }
+  componentDidMount() {
+    var Obj = {
+      accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
+    }
+    axios.post("https://bazaar-408.herokuapp.com/calendar", Obj)
+    .then(function(result) {
+      console.log(result);
+
+    })
   }
   render() {
     return(
