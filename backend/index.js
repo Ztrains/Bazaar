@@ -1,14 +1,14 @@
 require('dotenv').load();
-const app 		= require("express")();
+const app 			= require("express")();
 const passport		= require("passport");
 const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
-const fs 		= require("fs");
-const cookieParser = require("cookie-parser");
+const fs 			= require("fs");
+const cookieParser 	= require("cookie-parser");
 const cookieSession = require("cookie-session");
-const cors		= require("cors");
-const nodemailer = require('nodemailer');
+const cors			= require("cors");
+const nodemailer 	= require('nodemailer');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -262,10 +262,38 @@ app.post("/profile/update_username", (req, res) => {
 	});
 });
 
+app.post("/profile/updatePhoneNumber", (req, res) => {
+	let newPhone = req.body.phoneNumber;
+	let token = req.body.token;
+	let email = req.body.email;
+
+	if (!newPhone) {
+		return res.status(400).json({message: "No new username in request"});
+	}
+	if (!token) {
+		return res.status(400).json({message: "No token in request"});
+	}
+	if (!email) {
+		return res.status(400).json({message: "No email in request"});
+	}
+
+	User.findOneAndUpdate({email: email}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "User not found"});
+		}
+
+		return res.status(200).json({message: "Successfully updated username"});
+	});
+});
+
 app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
 	let newPrefs = req.body.prefs;
 	let token = req.body.accessToken;
+	let email = req.body.email;
 
 	if (!newPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
@@ -273,14 +301,19 @@ app.post("/profile/update_preferences", (req, res) => {
 	if (!token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
+	if (!email) {
+		return res.status(400).json({message: "No email in request"});
+	}
 
-	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({email: email}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "User not found"});
 		}
+
+		return res.status(200).json({message: "Successfully updated user preferences"});
 	});
 });
 
@@ -399,7 +432,7 @@ app.post("/recipes/:id", (req, res) => {
 
 	User.findOne(({username: usrname}), (err, user) => {
 		if (err) {
-			return res.status(500).json({message: "Internal server error: username"});
+			return res.status(500).json({message: "Internal server error. Unable to process user find"});
 		}
 		if (!user) {
 			console.log('no user found')
@@ -411,8 +444,7 @@ app.post("/recipes/:id", (req, res) => {
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {
-				console.log(err);
-				return res.status(500).json({message: err});
+				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
 			}
 			if (!recipe) {
 				return res.status(400).json({message: "No recipe found"});
