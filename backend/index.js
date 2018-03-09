@@ -418,11 +418,11 @@ app.post("/recipes/:id", (req, res) => {
 				return res.status(400).json({message: "No recipe found"});
 			}
 			
-			console.log(recipe);
-			console.log(`\nCURRENTUSER IS ${currentUser}\n`)
+			// console.log(recipe);
+			// console.log(`\nCURRENTUSER IS ${currentUser}\n`)
 			if (currentUser) {
 				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-				var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+				var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
 				
 				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
 			}
