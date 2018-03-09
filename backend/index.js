@@ -608,16 +608,14 @@ app.post("/recipes/new", (req, res) => {
 	}
 
 	var data = newRecipe;
-	scraper.getVideos(data.name, (resp) => {
-		data.videoId = resp;
-		Recipe.create(data, (err, recipe) => {
-			if (err) {
-				console.log(err);
-				return res.status(500).json({message: "Internal server error"});
-			}
-	
-			return res.status(200).json({message: "Success", recipe: recipe});
-		});
+	data.videoId = scraper.getVideos(data.name);
+	Recipe.create(data, (err, recipe) => {
+		if (err) {
+			console.log(err);
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", recipe: recipe});
 	});
 	// TODO(Vedant): do a check for the access token to ensure current user is authenticated
 	// before saving recipe
