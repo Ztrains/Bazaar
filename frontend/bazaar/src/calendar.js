@@ -9,7 +9,127 @@ export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendar: {}
+      calendar: {
+					sunday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					monday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					tuesday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					wednesday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					thursday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					friday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					},
+					saturday: {
+						breakfast: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						lunch: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						},
+						dinner: {
+							id: "",
+							name: "",
+							calorieCount: 0
+						}
+					}
+        }
     };
   }
   componentDidMount() {
@@ -41,65 +161,66 @@ export default class Calendar extends React.Component {
       </thead>
       <tbody>
       <tr>
-        <th scope="row">Monday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <th scope="row">Sunday</th>
+        <td>{this.state.calendar.sunday.breakfast.name}</td>
+        <td>{this.state.calendar.sunday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
+        <td>{this.state.calendar.sunday.dinner.name}</td>
+        <td>{this.state.calendar.sunday.breakfast.calorieCount + this.state.calendar.sunday.lunch.calorieCount + this.state.calendar.sunday.dinner.calorieCount}</td>
+      </tr>
+      <tr>
+        <th scope="row">Monday</th>
+        <td>{this.state.calendar.monday.breakfast.name}</td>
+        <td>{this.state.calendar.monday.lunch.name}</td>
+
+        <td>{this.state.calendar.monday.dinner.name}</td>
+        <td>{this.state.calendar.monday.breakfast.calorieCount + this.state.calendar.monday.lunch.calorieCount + this.state.calendar.monday.dinner.calorieCount}</td>
       </tr>
       <tr>
         <th scope="row">Tuesday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <td>{this.state.calendar.tuesday.breakfast.name}</td>
+        <td>{this.state.calendar.tuesday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td >2000</td>
+        <td>{this.state.calendar.tuesday.dinner.name}</td>
+        <td>{this.state.calendar.tuesday.breakfast.calorieCount + this.state.calendar.tuesday.lunch.calorieCount + this.state.calendar.tuesday.dinner.calorieCount}</td>
 
       </tr>
       <tr>
         <th scope="row">Wednesday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <td>{this.state.calendar.wednesday.breakfast.name}</td>
+        <td>{this.state.calendar.wednesday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
+        <td>{this.state.calendar.wednesday.dinner.name}</td>
+        <td>{this.state.calendar.wednesday.breakfast.calorieCount} + {this.state.calendar.wednesday.lunch.calorieCount} + {this.state.calendar.wednesday.dinner.calorieCount}</td>
 
       </tr>
       <tr>
         <th scope="row">Thursday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <td>{this.state.calendar.thursday.breakfast.name}</td>
+        <td>{this.state.calendar.thursday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
+        <td>{this.state.calendar.thursday.dinner.name}</td>
+        <td>{this.state.calendar.thursday.breakfast.calorieCount + this.state.calendar.thursday.lunch.calorieCount + this.state.calendar.thursday.dinner.calorieCount}</td>
 
       </tr>
       <tr>
         <th scope="row">Friday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <td>{this.state.calendar.friday.breakfast.name}</td>
+        <td>{this.state.calendar.friday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
+        <td>{this.state.calendar.friday.dinner.name}</td>
+        <td>{this.state.calendar.friday.breakfast.calorieCount + this.state.calendar.friday.lunch.calorieCount + this.state.calendar.friday.dinner.calorieCount}</td>
 
       </tr>
       <tr>
         <th scope="row">Saturday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
+        <td>{this.state.calendar.saturday.breakfast.name}</td>
+        <td>{this.state.calendar.saturday.lunch.name}</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
+        <td>{this.state.calendar.saturday.dinner.name}</td>
+        <td>{this.state.calendar.saturday.breakfast.calorieCount + this.state.calendar.saturday.lunch.calorieCount + this.state.calendar.saturday.dinner.calorieCount}</td>
       </tr>
-      <tr>
-        <th scope="row">Sunday</th>
-        <td>Jelly</td>
-        <td>Pudding</td>
 
-        <td>Ramen</td>
-        <td>2000</td>
-      </tr>
       </tbody>
       </table>
       </div>

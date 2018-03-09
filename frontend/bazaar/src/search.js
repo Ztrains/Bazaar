@@ -42,7 +42,7 @@ export default class SearchPage extends React.Component {
           <h1 id="center">{"Search Query = " + this.props.match.params.terms}</h1>
           <br></br>
           {this.state.resultsList.map((recipe, key) => (
-            <RecipeEntry id={recipe._id} name={recipe.name} description={recipe.description} deleteBut={false}/>
+            <RecipeEntry id={recipe._id} name={recipe.name} description={recipe.description} deleteBut={false} calories={recipe.calories}/>
           ))}
         </div>
     );

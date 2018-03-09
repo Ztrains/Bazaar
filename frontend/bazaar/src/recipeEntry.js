@@ -48,9 +48,13 @@ export default class recipeEntry extends React.Component {
   addMealToCal() {
     var calObj = {
       day: this.state.dayValue,
-      id: this.props.id,
+      meal: {
+        id: this.props.id,
+        name: this.props.name,
+        calorieCount: this.props.calories,
+      },
       time: this.state.timeValue,
-      token: window.sessionStorage.getItem('token'),
+      accessToken: window.sessionStorage.getItem('token'),
       email: window.sessionStorage.getItem('email'),
     }
     console.log(calObj);
@@ -80,20 +84,20 @@ export default class recipeEntry extends React.Component {
 
                 <h3>Select Day and Time</h3>
                 <Input id="day" type="select" defaultValue='Sunday' onChange={this.setDayValue} >
-                  <option value="Sunday">Sunday</option>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="4">Thursday</option>
-                  <option value="Friday">Friday</option>
-                  <option value="Saturday">Saturday</option>
+                  <option value="sunday">Sunday</option>
+                  <option value="monday">Monday</option>
+                  <option value="tuesday">Tuesday</option>
+                  <option value="wednesday">Wednesday</option>
+                  <option value="thursday">Thursday</option>
+                  <option value="friday">Friday</option>
+                  <option value="saturday">Saturday</option>
                 </Input>
 
 
               <Input id="timeVal" type="select" defaultValue='Breakfast' onChange={this.setTimeValue} >
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
               </Input>
               <button id="mealAdderBtn" onClick={this.addMealToCal}>Add to Meal Calendar</button>
             </Row>

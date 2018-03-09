@@ -27,8 +27,14 @@ export default class viewRecipe extends React.Component {
         createdBy: '',
         comments: {},
         contact: {},
+        videoId: '',
+        comments:[ {
+          username: '',
+          comment: '',
+        } ],
       },
       commentBox: '',
+      commentList: [],
       dayValue: '',
       timeValue: '',
       ml: {},
@@ -48,6 +54,7 @@ export default class viewRecipe extends React.Component {
       console.log(result.data.data);
       _this.setState({recipe: result.data.data});
       _this.setState({votes: result.data.data.upvotes});
+      _this.setState({commentList: result.data.data.comments})
       //_this.setState({ml: result.data.ml});
     })
     //get recipe from id passed in through path
@@ -110,16 +117,42 @@ export default class viewRecipe extends React.Component {
  }
  addComment = () => {
    console.log(this.state.commentBox);
+   var Obj = {
+     username: window.sessionStorage.getItem('loggedInName'),
+     comment: this.state.commentBox,
+     accessToken:window.sessionStorage.getItem('token'),
+   };
+   axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
+   .then(function(result) {
+     console.log(result);
+   });
+   var list = this.state.commentList;
+   var newObj = {
+     username: window.sessionStorage.getItem('loggedInName'),
+     comment: this.state.commentBox,
+   }
+   list.push(newObj);
+   this.setState({commentList: list});
  }
- addMealToCal() {
+ addMealToCal = () => {
    var calObj = {
-     calUpdate: {
        day: this.state.dayValue,
        time: this.state.timeValue,
-       id: this.props.match.params.id,
-     },
-     accessToken: window.sessionStorage.getItem('token'),
-   }
+       meal: {
+         id: this.state.recipe._id,
+         calorieCount: this.state.recipe.calories,
+         name: this.state.recipe.name,
+       },
+       email: window.sessionStorage.getItem('email'),
+       accessToken: window.sessionStorage.getItem('token'),
+     };
+     console.log(calObj);
+     var _this = this;
+     axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
+     .then(function(result) {
+       console.log(result);
+     })
+
 
  }
   render() {
@@ -174,27 +207,27 @@ export default class viewRecipe extends React.Component {
         <Row>
                <h4>Select Day and Time</h4>
 
-                 <Input type='select' defaultValue='Sunday' onChange={this.setDayValue} >
-                   <option value="Sunday">Sunday</option>
-                   <option value="Monday">Monday</option>
-                   <option value="Tuesday">Tuesday</option>
-                   <option value="Wednesday">Wednesday</option>
-                   <option value="Thursday">Thursday</option>
-                   <option value="Friday">Friday</option>
-                   <option value="Saturday">Saturday</option>
+                 <Input type='select' defaultValue='sunday' onChange={this.setDayValue} >
+                   <option value="sunday">Sunday</option>
+                   <option value="monday">Monday</option>
+                   <option value="tuesday">Tuesday</option>
+                   <option value="wednesday">Wednesday</option>
+                   <option value="thursday">Thursday</option>
+                   <option value="friday">Friday</option>
+                   <option value="saturday">Saturday</option>
                  </Input>
 
 
-               <Input type='select' defaultValue='Sunday' onChange={this.setTimeValue} >
-                 <option value="Breakfast">Breakfast</option>
-                 <option value="Lunch">Lunch</option>
-                 <option value="Dinner">Dinner</option>
+               <Input type='select' defaultValue='breakfast' onChange={this.setTimeValue} >
+                 <option value="breakfast">Breakfast</option>
+                 <option value="lunch">Lunch</option>
+                 <option value="dinner">Dinner</option>
                </Input>
                <button onClick={this.addMealToCal}>Add to Meal Calendar</button>
              </Row>
 
         <YouTube
-          videoId="7pSmhZFbCy0"
+          videoId={this.state.recipe.videoId}
           opts={{height: '480', width:'720',playerVars:{autoplay: 0}}}
           onReady={this._onReady}
         />
@@ -203,14 +236,16 @@ export default class viewRecipe extends React.Component {
           <input type="text" placeholder="Leave a public review/comment..." value={this.state.commentBox} onChange={this.handleCommentChange}/>
           {button}
         </div>
-        <div id="commentCard" className="card">
-          <div className="card-content">
-            <div id="commentBlock">
-              <h5>ssad said:  </h5>
-              <p>' ' + asdasdasd</p>
+        {this.state.recipe && this.state.recipe.comments.map((obj, key) => (
+          <div id="commentCard" className="card">
+            <div className="card-content">
+              <div id="commentBlock">
+                <h5>{obj.username} said:  </h5>
+                <p>{obj.comment}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
         {/*{this.state.recipe.comments.map((obj, key) => (
           <div id="commentBlock">
             <h4>{obj.username}: </h4>

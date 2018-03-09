@@ -14,7 +14,7 @@ export default class viewRecipe extends React.Component {
       ingredients: [{name: '', quantity: ''}],
       steps: [{step: ''}],
       imageURL: '',
-      calories: '',
+      calories: 0,
       servingSize: '',
       preferences: [],
       value: '',
@@ -149,6 +149,9 @@ export default class viewRecipe extends React.Component {
       alert("recipe must have characteristic tags");
       return;
     }
+    if (isNaN(this.state.calories)) {
+      alert("The calorie count must be a number");
+    }
     var Obj = {
       accessToken: window.sessionStorage.getItem('token'),
       recipe: {
@@ -167,7 +170,7 @@ export default class viewRecipe extends React.Component {
     .then(function(results) {
       console.log(results);
       alert("recipe successfully created");
-      history.push("/recipe/" + results._id);
+      history.push("/recipes/" + results.data.recipe._id);
     });
   }
   render() {
