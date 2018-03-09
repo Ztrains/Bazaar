@@ -42,6 +42,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var User = require('./models/User');
 var Recipe = require('./models/Recipe');
+var ml = require('./ml')
 /******************************/
 
 passport.use(new GoogleStrat({
@@ -164,9 +165,9 @@ app.post("/auth/signup", (req, res) => {
 });
 
 app.post("/auth/signin", (req, res) => {
-	if (!req.body.accessToken) {
+	/*if (!req.body.accessToken) {
 		return res.status(400).json({message: "Missing access token in request"});
-	}
+	}*/
 	if (!req.body.googleId) {
 		return res.status(400).json({message: "Missing Google ID in request"});
 	}
@@ -385,21 +386,43 @@ app.post("/recipes/save", (req, res) => {
 	})
 });
 
-app.get("/recipes/:id", (req, res) => {
+app.post("/recipes/:id", (req, res) => {
+	let token = req.body.accessToken;
+	let usrname = req.body.username;
+
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
-	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+	User.findOne(({username: usrname}), (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
+		if (!user) {
+			return res.status(400).json({message: "No user found"});
+		}
 
-		return res.status(200).json({message: "Success", data: recipe});
+		Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+			if (!recipe) {
+				return res.status(400).json({message: "No recipe found"});
+			}
+			console.log(recipe);
+			
+			var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+			var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+
+			return res.status(200).json({message: "Success", data: recipe, ml: prediction});
+		});
 	});
 });
 
 app.post("/recipes/updateVote", (req, res) => {
+	let token = req.body.token;
+	var currentUser;
+
 	if (!req.body.voteCount) {
 		return res.status(400).json({message: "No vote count specified"});
 	}
@@ -414,6 +437,17 @@ app.post("/recipes/updateVote", (req, res) => {
 		if (!recipe) {
 			return res.status(400).json({message: "Recipe not found"});
 		}
+		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+		
+		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new:true}, (err, user) => {
+			if (err) {
+				console.log('err:', err);
+			}
+			if (!user) {
+				console.log('no user found');
+			}
+			currentUser = user;
+		});
 
 		return res.status(200).json({message: "Success", data: recipe});
 	});
@@ -440,11 +474,6 @@ app.post("/recipes/new", (req, res) => {
 
 		return res.status(200).json({message: "Success", recipe: recipe});
 	});
-});
-
-// TODO(Vedant): ML route - temporary
-app.get("/chini", (req, res) => {
-	res.json({message: "Like"});
 });
 
 app.post("/search", (req, res) => {
@@ -534,6 +563,24 @@ app.get('/email/test', (req,res) => {
 	});
 
 	//return res.json({message: 'end'});
+})
+
+//sent obj with day as string (e.g. 'Monday'), meal as string (e.g. "breakfast"), 
+// id as string (e.g. '243786ab4f90e' the hex stuff from the db), and token for auth
+// in req.body: day, time, id, token
+app.post('/calendar/update', (req, res) => {
+	if (!req.body.day) {
+		return res.status(400).json({message: "No day specified in request"});
+	}
+	if (!req.body.time) {
+		return res.status(400).json({message: "No time specified in request"});
+	}
+	if (!req.body.id) {
+		return res.status(400).json({message: "No id specified in request"});
+	}
+	if (!req.body.token) {
+		return res.status(400).json({message: "No token specified in request"});
+	}
 })
 
 function ensureAuthenticated(req, res, next) {

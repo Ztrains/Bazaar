@@ -68,7 +68,11 @@ export default class viewRecipe extends React.Component {
     var Obj = {
       voteCount: this.state.votes,
       recipeId: this.props.match.params.id,
+<<<<<<< HEAD
       accessToken: window.sessionStorage.getItem('token'),
+=======
+      vote: 'like'
+>>>>>>> 32f3902fa10eb49b824dad3f4a67699ddcddfaed
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
@@ -89,6 +93,7 @@ export default class viewRecipe extends React.Component {
     var Obj = {
       voteCount: this.state.votes,
       recipeId: this.props.match.params.id,
+      vote: 'dislike'
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
