@@ -267,7 +267,7 @@ app.post("/profile/update_username", (req, res) => {
 	});
 });
 
-app.get("/calendar", (req, res) => {
+app.post("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
 	if (!req.body.email) {
 		return res.status(400).json({message: "No email specified in request"});
