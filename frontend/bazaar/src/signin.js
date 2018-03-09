@@ -65,22 +65,27 @@ export default class Login extends React.Component {
           <div className="row">
             <div className="col s2"></div>
             <div className="col s8 z-depth-6">
-              <div className="center">
-                <h1 id="fancytext">Sign In</h1>
-                <h3 id="signintext">Sign in with your Google account</h3>
+            <div className="card-panel">
+              <div className="center card-action">
+                <h1><b>Sign In</b></h1>
+                <h4 className="condensed">Sign in with your Google account</h4>
               </div>
-              <div className="container" id="signin">
+              <hr />
+              <div className="container center card-content" id="signin">
                       <GoogleLogin
                         clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                         buttonText="Sign In with Google"
+                        className="btn red darken-1"
                         onSuccess={this.googSuccess}
                         onFailure={this.googFailure}
                       />
+                      <br />
                     <Link to="/signup">
-                      <button type="signin" className="waves-effect waves-light btn">Dont have an account?<font color="#000080"> <b>Sign Up</b> </font></button>
+                      <a type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
                     </Link>
               </div>
                   {/* <br></br><br></br><br></br><br></br> */}
+              </div>
             </div>
             <div className="col s2"></div>
           </div>

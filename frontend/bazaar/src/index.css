@@ -1,27 +1,17 @@
-
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
-body {font-family: arial, sans-serif;}
-
-
-input[type=username], input[type=email], input[type=password] {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    display: inline-block;
-    border: none;
-    background: white;
-}
 
 #img {
   width: 100%;
   position: absolute;
 }
+
 #center {
   text-align: center;
   font-family: "Noto Sans";
   text-decoration-color: #3b3b3b;
   text-shadow: 2px 2px pink;
 }
+
 #stepInfo {
   font-size: 16px;
   width: 50%;
@@ -30,52 +20,53 @@ input[type=username], input[type=email], input[type=password] {
   color: black;
   margin-left: 50px;
 }
+
 #quantField {
   width: 50%;
   font-size: 16px;
 
   color: black;
 }
+
 #nameField {
   font-size: 16px;
 }
+
 #shopListValue {
   width: 60%;
   font-size: 18px;
   font-weight: bold;
   color: black;
 }
+
 #shopListAdd {
   font-size: 18px;
   color: black;
   width: 60%;
 }
+
 #shopQuantAdd {
   font-size: 18px;
   width: 30%;
 }
+
 #shopListQuant {
   font-size: 18px;
   width: 30%;
   color: black;
 }
-::-moz-placeholder {  /* Firefox 19+ */
+
+::-moz-placeholder {
     color: #4d4d4d;
     opacity: 1 !important;
 }
+
 #commentCard {
   border-width: 10px;
 }
+
 #recipeEntryCard {
   overflow: visible;
-}
-#fancytext {
-  padding: 0px;
-  margin: 0px;
-  font-family: "Noto Sans";
-  font-size: 4rem;
-  font-weight: bold;
-  pointer-events: none;
 }
 
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
@@ -102,7 +93,7 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
 
 #title {
   text-align: center;
-  color: #black;
+  color: black;
 }
 
 #warning {
@@ -124,14 +115,9 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
   padding-bottom: 20px;
 }
 
-h1 {
-  padding-bottom: 5px;
-}
-
 #padd{
   padding-left: 5px;
 }
-
 
 .table-info {
   background-color: rgba(60, 179, 113, .3);
@@ -151,52 +137,13 @@ h1 {
   margin-left: 60px;
 }
 
-
 .nav-item {
   display: inline-block;
 }
 
-/* .container {
-    border-radius: 10px;
-    background-color: #F0F0F0;
-    padding: 20px;
-}
-
-.container5 {
-    border-radius: 5px;
-    background-color: #F0F0F0;
-    padding: 40px;
-}
-
-.container2 {
-  padding-top: 5px;
-}
-
-.container4 {
-  border-radius: 5px;
-  background-color: #FFFFF0;
-  padding: 35px;
-  padding-bottom: 85px;
-} */
-
 .signUpClass {
   text-align: center;
   float: none;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
-}
-
-button:hover {
-    opacity:1;
 }
 
 .cancelbtn {
@@ -238,34 +185,28 @@ button:hover {
   display: grid;
   grid-template-columns: 100fr;
 }
-.minusbtn {
-  padding-top: 0px;
-  font-size: 30px;
-  font-weight: bolder;
-  width: 5%;
-  padding-right: 30px;
-  margin-left: 30px;
-  background-color: pink;
-  height: 45px;
-  text-align: center;
 
+.darkText {
+  color: black;
 }
 
-.btnsmall {
-  width: 55%;
-  height:20%;
-  padding-top: 7px;
-  background-color: grey;
+.condensed {
+  font-family: "Roboto";
+  font-weight: 300;
 }
 
-.btnsmallgreen {
-  width: 60%;
-  height:20%;
-  padding-top: 7px;
+hr {
+  border-width: 0.01px 0 0 0;
+  border-style: ridge;
+  border-color: #8c8b8b;
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
-.btnsmall2 {
-  width: 60px;
-  background-color: grey;
-  float: float;
+.button-column {
+  margin-top: 20px;
+}
+
+.disabled {
+  margin-right: 5px;
 }
