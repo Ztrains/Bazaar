@@ -156,7 +156,7 @@ h1 {
   display: inline-block;
 }
 
-.container {
+/* .container {
     border-radius: 10px;
     background-color: #F0F0F0;
     padding: 20px;
@@ -177,7 +177,7 @@ h1 {
   background-color: #FFFFF0;
   padding: 35px;
   padding-bottom: 85px;
-}
+} */
 
 .signUpClass {
   text-align: center;
