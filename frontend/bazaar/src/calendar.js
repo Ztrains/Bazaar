@@ -17,9 +17,11 @@ export default class Calendar extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
+    var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/calendar", Obj)
     .then(function(result) {
       console.log(result);
+      _this.setState({calendar: result.data.calendar});
 
     })
   }

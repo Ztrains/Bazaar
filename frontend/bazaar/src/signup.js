@@ -49,7 +49,7 @@ export default class Signup extends React.Component {
       axios.post("https://bazaar-408.herokuapp.com/auth/signup/", tempObj)
       .then(function(result) {
         console.log(result);
-        if (result.data.message == "user not found") {
+        if (result.message == "user not found") {
           alert("username is already in database. Please try again");
           return false;
         }

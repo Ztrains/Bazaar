@@ -41,17 +41,25 @@ export default class shoppingList extends React.Component {
     this.setState({newQuant: event.target.value});
   }
   addItem() {
-    if (this.state.newItem.length < 1 && this.state.isSubmit === false) {
-      alert('Box must be full');
-      return;
+    if (this.state.newItem.length < 1) {
+      alert('Must add item to box');
+      return true;
+    }
+    if (this.state.newQuant.length < 1) {
+      alert('Must add quantity to item');
+      return true;
     }
     var newList = this.state.List;
     newList.push({name: this.state.newItem, quantity: this.state.newQuant});
     this.setState({List: newList, newItem: '', newQuant: ''});
+    return false;
   }
   submit = () => {
     this.setState({isSubmit: true});
-    this.addItem();
+    var shouldReturn = this.addItem(shouldReturn);
+    if (shouldReturn == true) {
+      return;
+    }
     var _this = this;
     this.setState({isSubmit: false});
     var Obj = {

@@ -48,13 +48,26 @@ export default class recipeEntry extends React.Component {
   addMealToCal() {
     var calObj = {
       day: this.state.dayValue,
+      id: this.props.id,
       time: this.state.timeValue,
       token: window.sessionStorage.getItem('token'),
       email: window.sessionStorage.getItem('email'),
-
     }
+    console.log(calObj);
+    var _this = this;
+    axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
+    .then(function(result) {
+      console.log(result);
+    })
   }
   render() {
+    let addBut = '';
+    if (this.props.addBut == false) {
+      addBut = '';
+    }
+    else {
+      addBut = <button id="favBtn" className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
+    }
     let button = '';
     console.log(this.props.deleteBut);
     if (this.props.deleteBut === true) {
@@ -71,7 +84,7 @@ export default class recipeEntry extends React.Component {
                   <option value="Monday">Monday</option>
                   <option value="Tuesday">Tuesday</option>
                   <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
+                  <option value="4">Thursday</option>
                   <option value="Friday">Friday</option>
                   <option value="Saturday">Saturday</option>
                 </Input>
@@ -103,7 +116,7 @@ export default class recipeEntry extends React.Component {
                 </div>
                 <div className="card-action">
                   {opts}
-                  <button id="favBtn" className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
+                  {addBut}
                   {button}
 
                 </div>

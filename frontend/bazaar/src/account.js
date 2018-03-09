@@ -113,7 +113,7 @@ export default class accountPage extends React.Component {
         alert("username successfully changed");
         window.sessionStorage.removeItem('loggedInName');
         window.sessionStorage.setItem('loggedInName', _this.state.newName);
-        _this.setState({usernmae: _this.state.newName});
+        _this.setState({username: _this.state.newName});
         _this.setState({newName: ''});
         history.push('/profile/' + window.sessionStorage.getItem('loggedInName'));
       }
@@ -177,18 +177,20 @@ export default class accountPage extends React.Component {
   }
   removeFavorite(id) {
     var list = this.state.savedRecipes;
-    if (list.length === 1) {
-      this.setState({savedRecipes: []});
+    /*if (list.length === 1) {
+      this.setState({savedRecipes: [], });
     }
-    else {
-      for(var i = 0; i < list.length - 1; i++) {
+    else {*/
+      console.log("in for loop");
+      for(var i = 0; i < list.length; i++) {
         if (list[i].recipeID === id) {
           list.splice(i, 1);
           this.setState({savedRecipes: list});
           break;
         }
       }
-    }
+    //}
+    console.log(this.state.savedRecipes);
     var Obj = {
       savedRecipes: this.state.savedRecipes,
       userEmail: window.sessionStorage.getItem('email'),
@@ -196,6 +198,7 @@ export default class accountPage extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/remove", Obj)
     .then(function(result) {
+      console.log(result);
       alert('Recipe successfully removed');
     })
   }
@@ -251,7 +254,7 @@ export default class accountPage extends React.Component {
 
         <p>a lot of recipes can go here</p>
         {this.state.savedRecipes.map((recipe, key) => (
-          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite}/>
+          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite} addBut={false}/>
         ))}
       </div>
     );

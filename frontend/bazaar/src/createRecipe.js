@@ -66,6 +66,11 @@ export default class viewRecipe extends React.Component {
 
   handleAddIngredient = () => {
     if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name == '') {
+      alert('ingredient field not filled');
+      return;
+    }
+    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].quantity == '') {
+      alert("quantity field not filled");
       return;
     }
     this.setState({
@@ -116,6 +121,34 @@ export default class viewRecipe extends React.Component {
   }
 
   submit = () => {
+    if (this.state.name.length < 1) {
+      alert("recipe must have name");
+      return;
+    }
+    if (this.state.description.length < 1) {
+      alert("recipe must have a description");
+      return;
+    }
+    if (this.state.ingredients.length < 1 || (this.state.ingredients.length == 1 && (this.state.ingredients[0].name === '' || this.state.ingredients[0].description === ''))) {
+      alert("recipe must have ingedients");
+      return;
+    }
+    if (this.state.steps.length < 1 || (this.state.steps.length == 1 && this.state.steps[0].step == '')) {
+      alert("recipe must have steps");
+      return;
+    }
+    if (this.state.calories.length < 1) {
+      alert("recipe must have a calorie count");
+      return;
+    }
+    if (this.state.servingSize.length < 1) {
+      alert("recipe must have a recommended serving size");
+      return;
+    }
+    if (this.state.preferences.length < 1) {
+      alert("recipe must have characteristic tags");
+      return;
+    }
     var Obj = {
       accessToken: window.sessionStorage.getItem('token'),
       recipe: {
