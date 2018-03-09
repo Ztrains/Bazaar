@@ -11,6 +11,14 @@ input[type=username], input[type=email], input[type=password] {
     border: none;
     background: white;
 }
+
+#img {
+  width: 100%;
+  position: absolute;
+}
+#center {
+  text-align: center;
+}
 #quantField {
   width: 50%;
   font-size: 16px;

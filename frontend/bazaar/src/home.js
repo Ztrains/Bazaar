@@ -6,7 +6,11 @@ import axios from 'axios'
 export default class Home extends React.Component {
   render() {
     return (
-      <h1>This is the homepage</h1>
+      <div>
+      <h2 id="center">Bazaar is a website intented to allow users to keep track of new recipes, grocery lists, and plan out a meal calendar! </h2>
+      <br></br><br></br>
+      <img id="img" src="https://www.visitoiran.com/sites/default/files/styles/main_picture_1200x300/public/2017-07/%D8%A8%D8%A7%D8%B2%D8%A7%D8%B1%20%D9%88%DA%A9%DB%8C%D9%84-main-r.jpg?itok=l4OL0_pH" alt="bazaar"></img>
+      </div>
     );
   }
 }
