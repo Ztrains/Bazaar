@@ -140,7 +140,7 @@ export default class viewRecipe extends React.Component {
         <h3>Create Recipe</h3>
         <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
-        <label id="descriptionInput"><b>Description</b></label>
+        <label id="descriptionInputH"><b>Description</b></label>
         <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
         <br></br>
         <label> <b>Ingredients: </b></label>
@@ -165,12 +165,12 @@ export default class viewRecipe extends React.Component {
                value={ingredient.name}
                onChange={this.handleIngredientChange(i)} />
             </div>
-             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn" id="nimusbtn">-</button>
+             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn" id="minusbtn">-</button>
           </div>
         )
          })}
          <br></br>
-         <button onClick={this.handleAddIngredient} className="btnsmall">Add Ingredient</button>
+         <button onClick={this.handleAddIngredient} id ="ingredientBtn" className="btnsmall">Add Ingredient</button>
          <br></br><br></br>
          <label> <b>Steps: </b></label>
          <br></br>
@@ -181,6 +181,7 @@ export default class viewRecipe extends React.Component {
            <input
                 type="text"
                 placeholder="Enter Next Step"
+                id="stepInfo"
                 value={step.step}
                 onChange={this.handleStepChange(i)} />
               <button onClick={this.handleRemoveStep(i)} className="minusbtn">-</button>
@@ -189,7 +190,7 @@ export default class viewRecipe extends React.Component {
          )
           })}
           <br></br>
-          <button onClick={this.handleAddStep} className="btnsmall">Add Step</button>
+          <button onClick={this.handleAddStep} id="stepBtn" className="btnsmall">Add Step</button>
           <br></br>
           <br></br>
           <label id="servingSizeInputLabel"><b>Recommended Serving Size </b></label>
@@ -205,7 +206,7 @@ export default class viewRecipe extends React.Component {
               <li>{prefValue}</li>
             ))}
             <Row>
-              <Input type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
+              <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
                 <option value=""></option>
                 <option value="Vegetarian">Vegetarian</option>
                 <option value="Vegan">Vegan</option>
@@ -216,7 +217,7 @@ export default class viewRecipe extends React.Component {
               </Input>
             </Row>
           </ul>
-          <button onClick={this.submit} className="btn-success">Create Recipe</button>
+          <button id="createRecipeBtn" onClick={this.submit} className="btn-success">Create Recipe</button>
           </div>
         </div>
       </div>
