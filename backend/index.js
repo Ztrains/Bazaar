@@ -688,9 +688,9 @@ app.post('/calendar/update', (req, res) => {
 		}
 
 		var cal = user.calendar;
-		if (cal.day) {
-			if (cal.day.time) {
-				cal.day.time = id;
+		if (cal[day]) {
+			if (cal[day][time]) {
+				cal[day][time] = id;
 				user.calendar = cal;
 			} else {
 				return res.status(400).json({message: "Wrong time entry"});
