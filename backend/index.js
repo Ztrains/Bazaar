@@ -272,7 +272,7 @@ app.post("/calendar", (req, res) => {
 	/*if (!req.body.email) {
 		return res.status(400).json({message: "No email specified in request"});
 	}*/
-	if (!req.body.token) {
+	if (!req.body.accessToken) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
 
