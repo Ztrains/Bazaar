@@ -119,12 +119,15 @@ export default class viewRecipe extends React.Component {
         <div className="arrange-horizontally">
           <div className="arrange-vertically">
           <button className="up" onClick={this.upvote} disabled={this.state.buttonDisabled}>&and;</button>
+          <p className="count">{this.state.votes}</p>
           <button className="down" onClick={this.downvote} disabled={this.state.buttonDisabled}>&or;</button>
           </div>
-          <h1>{this.state.recipe.name}</h1>
+          <div className="arrange-vertically" id="left">
+          <h1 id="a">Moose</h1>
+          <h2 id="b">This is a moose world over here.</h2>
+          </div>
         </div>
-        <h2>{this.state.recipe.description}</h2>
-        <p>{this.state.votes}</p>
+        <br></br>
 
         <FacebookShareButton
           url={window.location.href}

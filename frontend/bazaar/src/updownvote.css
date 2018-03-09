@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
+
 .up {
   width: 50px;
   text-shadow: 3px 2px grey;
@@ -15,4 +17,31 @@
 }
 .arrange-vertically > * {
     display: block;
+}
+
+#left {
+  text-align: left;
+}
+
+.count {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Noto Sans";
+  font-size: 2rem;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#a {
+  padding: 0px;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  padding-left: 50px
+}
+
+#b {
+  padding: 0px;
+  font-size: 2rem;
+  padding-left: 50px;
 }
