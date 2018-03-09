@@ -67,9 +67,7 @@ export default class shoppingList extends React.Component {
   render() {
     return(
         <div className="container">
-        <div className="card">
-        <div className="card-content">
-        <h1>  Shopping List</h1>
+        <h1 id="fancytext">  Shopping List</h1>
         <br></br>
         <ul>
         {this.state.List.map((prefValue, key) => (
@@ -90,12 +88,10 @@ export default class shoppingList extends React.Component {
             </div>
             <div id="shopAddDiv" className="input-field">
               <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
-              <button className="btnsmallgreen" onClick={this.addItem}>Add Item</button>
+              <button className="btn btn-primary" onClick={this.addItem}>Add Item</button>
             </div>
           </div>
           <button className="listSubmitButton" onClick={this.submit}>Submit List</button>
-        </div>
-      </div>
         </div>
     );
   }
