@@ -159,7 +159,7 @@ export default class viewRecipe extends React.Component {
         description: this.state.description,
         ingredients: this.state.ingredients,
         steps: this.state.steps,
-        calories: this.state.calories,
+        calories: parseInt(this.state.calories, 10),
         servingSize: this.state.servingSize,
         tags: this.state.preferences,
         createdBy: window.sessionStorage.getItem('loggedInName'),
@@ -170,7 +170,7 @@ export default class viewRecipe extends React.Component {
     .then(function(results) {
       console.log(results);
       alert("recipe successfully created");
-      history.push("/recipes/" + results.data.recipe._id);
+      //history.push("/recipes/" + results.data.recipe._id);
     });
   }
   render() {

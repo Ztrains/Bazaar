@@ -71,7 +71,7 @@ export default class accountPage extends React.Component {
     //send to database
     axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
-      alert("Dish preferences successfully updated");
+      window.Materialize.toast("Dish preferences successfully updated", 2000);
     })
   };
   handleNameChange(event) {
@@ -254,7 +254,7 @@ export default class accountPage extends React.Component {
 
         <p>a lot of recipes can go here</p>
         {this.state.savedRecipes.map((recipe, key) => (
-          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite} addBut={false}/>
+          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite} addBut={false} calories={recipe.calories}/>
         ))}
       </div>
     );
