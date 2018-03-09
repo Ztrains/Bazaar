@@ -54,7 +54,7 @@ passport.use(new GoogleStrat({
 			googleId: profile.id
 		}, (err, user) => {
 			if (err) {
-				return callback(err);
+				return res.status(500).json({message: "Internal server error"});
 			}
 
 			// console.log("ACCESS TOKEN: " + accessToken, " REFRESH TOKEN: ", refreshToken);
@@ -78,10 +78,10 @@ passport.use(new GoogleStrat({
 				// we found the user, so update the db with new access token and return
 				User.findOneAndUpdate({googleId: profile.id}, {$set: {token: accessToken}}, {new: true}, (err, user) => {
 					if (err) {
-						return console.error('ERROR: ', err);
+						return res.status(500).json({message: "Internal server error"});
 					}
 					if (!user) {
-						return res.status(400).json({ message: 'user not found'});
+						return res.status(400).json({message: "User not found"});
 					}
 
 					return callback(err, user);
@@ -126,16 +126,16 @@ app.get("/auth/google/callback", passport.authenticate("google", { failureRedire
 
 app.post("/auth/signup", (req, res) => {
 	if (!req.body.username) {
-		return res.status(400).json({message: "Username missing"});
+		return res.status(400).json({message: "Missing username"});
 	}
-	if (!req.body.accessToken) {	//We're just now signing up, there won't be a token yet?
-		return res.status(400).json({message: "Internal server error"});
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
 	}
 	if (!req.body.userObj) {
-		return res.status(500).json({message: "Internal server error"});
+		return res.status(400).json({message: "Missing user object"});
 	}
 	
-	User.findOne({username: req.body.username}, (err, user) => {
+	User.findOne({username: req.body.username, email: req.body.userObj.email}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -157,9 +157,9 @@ app.post("/auth/signup", (req, res) => {
 
 				return res.status(200).json({message: "Success", user: newUser});
 			});
+		} else {
+			return res.status(400).json({message: "User already exists"});
 		}
-
-		return res.status(400).json({message: "User already exists"});
 	});
 });
 
@@ -170,8 +170,11 @@ app.post("/auth/signin", (req, res) => {
 	if (!req.body.googleId) {
 		return res.status(400).json({message: "Missing Google ID in request"});
 	}
+	if (!req.body.email) {
+		return res.status(400).json({message: "Missing email in request"});
+	}
 	
-	User.findOne(({googleId: req.body.googleId}), (err, user) => {
+	User.findOne({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -180,7 +183,7 @@ app.post("/auth/signin", (req, res) => {
 			return res.status(400).json({message : "User not found"});
 		}
 		
-		User.findOneAndUpdate({googleId: req.body.googleId}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
+		User.findOneAndUpdate({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
 			if (err) {
 				return res.status(500).json({message: "Internal server error"});
 			}
@@ -189,18 +192,21 @@ app.post("/auth/signin", (req, res) => {
 				return res.status(400).json({message: "User not found"});
 			}
 
-			return res.status(200).json({message: "Success", username: user.username});
+			return res.status(200).json({message: "Success", username: user.username, email: user.email});
 		});
 	});
 });
 
-app.get("/profile/:username", (req, res) => {
+app.post("/profile/:username", (req, res) => {
 	// Get profile information about logged in user, requires valid auth middleware
 	if (!req.params.username) {
 		return res.status(400).json({message: "Username required in URL"});
 	}
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
 	
-	User.findOne(({'username': req.params.username}), (err, user) => {
+	User.findOne(({username: req.params.username}), (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -208,7 +214,12 @@ app.get("/profile/:username", (req, res) => {
 			return res.status(400).json({message : "User not found"});
 		}
 
-        return res.json(user);
+		// TODO(Vedant): try this later when we make sure signin works
+		// if (user.accessToken !== req.body.accessToken) {
+		// 	return res.status(400).json({message: "Not signed in"});
+		// }
+
+        return res.status(200).json({message: "Success", user: user});
 	});
 });
 
@@ -218,35 +229,40 @@ app.get("/calendar", (req, res) => {
 });
 
 app.post("/profile/update_username", (req, res) => {
-	// for now we're updating the username by getting the frontend
-	// to pass the user's email in the request body so we can do a lookup in the db
-	// by email, and change the username for the user whose email corresponds
-	// to that email. Later on, do this by checking user session to find user
 	let newUsername = req.body.username;
 	let token = req.body.accessToken;
-	
+	let email = req.body.email;
 
-	User.findOne(({token: token}), (err, user) => {
+	if (!newUsername) {
+		res.status(400).json({message: "Missing new username"});
+	}
+	if (!token) {
+		res.status(400).json({message: "Missing authentication token"});
+	}
+	if (!email) {
+		res.status(400).json({message: "Missing email"});
+	}
+
+	User.findOne(({email: email, token: token}), (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'User not found' });
+			return res.status(400).json({message: "User not found"});
 		}
 
 		user.username = newUsername;
 		user.save((err) => {
 			if (err) {
-				return res.status(400).json({ message: "Internal server error" });
+				return res.status(500).json({message: "Internal server error"});
 			}
-			return res.status(200).json({ message: "Successfully updated username" });
+			return res.status(200).json({message: "Successfully updated username"});
 		});
 	});
 });
 
 app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
-
 	let newPrefs = req.body.prefs;
 	let token = req.body.accessToken;
 
@@ -259,11 +275,55 @@ app.post("/profile/update_preferences", (req, res) => {
 
 	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({message: "User not found"});
 		}
+	});
+});
+
+app.post("/getShoppingList", (req, res) => {
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "Missing username"});
+	}
+
+	User.findOne({username: req.body.username}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "User not found"});
+		}
+
+		return res.status(200).json({message: "Success", data: user.shoppingList});
+	});
+});
+
+app.post("/updateShoppingList", (req, res) => {
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "Missing username"});
+	}
+	if (!req.body.shoppingList) {
+		return res.status(400).json({message: "Missing updated shopping list"});
+	}
+
+	User.findOneAndUpdate({username: req.body.username}, {$set: {shoppingList: req.body.shoppingList}}, {new: true}, 
+		(err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "User not found"});
+		}
+
+		return res.status(200).json({message: "Success"});
 	});
 });
 
@@ -282,12 +342,12 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 
 	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({message: "User not found"});
 		}
-		return res.json({'updatedUser': user});
+		return res.status(200).json({updatedUser: user});
 	});
 });
 
@@ -302,7 +362,7 @@ app.get("/recipes", (req, res) => {
 	return res.json(parsed_recipes);
 });
 
-app.post("/recipes/save", (req,res) => {
+app.post("/recipes/save", (req, res) => {
 	// Saves a recipe into a user's favorites based on recipe ID
 
 	let idToSave = req.body.recipeID;
@@ -317,38 +377,106 @@ app.post("/recipes/save", (req,res) => {
 
 	User.findOneAndUpdate({email: userEmail}, {$push:{savedRecipes:idToSave}}, {new:true}, (err, user) => {
 		if (err) {
-			return console.error('ERROR: ', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: 'user not found'});
+			return res.status(400).json({ message: "User not found"});
 		}
 	})
 });
 
-// ML route - temporary
+app.get("/recipes/:id", (req, res) => {
+	if (!req.params.id) {
+		return res.status(400).json({message: "Missing recipe ID"});
+	}
+
+	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", data: recipe});
+	});
+});
+
+app.post("/recipes/updateVote", (req, res) => {
+	if (!req.body.voteCount) {
+		return res.status(400).json({message: "No vote count specified"});
+	}
+	if (!req.body.recipeId) {
+		return res.status(400).json({message: "No recipe ID specified"});
+	}
+
+	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: req.body.voteCount}}, {new: true}, (err, recipe) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!recipe) {
+			return res.status(400).json({message: "Recipe not found"});
+		}
+
+		return res.status(200).json({message: "Success", data: recipe});
+	});
+});
+
+app.post("/recipes/new", (req, res) => {
+	let accessToken = req.body.accessToken;
+	let newRecipe = req.body.recipe;
+
+	if (!accessToken) {
+		return res.status(400).json({message: "No access token in request"});
+	}
+	if (!newRecipe) {
+		return res.status(400).json({message: "No recipe in request"});
+	}
+
+	// TODO(Vedant): do a check for the access token to ensure current user is authenticated
+	// before saving recipe
+	Recipe.create(newRecipe, (err, recipe) => {
+		if (err) {
+			console.log(err);
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", recipe: recipe});
+	});
+});
+
+// TODO(Vedant): ML route - temporary
 app.get("/chini", (req, res) => {
 	res.json({message: "Like"});
 });
 
-app.get("/search", (req, res) => {
+app.post("/search", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
 	// returns a list of JSON objects representing recipes related to {query}
 	// requires valid auth middleware
 	if (!req.query.q) {
-		return res.status(400).json({"message": "No query specified"});
+		return res.status(400).json({message: "No query specified"});
 	}
 
 	let search_q = req.query.q.toLowerCase();
-	//let dat = parsed_recipes.data;
-	let ret_data = [];
-	for (var i in parsed_recipes) {
-		if (parsed_recipes[i].name.toLowerCase().indexOf(search_q) !== -1) {
-			ret_data.push(parsed_recipes[i]);
-		}
-	}
 
-	return res.json(ret_data);
+	// TODO(Vedant): add all recipes from recipes.json to the database so
+	// we don't have to do this ugly ass query, also search by id
+	// //let dat = parsed_recipes.data;
+	// let ret_data = [];
+	// for (var i in parsed_recipes) {
+	// 	if (parsed_recipes[i].name.toLowerCase().indexOf(search_q) !== -1) {
+	// 		ret_data.push(parsed_recipes[i]);
+	// 	}
+	// }
+
+	Recipe.find({$or: [{name: {$regex: search_q, $options: "i"}}, {description: {$regex: search_q, $options: "i"}}, {ingredients: {$elemMatch: {name: {$regex: search_q, $options: "i"}}}}]}, 
+		(err, recipes) => {
+		if (err) {
+			console.log(err);
+			return res.status(500).json({message: "Internal server error"});
+		}
+
+		return res.status(200).json({message: "Success", data: recipes});
+	});
 });
 
 app.get("/logout", (req, res) => {

@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
-import {Row} from 'react-materialize'
+import {Row, Input} from 'react-materialize'
+import history from './history.js';
 
 export default class viewRecipe extends React.Component {
   constructor(props) {
@@ -15,6 +16,8 @@ export default class viewRecipe extends React.Component {
       imageURL: '',
       calories: '',
       servingSize: '',
+      preferences: [],
+      value: '',
     };
     this.nameHandle = this.nameHandle.bind(this);
     this.descriptionHandle = this.descriptionHandle.bind(this);
@@ -33,12 +36,12 @@ export default class viewRecipe extends React.Component {
       description: event.target.value,
     });
   }
-  servingChangeHandle(event) {
+  servingChangeHandle = (event) => {
     this.setState({
-      serviingSize: event.target.value,
+      servingSize: event.target.value,
     });
   }
-  calorieChangeHandle(event) {
+  calorieChangeHandle = (event) => {
     this.setState({
       calories: event.target.value,
     });
@@ -97,6 +100,36 @@ export default class viewRecipe extends React.Component {
   handleRemoveStep = (i) => () => {
     this.setState({
       steps: this.state.steps.filter((s, sidx) => i !== sidx)
+    });
+  }
+  addPref = (event) => {
+    console.log(event.target.value);
+    this.setState({value: event.target.value});
+    var newList = this.state.preferences;
+    newList.push(this.state.value);
+    this.setState({preferences: newList});
+  }
+
+  submit = () => {
+    var Obj = {
+      accessToken: window.sessionStorage.getItem('token'),
+      recipe: {
+        name: this.state.name,
+        description: this.state.description,
+        ingredients: this.state.ingredients,
+        steps: this.state.steps,
+        calories: this.state.calories,
+        servingSize: this.state.servingSize,
+        tags: this.state.preferences,
+        createdBy: window.sessionStorage.getItem('loggedInName'),
+        votes: 0
+      }
+    }
+    axios.post("https://bazaar-408.herokuapp.com/recipes/new", Obj)
+    .then(function(results) {
+      console.log(results);
+      alert("recipe successfully created");
+      history.push("/recipe/" + results._id);
     });
   }
   render() {
@@ -166,7 +199,24 @@ export default class viewRecipe extends React.Component {
           <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
           <br></br>
           <br></br>
-          <button type="submit" className="btn-success">Create Recipe</button>
+          <label id="preferencesInput"><b>Dish Tags</b></label>
+          <ul>
+            {this.state.preferences.map((prefValue, key) => (
+              <li>{prefValue}</li>
+            ))}
+            <Row>
+              <Input type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
+                <option value=""></option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+                <option value="Lactose-Free">Lactose-Free</option>
+                <option value="Low Carb">Low Carb</option>
+                <option value="Paleo">Paleo</option>
+              </Input>
+            </Row>
+          </ul>
+          <button onClick={this.submit} className="btn-success">Create Recipe</button>
           </div>
         </div>
       </div>

@@ -7,12 +7,24 @@ export default class shoppingList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      List: [{name: "shoes", quantity: '6'},{name: "potatoes", quantity: '234'}, {name: "keyboard", quantity: '1'}],
+      List: [],
       newItem: '',
       newQuant: '',
+      isSubmit: false,
     }
+    this.addItem = this.addItem.bind(this);
   }
   componentDidMount() {
+    var _this = this;
+    var Obj = {
+      accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
+    }
+    axios.post("https://bazaar-408.herokuapp.com/getShoppingList", Obj)
+    .then(function(result) {
+      console.log(result.data.data);
+      _this.setState({List: result.data.data});
+    })
     //get user list
   }
   handleRemoveItem = (key) => () => {
@@ -28,14 +40,29 @@ export default class shoppingList extends React.Component {
   handleNewQuant = (event) => {
     this.setState({newQuant: event.target.value});
   }
-  addItem = () => {
-    if (this.state.newItem.length < 1) {
+  addItem() {
+    if (this.state.newItem.length < 1 && this.state.isSubmit === false) {
       alert('Box must be full');
       return;
     }
     var newList = this.state.List;
     newList.push({name: this.state.newItem, quantity: this.state.newQuant});
     this.setState({List: newList, newItem: '', newQuant: ''});
+  }
+  submit = () => {
+    this.setState({isSubmit: true});
+    this.addItem();
+    var _this = this;
+    this.setState({isSubmit: false});
+    var Obj = {
+      accessToken: window.sessionStorage.getItem('token'),
+      shoppingList: this.state.List,
+      username: window.sessionStorage.getItem('loggedInName'),
+    }
+    axios.post("https://bazaar-408.herokuapp.com/updateShoppingList", Obj)
+    .then(function(result) {
+      alert("List successfully submitted");
+    })
   }
   render() {
     return(
@@ -60,14 +87,15 @@ export default class shoppingList extends React.Component {
           <div id="newAddDiv">
             <div className="input-field">
               <input type='text' id="shopQuantAdd" placeholder="Add Quantity of Item" value={this.state.newQuant} onChange={this.handleNewQuant} />
-              </div>
-              <div id="shopAddDiv" className="input-field">
-                <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
-                <button className="btnsmallgreen" onClick={this.addItem}>Add Item</button>
-              </div>
+            </div>
+            <div id="shopAddDiv" className="input-field">
+              <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
+              <button className="btnsmallgreen" onClick={this.addItem}>Add Item</button>
             </div>
           </div>
-          </div>
+          <button className="listSubmitButton" onClick={this.submit}>Submit List</button>
+        </div>
+      </div>
         </div>
     );
   }

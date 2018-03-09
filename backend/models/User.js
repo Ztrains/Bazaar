@@ -11,7 +11,12 @@ var UserSchema = new mongoose.Schema({
     preferences: [String],
     token: String,
     imageUrl: String,
-    dishPrefs: [String]
+    dishPrefs: [String],
+    phoneNumber: String,
+    shoppingList: [{
+    	quantity: String,
+    	name: String
+    }]
 });
 
 module.exports = mongoose.model('User', UserSchema);

@@ -14,23 +14,26 @@ export default class accountPage extends React.Component {
       value: "",
       newName: '',
       email: '',
-      userObj: '',
+      phoneNum: '',
+      userObj: {},
     };
     this.addPref = this.addPref.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
   }
   componentDidMount() {
+    console.log(window.sessionStorage.getItem('token'));
     var Obj =  {
       accessToken: window.sessionStorage.getItem('token'),
     }
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/" + this.props.match.params.username, Obj)
     .then(function(results) {
+      console.log(results);
       _this.setState({
-        userObj: results.data,
-        username: results.data.username,
-        email: results.data.email,
+        userObj: results.user,
+        username: results.user.username,
+        email: results.user.email,
       });
     });
   }
@@ -40,7 +43,15 @@ export default class accountPage extends React.Component {
     var newList = this.state.preferences;
     newList.push(this.state.value);
     this.setState({preferences: newList});
+    var Obj = {
+      prefs: this.state.preferences,
+      accessToken: window.sessionStorage.getItem('token'),
+    }
     //send to database
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
+    .then(function(result) {
+      alert("Dish preferences successfully updated");
+    })
   };
   handleNameChange(event) {
     if (this.state.username === '' || this.state.username === " ") {
@@ -51,16 +62,15 @@ export default class accountPage extends React.Component {
     this.setState({
       newName: event.target.value
     });
-    var newObj = {
-      username: this.state.newName,
-      email: this.state.email,
-
+  }
+  handleNameChange(event) {
+    if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
+      alert("nothing has been written in input box");
+      return false;
     }
-    axios.post("https://bazaar-408.herokuapp.com/auth/signin/", newObj)
-    .then(function(result) {
-      alert("username successfully changed");
-    }).catch(function(error) {
-      alert("username change unsuccessful");
+    //console.log(event.target.value);
+    this.setState({
+      phoneNum: event.target.value
     });
   }
   changeNameButtonActivate() {
@@ -69,6 +79,46 @@ export default class accountPage extends React.Component {
       username: temp,
     });
     //send it to database
+    var Obj = {
+      username: this.state.newName,
+      email: this.state.email,
+      accessToken: window.sessionStorage.getItem('token'),
+    }
+    var _this = this;
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
+    .then(function(result) {
+      if (result.data.message == "User Not Found") {
+        alert("User not found");
+        return;
+      }
+      else {
+        alert("username successfully changed");
+      }
+    })
+    console.log(this.state.username);
+  }
+  changeNameButtonActivate() {
+    var temp = this.state.phoneNum;
+    this.setState({
+      phoneNum: temp,
+    });
+    //send it to database
+    var Obj = {
+      phoneNum: this.state.phoneNum,
+      email: this.state.email,
+      accessToken: window.sessionStorage.getItem('token'),
+    }
+    var _this = this;
+    axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
+    .then(function(result) {
+      if (result.data.message == "User Not Found") {
+        alert("User not found");
+        return;
+      }
+      else {
+        alert("username successfully changed");
+      }
+    })
     console.log(this.state.username);
   }
   render() {
@@ -78,6 +128,8 @@ export default class accountPage extends React.Component {
         <h2 id="userNameBanner">Example {this.state.username}</h2>
         <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
         <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
+        <input type="text" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
+        <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Phone Number</button>
         <p>{this.state.email}</p>
         <ul>
           {this.state.preferences.map((prefValue, key) => (

@@ -26,11 +26,11 @@ export default class recipeEntry extends React.Component {
           <div className="col-md-8">
             <div className="card">
 
-    
+
               <div className="card-stacked">
                 <div className="card-content">
                   <h3 className="card-title"><Link to={'/recipe/' + this.props.id}><b>{this.props.name}</b></Link></h3>
-                  <p>This is a description of the recipe.</p>
+                  <p>{this.props.description}</p>
                 </div>
                 <div className="card-action">
                   <button className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>

@@ -33,9 +33,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "@angular/cli": "^1.7.2"
+    "eject": "react-scripts eject"     
   }
 }

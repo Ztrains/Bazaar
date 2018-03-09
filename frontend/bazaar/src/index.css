@@ -78,6 +78,10 @@ h1 {
   padding-bottom: 5px;
 }
 
+.table-info {
+  background-color: rgba(60, 179, 113, .3);
+}
+
 .list-group {
   width: 80%;
 }
