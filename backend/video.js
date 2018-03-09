@@ -23,4 +23,4 @@ function getVideos(query, next) {
     next(data);
 }
 
-module.exports = getVideos;
+module.exports = { getVideos };
