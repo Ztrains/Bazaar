@@ -10,7 +10,7 @@ export default class SearchPage extends React.Component {
     this.state = {
       resultsList: [],
       terms: '',
-    }
+    };
   }
   renderList() {
     let list = [];
