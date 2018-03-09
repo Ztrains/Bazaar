@@ -1,14 +1,14 @@
 require('dotenv').load();
-const app 			= require("express")();
+const app 		= require("express")();
 const passport		= require("passport");
 const GoogleStrat	= require("passport-google-oauth20").Strategy;
 const bodyParser 	= require("body-parser");
 const mongoose 		= require('mongoose');
-const fs 			= require("fs");
-const cookieParser 	= require("cookie-parser");
+const fs 		= require("fs");
+const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
-const cors			= require("cors");
-const nodemailer 	= require('nodemailer');
+const cors		= require("cors");
+const nodemailer = require('nodemailer');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -148,44 +148,7 @@ app.post("/auth/signup", (req, res) => {
 				email: req.body.userObj.email,
 				googleId: req.body.userObj.googleId,
 				imageUrl: req.body.userObj.imageUrl,
-				token: req.body.accessToken,
-				calendar: {
-					sunday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					monday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					tuesday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					wednesday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					thursday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					friday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					},
-					saturday: {
-						breakfast: "",
-						lunch: "",
-						dinner: ""
-					}
-				}
+				token: req.body.accessToken
 			};
 
 			User.create(data, (err, newUser) => {
@@ -334,7 +297,6 @@ app.post("/profile/update_preferences", (req, res) => {
 	//Updates user's preferences in the db. Overwrites previous preferences, so all must be sent with this request
 	let newPrefs = req.body.prefs;
 	let token = req.body.accessToken;
-	let email = req.body.email;
 
 	if (!newPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
@@ -342,19 +304,14 @@ app.post("/profile/update_preferences", (req, res) => {
 	if (!token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
-	if (!email) {
-		return res.status(400).json({message: "No email in request"});
-	}
 
-	User.findOneAndUpdate({email: email}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({token: token}, {$set: {preferences: newPrefs}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "User not found"});
 		}
-
-		return res.status(200).json({message: "Successfully updated user preferences"});
 	});
 });
 
@@ -407,16 +364,12 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 
 	let newDishPrefs = req.body.prefs;
 	let token = req.body.accessToken;
-	let email = req.body.email;
 
 	if (!newDishPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
 	}
 	if (!token) {
 		return res.status(400).json({message: "No token specified in request"});
-	}
-	if (!email) {
-		return res.status(400).json({message: "No email specified in request"});
 	}
 
 	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
@@ -426,7 +379,7 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 		if (!user) {
 			return res.status(400).json({message: "User not found"});
 		}
-		return res.status(200).json({message: "Successfully updated dish preferences"});
+		return res.status(200).json({updatedUser: user});
 	});
 });
 
@@ -672,23 +625,6 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
-
-	let day = req.body.day;
-	let time = req.body.time;
-	let id = req.body.id;
-	let token = req.body.token;
-
-	let toSet = `calendar.${day}.${time}`;
-	User.findOneAndUpdate({token: token}, {$set: {'calendar': {day: {time : id}}}}, {new:true}, (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error"});
-		}
-		if (!user) {
-			return res.status(400).json({message: "No user found"});
-		}
-		console.log("USER CALENDAR IS: ", user.calendar);
-		return res.status(200).json({message: "Success", data: user});
-	});
 })
 
 function ensureAuthenticated(req, res, next) {
