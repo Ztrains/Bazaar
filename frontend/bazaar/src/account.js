@@ -23,6 +23,12 @@ export default class accountPage extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
     this.changePhoneButtonActivate = this.changePhoneButtonActivate.bind(this);
+<<<<<<< HEAD
+    this.changeemailDayPref = this.changeemailDayPref.bind(this);
+    this.changeTransportMethod = this.changeTransportMethod.bind(this);
+    this.handlePhoneChange = this.handlePhoneChange.bind(this);
+=======
+>>>>>>> d324d2c7c73c3b3806a178b2788af7b57abaec1c
   }
   componentDidMount() {
     console.log(window.sessionStorage.getItem('token'));
