@@ -286,7 +286,7 @@ app.post("/profile/update_username", (req, res) => {
 		res.status(400).json({message: "Missing old username"});
 	}
 
-	User.findOneAndUpdate({$or: [{email: email}, {username: oldUsername}]}, {$set: {username: newUsername}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({username: oldUsername}, {$set: {username: newUsername}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
