@@ -14,6 +14,7 @@ export default class recipeEntry extends React.Component {
       timeValue: '',
     };
     this.addFavorite = this.addFavorite.bind(this);
+    this.addMealToCal = this.addMealToCal.bind(this);
   }
   showCalOpt = () => {
     this.setState({showCalOptions: true});
@@ -62,7 +63,7 @@ export default class recipeEntry extends React.Component {
       opts = <Row>
 
                 <h3>Select Day and Time</h3>
-                <Input type="select" defaultValue='Sunday' onChange={this.setDayValue} >
+                <Input id="day" type="select" defaultValue='Sunday' onChange={this.setDayValue} >
                   <option value="Sunday">Sunday</option>
                   <option value="Monday">Monday</option>
                   <option value="Tuesday">Tuesday</option>
@@ -73,16 +74,16 @@ export default class recipeEntry extends React.Component {
                 </Input>
 
 
-              <Input type="select" defaultValue='Breakfast' onChange={this.setTimeValue} >
+              <Input id="timeVal" type="select" defaultValue='Breakfast' onChange={this.setTimeValue} >
                 <option value="Breakfast">Breakfast</option>
                 <option value="Lunch">Lunch</option>
                 <option value="Dinner">Dinner</option>
               </Input>
-              <button onClick={this.addMealToCal}>Add to Meal Calendar</button>
+              <button id="mealAdderBtn" onClick={this.addMealToCal}>Add to Meal Calendar</button>
             </Row>
     }
     else {
-      opts = <button className="btn btn-success float-md-right" onClick={this.showCalOpt}> Add to Meal Calendar</button>
+      opts = <button id="noBtn" className="btn btn-success float-md-right" onClick={this.showCalOpt}> Add to Meal Calendar</button>
     }
     return(
       <div className="container flex">
@@ -99,7 +100,7 @@ export default class recipeEntry extends React.Component {
                 </div>
                 <div className="card-action">
                   {opts}
-                  <button className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
+                  <button id="favBtn" className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
 
 
                 </div>
