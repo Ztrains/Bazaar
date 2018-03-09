@@ -18,6 +18,7 @@ export default class viewRecipe extends React.Component {
       servingSize: '',
       preferences: [],
       value: '',
+      step: 1,
     };
     this.nameHandle = this.nameHandle.bind(this);
     this.descriptionHandle = this.descriptionHandle.bind(this);
@@ -64,7 +65,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddIngredient = () => {
-    if (this.state.ingredients[this.state.ingredients.length - 1].name == '') {
+    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name == '') {
       return;
     }
     this.setState({
@@ -88,12 +89,16 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
-    if (this.state.steps[this.state.steps.length - 1].step == '') {
+    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step == '') {
       return;
     }
     this.setState({
       steps: this.state.steps.concat([{ step: '' }])
     });
+
+    let temp = this.state.step;
+    this.setState({step: temp + 1});
+    this.setState({buttonDisabled: true});
     console.log(this.state.steps);
   }
 
@@ -135,9 +140,8 @@ export default class viewRecipe extends React.Component {
   render() {
     return(
       <div className="container">
-        <div className="card">
-        <div className="card-content">
-        <h3>Create Recipe</h3>
+        <h3 id="fancytext">Create Recipe</h3>
+        <br></br>
         <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInputH"><b>Description</b></label>
@@ -148,11 +152,12 @@ export default class viewRecipe extends React.Component {
         {this.state.ingredients.map((ingredient, i) => {
           return(
           <div className="ingredientList" id="ingredientList">
+          <div className="arrange-horizontally">
             <div className="input-field">
             <input
               type="text"
               id="quantField"
-              placeholder="enter quanity of ingredient"
+              placeholder="Enter Quantity"
               value={ingredient.quantity}
               onChange={this.handleQuantityChange(i)}
             />
@@ -167,6 +172,7 @@ export default class viewRecipe extends React.Component {
             </div>
              <button onClick={this.handleRemoveIngredient(i)} className="minusbtn" id="minusbtn">-</button>
           </div>
+          </div>
         )
          })}
          <br></br>
@@ -176,7 +182,8 @@ export default class viewRecipe extends React.Component {
          <br></br>
          {this.state.steps.map((step, i) => {
            return(
-           <div className="ingredientList">
+           <div className="ingredientList2" id="ingredientList">
+           <div className="arrange-horizontally">
            <div className="input-field">
            <input
                 type="text"
@@ -184,8 +191,9 @@ export default class viewRecipe extends React.Component {
                 id="stepInfo"
                 value={step.step}
                 onChange={this.handleStepChange(i)} />
-              <button onClick={this.handleRemoveStep(i)} className="minusbtn">-</button>
               </div>
+              <button onClick={this.handleRemoveStep(i)} className="minusbtn" id="minusbtn">-</button>
+           </div>
            </div>
          )
           })}
@@ -203,7 +211,7 @@ export default class viewRecipe extends React.Component {
           <label id="preferencesInput"><b>Dish Tags</b></label>
           <ul>
             {this.state.preferences.map((prefValue, key) => (
-              <li>{prefValue}</li>
+              <li id="pref">{prefValue}</li>
             ))}
             <Row>
               <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
@@ -218,8 +226,7 @@ export default class viewRecipe extends React.Component {
             </Row>
           </ul>
           <button id="createRecipeBtn" onClick={this.submit} className="btn-success">Create Recipe</button>
-          </div>
-        </div>
+          <br></br>
       </div>
     );
   }

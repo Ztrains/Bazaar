@@ -26,7 +26,11 @@ export default class accountPage extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
     this.changePhoneButtonActivate = this.changePhoneButtonActivate.bind(this);
+    this.changeemailDayPref = this.changeemailDayPref.bind(this);
+    this.changeTransportMethod = this.changeTransportMethod.bind(this);
+    this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.removeFavorite = this.removeFavorite.bind(this);
+
   }
   componentDidMount() {
     console.log(window.sessionStorage.getItem('token'));
@@ -198,16 +202,17 @@ export default class accountPage extends React.Component {
   render() {
     return (
       <div className="container">
-      <div className="card border-primary text-center">
-        <h2 id="userNameBanner">{this.state.username}</h2>
+        <h1 id="fancytext">{this.state.username}</h1>
+        <br></br>
         <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
         <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
         <input type="tel" className="validate" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
         <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Phone Number</button>
         <p>{this.state.email}</p>
+        <h4>Meal Preferences</h4>
         <ul>
           {this.state.preferences.map((prefValue, key) => (
-            <li>{prefValue}</li>
+            <li id="pref">{prefValue}</li>
           ))}
 
           <Row>
@@ -222,9 +227,9 @@ export default class accountPage extends React.Component {
             </Row>
               <button onClick={this.deletePref}>Remove Last Preference</button>
             <br/>
-            <h3>Edit Preferences</h3>
+            <h4>Notification Options</h4>
           <Row>
-            <p>Change When you recieve your meal plan</p>
+            <p id="padd">Change how often you recieve your meal plan</p>
             <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
               <option value="1">Every Day</option>
               <option value="2">2 Days</option>
@@ -236,7 +241,7 @@ export default class accountPage extends React.Component {
             </Input>
           </Row>
           <Row>
-          <p>Change how you get your calendar</p>
+          <p id="padd">Change how you get your calendar</p>
           <Input type='select' value={this.state.transportMethod} onChange={this.changeTransportMethod}>
             <option value="email">Email</option>
             <option value="text">Text</option>
@@ -248,7 +253,6 @@ export default class accountPage extends React.Component {
         {this.state.savedRecipes.map((recipe, key) => (
           <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite}/>
         ))}
-      </div>
       </div>
     );
   }
