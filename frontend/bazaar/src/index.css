@@ -16,14 +16,6 @@ input[type=username], input[type=email], input[type=password] {
   width: 100%;
   position: absolute;
 }
-#fancytext {
-  padding: 0px;
-  margin: 0px;
-  font-family: "Noto Sans";
-  font-size: 4rem;
-  font-weight: bold;
-  pointer-events: none;
-}
 #center {
   text-align: center;
   font-family: "Noto Sans";
@@ -69,14 +61,14 @@ input[type=username], input[type=email], input[type=password] {
 #recipeEntryCard {
   overflow: visible;
 }
-/*input[type=text2] {
-  width: 60%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: white;
-}*/
+#fancytext {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Noto Sans";
+  font-size: 4rem;
+  font-weight: bold;
+  pointer-events: none;
+}
 
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;

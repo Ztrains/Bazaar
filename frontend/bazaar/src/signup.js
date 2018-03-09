@@ -78,7 +78,7 @@ export default class Signup extends React.Component {
             <div className="container2" id="signup">
               <GoogleLogin
                 clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
-                buttonText="Signup with Google"
+                buttonText="Sign Up with Google"
                 onSuccess={this.googSuccess}
                 onFailure={this.googFailure}
                 />
