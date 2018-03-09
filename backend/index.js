@@ -282,6 +282,8 @@ app.post("/profile/update_username", (req, res) => {
 		res.status(400).json({message: "Missing email"});
 	}
 
+	console.log("User email is: " + email);
+
 	User.findOne({email: email}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
