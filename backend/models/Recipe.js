@@ -8,7 +8,7 @@ var RecipeSchema = new mongoose.Schema({
     	quantity: String
     }],
     steps: [{
-    	step: String,
+    	step: String
     }],
     calories: String,
     servingSize: String,

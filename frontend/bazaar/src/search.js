@@ -17,7 +17,7 @@ export default class SearchPage extends React.Component {
     console.log(this.state.resultsList);
     for (var i = 0; i < this.state.resultsList.length; i++) {
       list.push(
-        <RecipeEntry id={this.state.resultsList[i].id} name={this.state.resultsList[i].name} description={this.state.resultsList[i].description}/>
+        <RecipeEntry id={this.state.resultsList[i].id} name={this.state.resultsList[i].name} description={this.state.resultsList[i].description} deleteBut={false}/>
       );
       return list;
     }
@@ -32,7 +32,7 @@ export default class SearchPage extends React.Component {
         return;
       }
       _this.setState({resultsList: result.data.data});
-      console.log(result.data.data);
+      console.log(_this.state.resultsList);
     });
     //make database search call
   }
@@ -41,7 +41,9 @@ export default class SearchPage extends React.Component {
         <div>
           <h1 id="center">{"Search Query = " + this.props.match.params.terms}</h1>
           <br></br>
-          {this.renderList()}
+          {this.state.resultsList.map((recipe, key) => (
+            <RecipeEntry id={recipe._id} name={recipe.name} description={recipe.description} deleteBut={false}/>
+          ))}
         </div>
     );
   }
