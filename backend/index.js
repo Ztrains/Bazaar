@@ -148,7 +148,44 @@ app.post("/auth/signup", (req, res) => {
 				email: req.body.userObj.email,
 				googleId: req.body.userObj.googleId,
 				imageUrl: req.body.userObj.imageUrl,
-				token: req.body.accessToken
+				token: req.body.accessToken,
+				calendar: {
+					sunday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					monday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					tuesday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					wednesday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					thursday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					friday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					saturday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					}
+				}
 			};
 
 			User.create(data, (err, newUser) => {
@@ -366,12 +403,16 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 
 	let newDishPrefs = req.body.prefs;
 	let token = req.body.accessToken;
+	let email = req.body.email;
 
 	if (!newDishPrefs) {
 		return res.status(400).json({message: "No preferences to save in request"});
 	}
 	if (!token) {
 		return res.status(400).json({message: "No token specified in request"});
+	}
+	if (!email) {
+		return res.status(400).json({message: "No email specified in request"});
 	}
 
 	User.findOneAndUpdate({token: token}, {$set: {dishPrefs: newDishPrefs}}, {new: true}, (err, user) => {
@@ -381,7 +422,7 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 		if (!user) {
 			return res.status(400).json({message: "User not found"});
 		}
-		return res.status(200).json({updatedUser: user});
+		return res.status(200).json({message: "Successfully updated dish preferences"});
 	});
 });
 
