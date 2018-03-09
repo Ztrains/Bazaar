@@ -669,15 +669,43 @@ app.post('/calendar/update', (req, res) => {
 
 	let toSet = `calendar.${day}.${time}`;
 	console.log("To be set: " + toSet);
-	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {toSet: id}}, {new: true}, (err, user) => {
+	// User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {toSet: id}}, {new: true}, (err, user) => {
+	// 	if (err) {
+	// 		return res.status(500).json({message: "Internal server error"});
+	// 	}
+	// 	if (!user) {
+	// 		return res.status(400).json({message: "No user found"});
+	// 	}
+	// 	console.log("USER CALENDAR IS: ", user.calendar);
+	// 	return res.status(200).json({message: "Successfully updated calendar for user", data: user});
+	// });
+	User.findOne({$or: [{email: em}, {token: token}]}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "No user found"});
 		}
-		console.log("USER CALENDAR IS: ", user.calendar);
-		return res.status(200).json({message: "Successfully updated calendar for user", data: user});
+
+		var cal = user.calendar;
+		if (cal.day) {
+			if (cal.day.time) {
+				cal.day.time = id;
+				user.calendar = cal;
+			} else {
+				return res.status(400).json({message: "Wrong time entry"});
+			}
+		} else {
+			return res.status(400).json({message: "Wrong day entry"});
+		}
+
+		user.save((err) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			return res.status(200).json({message: "Successfully updated calendar"});
+		});
 	});
 });
 
