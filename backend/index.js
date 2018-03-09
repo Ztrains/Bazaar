@@ -282,7 +282,7 @@ app.post("/profile/update_username", (req, res) => {
 		res.status(400).json({message: "Missing email"});
 	}
 
-	User.findOne(({email: email, token: token}), (err, user) => {
+	User.findOne({email: email}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -318,6 +318,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 	if (!usr) {
 		return res.status(400).json({message: "No username in request"});
 	}
+	
 	User.findOneAndUpdate({$or: [{email: email}, {username: usr}]}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
