@@ -399,7 +399,7 @@ app.post("/recipes/:id", (req, res) => {
 
 	User.findOne(({username: usrname}), (err, user) => {
 		if (err) {
-			return res.status(500).json({message: "Internal server error: username"});
+			return res.status(500).json({message: "Internal server error. Unable to process user find"});
 		}
 		if (!user) {
 			console.log('no user found')
@@ -411,8 +411,7 @@ app.post("/recipes/:id", (req, res) => {
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {
-				console.log(err);
-				return res.status(500).json({message: err});
+				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
 			}
 			if (!recipe) {
 				return res.status(400).json({message: "No recipe found"});
