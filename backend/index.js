@@ -148,7 +148,44 @@ app.post("/auth/signup", (req, res) => {
 				email: req.body.userObj.email,
 				googleId: req.body.userObj.googleId,
 				imageUrl: req.body.userObj.imageUrl,
-				token: req.body.accessToken
+				token: req.body.accessToken,
+				calendar: {
+					sunday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					monday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					tuesday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					wednesday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					thursday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					friday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					},
+					saturday: {
+						breakfast: "",
+						lunch: "",
+						dinner: ""
+					}
+				}
 			};
 
 			User.create(data, (err, newUser) => {
@@ -625,7 +662,24 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
-})
+	let day = req.body.day;
+	let time = req.body.time;
+	let id = req.body.id;
+	let token = req.body.token;
+	let em = req.body.email;
+
+	let toSet = `calendar.${day}.${time}`;
+	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {calendar: {day: {time : id}}}}, {new: true}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "No user found"});
+		}
+		console.log("USER CALENDAR IS: ", user.calendar);
+		return res.status(200).json({message: "Successfully updated calendar for user", data: user});
+	});
+});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
