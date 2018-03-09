@@ -391,7 +391,7 @@ app.post("/recipes/:id", (req, res) => {
 	let usrname = req.body.username;
 	let currentUser;
 
-	console.log(`\nTHE ENTIRE REQUEST IS ${req.body}\n`)
+	console.log(`\nTHE ENTIRE REQUEST IS ${req.body.username}\n`)
 
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
