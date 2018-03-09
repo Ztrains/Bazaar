@@ -608,8 +608,8 @@ app.post("/recipes/new", (req, res) => {
 	}
 
 	var data = newRecipe;
-	scraper.getVideos(data.name, (res) => {
-		data.videoId = res;
+	scraper.getVideos(data.name, (resp) => {
+		data.videoId = resp;
 		Recipe.create(data, (err, recipe) => {
 			if (err) {
 				console.log(err);
