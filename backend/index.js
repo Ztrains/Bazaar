@@ -430,6 +430,30 @@ app.post("/recipes/save", (req, res) => {
 	})
 });
 
+app.post("/recipes/remove", (req, res) => {
+
+	let newRecipes = req.body.savedRecipes;
+	let userEmail = req.body.userEmail;
+
+	if (!newRecipes) {
+		return res.status(400).json({message: "No new recipe array sent"});
+	}
+	if (!userEmail) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+
+	User.findOneAndUpdate({email: userEmail}, {$set: {savedRecipes: newRecipes}}, {new: true}, (err, user) => {
+		if (err) {
+			console.log("ERR:", err)
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({ message: "User not found 9"});
+		}
+		return res.status(200).json({message: "Successfully removed saved recipe"});
+	})
+});
+
 app.post("/recipes/:id", (req, res) => {
 	let token = req.body.accessToken;
 	let usrname = req.body.username;
