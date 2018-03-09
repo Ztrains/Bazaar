@@ -595,6 +595,22 @@ app.post('/calendar/update', (req, res) => {
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
+
+	let day = req.body.day;
+	let time = req.body.time;
+	let id = req.body.id;
+	let token = req.body.token;
+
+	let toSet = calendar.day.time;
+	User.findOneAndUpdate({token: token}, {$set: {toSet: id}}, {new:true}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "No user found"});
+		}
+		return res.status(200).json({message: "Success", data: user});
+	});
 })
 
 function ensureAuthenticated(req, res, next) {
