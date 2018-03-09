@@ -169,13 +169,8 @@ export default class viewRecipe extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/new", Obj)
     .then(function(results) {
       console.log(results);
-<<<<<<< HEAD
-      alert("recipe successfully created");
-      //history.push("/recipes/" + results.data.recipe._id);
-=======
       window.Materialize.toast("recipe successfully created", 1500);
       history.push("/recipes/" + results.data.recipe._id);
->>>>>>> dbf8bc7ba8ed6b86d0f33c99a0c1ff5967c9cf17
     });
   }
   render() {
