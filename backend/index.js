@@ -82,7 +82,7 @@ passport.use(new GoogleStrat({
 						return res.status(500).json({message: "Internal server error"});
 					}
 					if (!user) {
-						return res.status(400).json({message: "User not found"});
+						return res.status(400).json({message: "User not found 1"});
 					}
 
 					return callback(err, user);
@@ -219,7 +219,7 @@ app.post("/auth/signin", (req, res) => {
 		}
 
 		if (!user) {
-			return res.status(400).json({message : "User not found"});
+			return res.status(400).json({message : "User not found 2"});
 		}
 		
 		User.findOneAndUpdate({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
@@ -228,7 +228,7 @@ app.post("/auth/signin", (req, res) => {
 			}
 
 			if (!user) {
-				return res.status(400).json({message: "User not found"});
+				return res.status(400).json({message: "User not found 3"});
 			}
 
 			return res.status(200).json({message: "Success", username: user.username, email: user.email});
@@ -236,41 +236,11 @@ app.post("/auth/signin", (req, res) => {
 	});
 });
 
-app.post("/profile/:username", (req, res) => {
-	// Get profile information about logged in user, requires valid auth middleware
-	if (!req.params.username) {
-		return res.status(400).json({message: "Username required in URL"});
-	}
-	if (!req.body.accessToken) {
-		return res.status(400).json({message: "Missing access token"});
-	}
-	
-	User.findOne(({username: req.params.username}), (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error"});
-		}
-		if (!user) {
-			return res.status(400).json({message : "User not found"});
-		}
-
-		// TODO(Vedant): try this later when we make sure signin works
-		// if (user.accessToken !== req.body.accessToken) {
-		// 	return res.status(400).json({message: "Not signed in"});
-		// }
-
-        return res.status(200).json({message: "Success", user: user});
-	});
-});
-
-app.get("/calendar", (req, res) => {
-	// Return JSON with Google calendar information, requires valid auth middleware
-	res.status(200).json({"message": "send back calendar information here"});
-});
-
 app.post("/profile/update_username", (req, res) => {
 	let newUsername = req.body.username;
 	let token = req.body.accessToken;
 	let email = req.body.email;
+	let oldUsername = req.body.oldUsername;
 
 	if (!newUsername) {
 		res.status(400).json({message: "Missing new username"});
@@ -281,23 +251,25 @@ app.post("/profile/update_username", (req, res) => {
 	if (!email) {
 		res.status(400).json({message: "Missing email"});
 	}
+	if (!oldUsername) {
+		res.status(400).json({message: "Missing old username"});
+	}
 
-	User.findOne(({email: email, token: token}), (err, user) => {
+	User.findOneAndUpdate({username: oldUsername}, {$set: {username: newUsername}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "Usr not found " + oldUsername});
 		}
 
-		user.username = newUsername;
-		user.save((err) => {
-			if (err) {
-				return res.status(500).json({message: "Internal server error"});
-			}
-			return res.status(200).json({message: "Successfully updated username"});
-		});
+		return res.status(200).json({message: "Successfully updated username", data: newUsername});
 	});
+});
+
+app.get("/calendar", (req, res) => {
+	// Return JSON with Google calendar information, requires valid auth middleware
+	res.status(200).json({"message": "send back calendar information here"});
 });
 
 app.post("/profile/updatePhoneNumber", (req, res) => {
@@ -318,6 +290,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 	if (!usr) {
 		return res.status(400).json({message: "No username in request"});
 	}
+	
 	User.findOneAndUpdate({$or: [{email: email}, {username: usr}]}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
@@ -347,7 +320,7 @@ app.post("/profile/update_preferences", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 5"});
 		}
 	});
 });
@@ -365,7 +338,7 @@ app.post("/getShoppingList", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 6"});
 		}
 
 		return res.status(200).json({message: "Success", data: user.shoppingList});
@@ -389,7 +362,7 @@ app.post("/updateShoppingList", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 7"});
 		}
 
 		return res.status(200).json({message: "Success"});
@@ -414,7 +387,7 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 8"});
 		}
 		return res.status(200).json({updatedUser: user});
 	});
@@ -435,6 +408,8 @@ app.post("/recipes/save", (req, res) => {
 	// Saves a recipe into a user's favorites based on recipe ID
 
 	let idToSave = req.body.recipeID;
+	let nameToSave = req.body.recipeName;
+	let descToSave = req.body.recipeDescription;
 	let userEmail = req.body.userEmail;
 
 	if (!idToSave) {
@@ -444,13 +419,38 @@ app.post("/recipes/save", (req, res) => {
 		return res.status(400).json({message: "No email specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$push:{savedRecipes:idToSave}}, {new:true}, (err, user) => {
+	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: nameToSave, recipeDescription: descToSave}}}, {new: true}, (err, user) => {
 		if (err) {
+			console.log("ERR:", err)
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: "User not found"});
+			return res.status(400).json({ message: "User not found 9"});
 		}
+	})
+});
+
+app.post("/recipes/remove", (req, res) => {
+
+	let newRecipes = req.body.savedRecipes;
+	let userEmail = req.body.userEmail;
+
+	if (!newRecipes) {
+		return res.status(400).json({message: "No new recipe array sent"});
+	}
+	if (!userEmail) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+
+	User.findOneAndUpdate({email: userEmail}, {$set: {savedRecipes: newRecipes}}, {new: true}, (err, user) => {
+		if (err) {
+			console.log("ERR:", err)
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({ message: "User not found 9"});
+		}
+		return res.status(200).json({message: "Successfully removed saved recipe"});
 	})
 });
 
@@ -520,7 +520,7 @@ app.post("/recipes/updateVote", (req, res) => {
 		}
 		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 		
-		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new:true}, (err, user) => {
+		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new: true}, (err, user) => {
 			if (err) {
 				console.log('err:', err);
 			}
@@ -644,7 +644,33 @@ app.get('/email/test', (req,res) => {
 	});
 
 	//return res.json({message: 'end'});
-})
+});
+
+app.post("/profile/:username", (req, res) => {
+	// Get profile information about logged in user, requires valid auth middleware
+	if (!req.params.username) {
+		return res.status(400).json({message: "Username required in URL"});
+	}
+	if (!req.body.accessToken) {
+		return res.status(400).json({message: "Missing access token"});
+	}
+	
+	User.findOne(({username: req.params.username}), (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message : "User not found 4"});
+		}
+
+		// TODO(Vedant): try this later when we make sure signin works
+		// if (user.accessToken !== req.body.accessToken) {
+		// 	return res.status(400).json({message: "Not signed in"});
+		// }
+
+        return res.status(200).json({message: "Success", user: user});
+	});
+});
 
 //sent obj with day as string (e.g. 'Monday'), meal as string (e.g. "breakfast"), 
 // id as string (e.g. '243786ab4f90e' the hex stuff from the db), and token for auth
@@ -667,17 +693,24 @@ app.post('/calendar/update', (req, res) => {
 	let id = req.body.id;
 	let token = req.body.token;
 	let em = req.body.email;
-
-	let toSet = `calendar.${day}.${time}`;
-	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {calendar: {day: {time : id}}}}, {new: true}, (err, user) => {
+	
+	User.findOne({$or: [{email: em}, {token: token}]}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "No user found"});
 		}
-		console.log("USER CALENDAR IS: ", user.calendar);
-		return res.status(200).json({message: "Successfully updated calendar for user", data: user});
+
+		user.calendar[day][time] = id;
+
+		user.save((err) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			return res.status(200).json({message: "Successfully updated calendar"});
+		});
 	});
 });
 

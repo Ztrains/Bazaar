@@ -21,7 +21,11 @@ var UserSchema = new mongoose.Schema({
     },
     updatedAt: {type: Date, default: Date.now},
     googleId: String,
-    savedRecipes: [Number],
+    savedRecipes: [{
+        recipeID: String,
+        recipeName: String,
+        recipeDescription: String,
+    }],
     mlDishData: [[Number]],
     mlDishRatings: [String],
     preferences: [String],
