@@ -20,6 +20,10 @@ function formatDishData(calories,servingSize,upvotes,steps,tags) {
 		}
 	}
 
-
+	return dishData;
 }
 
+module.exports = {
+	predict: predict,
+	formatDishData: formatDishData
+}
