@@ -5,6 +5,20 @@ var UserSchema = new mongoose.Schema({
     username: String,
     //password: String, //not sure if needed cause google log in?
     email: String,
+    //emailPrefs: {type: String, default: 'weekly'},
+    contact: {
+        method: {
+            type: String, 
+            default: 'email',
+            enum: ['email', 'text']
+        },
+        frequency: {
+            type: Number, 
+            default: 7,
+            min: 1,
+            max: 7
+        }
+    },
     updatedAt: {type: Date, default: Date.now},
     googleId: String,
     savedRecipes: [Number],
