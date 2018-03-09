@@ -8,6 +8,8 @@ var UserSchema = new mongoose.Schema({
     updatedAt: {type: Date, default: Date.now},
     googleId: String,
     savedRecipes: [Number],
+    mlDishData: [[Number]],
+    mlDishRatings: [String],
     preferences: [String],
     token: String,
     imageUrl: String,
@@ -16,6 +18,11 @@ var UserSchema = new mongoose.Schema({
     shoppingList: [{
     	quantity: String,
     	name: String
+    }],
+    calendar: [{
+        breakfast: String,
+        lunch: String,
+        dinner: String
     }]
 });
 

@@ -164,9 +164,9 @@ app.post("/auth/signup", (req, res) => {
 });
 
 app.post("/auth/signin", (req, res) => {
-	if (!req.body.accessToken) {
+	/*if (!req.body.accessToken) {
 		return res.status(400).json({message: "Missing access token in request"});
-	}
+	}*/
 	if (!req.body.googleId) {
 		return res.status(400).json({message: "Missing Google ID in request"});
 	}
