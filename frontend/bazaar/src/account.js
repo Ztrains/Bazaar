@@ -179,7 +179,7 @@ export default class accountPage extends React.Component {
         <h4>Meal Preferences</h4>
         <ul>
           {this.state.preferences.map((prefValue, key) => (
-            <li>{prefValue}</li>
+            <li id="pref">{prefValue}</li>
           ))}
 
           <Row>
