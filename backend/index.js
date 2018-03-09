@@ -634,7 +634,7 @@ app.post('/calendar/update', (req, res) => {
 	let token = req.body.token;
 
 	let toSet = `calendar.${day}.${time}`;
-	User.findOneAndUpdate({token: token}, {$set: {calendar: {day: {time: id}}}}, {new:true}, (err, user) => {
+	User.findOneAndUpdate({token: token}, {$set: {'calendar': {day: {time : id}}}}, {new:true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
