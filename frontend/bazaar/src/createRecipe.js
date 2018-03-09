@@ -64,7 +64,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddIngredient = () => {
-    if (this.state.ingredients[this.state.ingredients.length - 1].name == '') {
+    if (this.state.steps.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name == '') {
       return;
     }
     this.setState({
@@ -88,7 +88,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
-    if (this.state.steps[this.state.steps.length - 1].step == '') {
+    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step == '') {
       return;
     }
     this.setState({
@@ -135,8 +135,6 @@ export default class viewRecipe extends React.Component {
   render() {
     return(
       <div className="container">
-        <div className="card">
-        <div className="card-content">
         <h3>Create Recipe</h3>
         <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
@@ -218,8 +216,6 @@ export default class viewRecipe extends React.Component {
             </Row>
           </ul>
           <button id="createRecipeBtn" onClick={this.submit} className="btn-success">Create Recipe</button>
-          </div>
-        </div>
       </div>
     );
   }
