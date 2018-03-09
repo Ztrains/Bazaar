@@ -3,7 +3,7 @@ var KNN = require("ml-knn");
 
 
 function predict(userData,userRatings,dishData) {
-	if (!userData || !userRatings || !dishData) {
+	if (userData.length === 0 || userRatings.length === 0 || dishData.length === 0) {
 		return "Possibly Enjoy";
 	}
 	var knn = new KNN(userData, userRatings);
