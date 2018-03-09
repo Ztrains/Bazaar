@@ -391,6 +391,8 @@ app.post("/recipes/:id", (req, res) => {
 	let usrname = req.body.username;
 	let currentUser;
 
+	console.log(`\nTHE ENTIRE REQUEST IS ${req.body}\n`)
+
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
@@ -416,6 +418,7 @@ app.post("/recipes/:id", (req, res) => {
 			}
 			
 			console.log(recipe);
+			console.log(`\nCURRENTUSER IS ${currentUser}\n`)
 			if (currentUser) {
 				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 				var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
