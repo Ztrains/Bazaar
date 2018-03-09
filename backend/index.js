@@ -269,18 +269,19 @@ app.post("/profile/update_username", (req, res) => {
 
 app.post("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
-	if (!req.body.email) {
+	/*if (!req.body.email) {
 		return res.status(400).json({message: "No email specified in request"});
-	}
+	}*/
 	if (!req.body.token) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
 
-	let token = req.body.token;
-	let email = req.body.email;
+	let token = req.body.accessToken;
+	//let email = req.body.email;
 	
-	User.findOne({$or: [{email: em}, {token: token}]}, (err, user) => {
+	User.findOne({token: token}, (err, user) => {
 		if (err) {
+			console.log(err)
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
