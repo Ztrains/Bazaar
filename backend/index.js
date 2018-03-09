@@ -275,20 +275,22 @@ app.post("/calendar", (req, res) => {
 	if (!req.body.accessToken) {
 		return res.status(400).json({message: "No token specified in request"});
 	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "No username specified in request"});
+	}
 
 	let token = req.body.accessToken;
-	//let email = req.body.email;
+	let user = req.body.username;
 	
-	User.findOne({token: token}, (err, user) => {
+	User.findOne({$or: [{token: token}, {username: user}]}, (err, user) => {
 		if (err) {
-			console.log(err)
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		return res.status(200).json({calendar: user.calendar});
+		return res.status(200).json({message: "Success", calendar: user.calendar});
 	});
 });
 
@@ -660,8 +662,8 @@ app.post("/recipes/:id", (req, res) => {
 			return res.status(500).json({message: "Internal server error. Unable to process user find"});
 		}
 		if (!user) {
-			console.log('no user found')
-			//return res.status(400).json({message: "No user found"});
+			//console.log('no user found')
+			return res.status(400).json({message: "No user found"});
 		}
 
 		currentUser = user;
@@ -721,9 +723,7 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		console.log("day is " + day + " and time is " + time + "id is " + id);
 		user.calendar[day][time] = id;
-		console.log("new user.calendar[day][time] is " + user.calendar[day][time]);
 
 		user.save((err) => {
 			if (err) {
