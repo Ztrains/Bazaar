@@ -364,9 +364,9 @@ app.post("/calendar", (req, res) => {
 	}
 
 	let token = req.body.accessToken;
-	let user = req.body.username;
+	let usrname = req.body.username;
 	
-	User.findOne({$or: [{token: token}, {username: user}]}, (err, user) => {
+	User.findOne({$or: [{token: token}, {username: usrname}]}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
