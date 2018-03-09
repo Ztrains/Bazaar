@@ -271,6 +271,7 @@ app.post("/profile/update_username", (req, res) => {
 	let newUsername = req.body.username;
 	let token = req.body.accessToken;
 	let email = req.body.email;
+	let oldUsername = req.body.oldUsername;
 
 	if (!newUsername) {
 		res.status(400).json({message: "Missing new username"});
@@ -281,10 +282,11 @@ app.post("/profile/update_username", (req, res) => {
 	if (!email) {
 		res.status(400).json({message: "Missing email"});
 	}
+	if (!oldUsername) {
+		res.status(400).json({message: "Missing old username"});
+	}
 
-	console.log("User email is: " + email);
-
-	User.findOne({email: email}, (err, user) => {
+	User.findOne({$or: [{email: email}, {username: oldUsername}]}, {$set: {username: newUsername}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -292,13 +294,7 @@ app.post("/profile/update_username", (req, res) => {
 			return res.status(400).json({message: "User not found"});
 		}
 
-		user.username = newUsername;
-		user.save((err) => {
-			if (err) {
-				return res.status(500).json({message: "Internal server error"});
-			}
-			return res.status(200).json({message: "Successfully updated username"});
-		});
+		return res.status(200).json({message: "Successfully updated username", data: newUsername});
 	});
 });
 
