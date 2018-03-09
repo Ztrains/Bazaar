@@ -71,9 +71,7 @@ export default class Signup extends React.Component {
     return (
       <div className="container">
       <div className="row">
-
         <div className="col s2"></div>
-
           <div className="col s8">
             <div className="card-panel">
               <div className="center card-action">

@@ -57,34 +57,31 @@ export default class Login extends React.Component {
     return;
   }
 
-
-
   render() {
     return (
         <div className="container">
           <div className="row">
             <div className="col s2"></div>
             <div className="col s8 z-depth-6">
-            <div className="card-panel">
-              <div className="center card-action">
-                <h1><b>Sign In</b></h1>
-                <h4 className="condensed">Sign in with your Google account</h4>
-              </div>
-              <hr />
-              <div className="container center card-content" id="signin">
-                      <GoogleLogin
-                        clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
-                        buttonText="Sign In with Google"
-                        className="btn red darken-1"
-                        onSuccess={this.googSuccess}
-                        onFailure={this.googFailure}
-                      />
-                      <br />
-                    <Link to="/signup">
-                      <a type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
-                    </Link>
-              </div>
-                  {/* <br></br><br></br><br></br><br></br> */}
+              <div className="card-panel">
+                <div className="center card-action">
+                  <h1><b>Sign In</b></h1>
+                  <h4 className="condensed">Sign in with your Google account</h4>
+                </div>
+                <hr />
+                <div className="container center card-content" id="signin">
+                        <GoogleLogin
+                          clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
+                          buttonText="Sign In with Google"
+                          className="btn red darken-1"
+                          onSuccess={this.googSuccess}
+                          onFailure={this.googFailure}
+                        />
+                        <br />
+                      <Link to="/signup">
+                        <a type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
+                      </Link>
+                </div>
               </div>
             </div>
             <div className="col s2"></div>
