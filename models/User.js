@@ -74,7 +74,7 @@ var UserSchema = new mongoose.Schema({
             lunch: String,
             dinner: String
         },
-    }
+    },
 });
 
 module.exports = mongoose.model('User', UserSchema);
