@@ -819,7 +819,8 @@ app.post('/calendar/update', (req, res) => {
 				return res.status(500).json({message: "Internal server error: Unable to save user data"});
 			}
 
-			return res.status(200).json({message: "Successfully updated calendar"});
+			console.log(user.calendar);
+			return res.status(200).json({message: "Successfully updated calendar", data: user.calendar});
 		});
 	});
 });
