@@ -31,6 +31,7 @@ export default class viewRecipe extends React.Component {
       commentBox: '',
       dayValue: '',
       timeValue: '',
+      ml: {},
     };
     this.upvote = this.upvote.bind(this);
     this.downvote = this.downvote.bind(this);
@@ -47,6 +48,7 @@ export default class viewRecipe extends React.Component {
       console.log(result.data.data);
       _this.setState({recipe: result.data.data});
       _this.setState({votes: result.data.data.upvotes});
+      //_this.setState({ml: result.data.ml});
     })
     //get recipe from id passed in through path
   }
@@ -129,6 +131,7 @@ export default class viewRecipe extends React.Component {
 
       <div className="container">
         <p>image can go here</p>
+        <p>We think you may {} this</p>
         <div className="arrange-horizontally">
           <div className="arrange-vertically">
           <button className="up" onClick={this.upvote} disabled={this.state.buttonDisabled}>&and;</button>
@@ -136,8 +139,8 @@ export default class viewRecipe extends React.Component {
           <button className="down" onClick={this.downvote} disabled={this.state.buttonDisabled}>&or;</button>
           </div>
           <div className="arrange-vertically" id="left">
-          <h1 id="a">Moose</h1>
-          <h2 id="b">This is a moose world over here.</h2>
+          <h1 id="a">{this.state.recipe.name}</h1>
+          <h2 id="b">{this.state.recipe.description}</h2>
           </div>
         </div>
         <br></br>
@@ -152,7 +155,7 @@ export default class viewRecipe extends React.Component {
 
         <ul>
         {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
-          <li>Step {key + 1}: {prefValue.quantity} {prefValue.name}</li>
+          <li>{key + 1}: {prefValue.quantity} {prefValue.name}</li>
         ))}
         </ul>
         <ul>
