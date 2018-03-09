@@ -93,7 +93,7 @@ export default class recipeEntry extends React.Component {
 
               <div className="card-stacked">
                 <div className="card-content">
-                  <h3 className="card-title"><Link to={'/recipe/' + this.props.id}><b>{this.props.name}</b></Link></h3>
+                  <h3 className="card-title"><Link to={'/recipes/' + this.props.id}><b>{this.props.name}</b></Link></h3>
                   <p>{this.props.description}</p>
 
                 </div>
