@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.17.1",
+    "chai": "^4.1.2",
     "dayz": "^0.8.1",
     "dompurify": "^1.0.3",
     "enzyme": "^3.3.0",

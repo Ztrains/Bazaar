@@ -1,5 +1,5 @@
 
-
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
 body {font-family: arial, sans-serif;}
 
 
@@ -10,6 +10,17 @@ input[type=username], input[type=email], input[type=password] {
     display: inline-block;
     border: none;
     background: white;
+}
+
+#img {
+  width: 100%;
+  position: absolute;
+}
+#center {
+  text-align: center;
+  font-family: "Noto Sans";
+  text-decoration-color: #3b3b3b;
+  text-shadow: 2px 2px pink;
 }
 #quantField {
   width: 50%;
@@ -50,19 +61,23 @@ input[type=username], input[type=email], input[type=password] {
 #recipeEntryCard {
   overflow: visible;
 }
-/*input[type=text2] {
-  width: 60%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: white;
-}*/
+#fancytext {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Noto Sans";
+  font-size: 4rem;
+  font-weight: bold;
+  pointer-events: none;
+}
 
 input[type=username]:focus, input[type=email]:focus, input[type=password]:focus {
     background-color: #F0F7FA;
     outline: none;
     width: 100%;
+}
+
+#signintext {
+  font-size: 1.5rem;
 }
 
 #title {
@@ -72,11 +87,21 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
 
 #warning {
   text-align: center;
-  color:
 }
 
 #center {
   text-align: center;
+}
+
+#signin {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+#signup {
+  text-align: center;
+  padding-bottom: 20px;
 }
 
 h1 {
@@ -107,9 +132,15 @@ h1 {
 }
 
 .container {
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #F0F0F0;
     padding: 20px;
+}
+
+.container5 {
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    padding: 40px;
 }
 
 .container2 {
@@ -150,7 +181,6 @@ button:hover {
 
 .cancelbtn, .signinbtn {
   float: left;
-  width: 50%;
 }
 
 .googlebtn {
@@ -170,6 +200,7 @@ button:hover {
     clear: both;
     display: table;
     padding-top: 15px;
+    text-align: center;
 }
 
 .ingredientList {
