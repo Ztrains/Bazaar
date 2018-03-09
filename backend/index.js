@@ -408,6 +408,8 @@ app.post("/recipes/save", (req, res) => {
 	// Saves a recipe into a user's favorites based on recipe ID
 
 	let idToSave = req.body.recipeID;
+	let nameToSave = req.body.recipeName;
+	let descToSave = req.body.recipeDescription;
 	let userEmail = req.body.userEmail;
 
 	if (!idToSave) {
@@ -417,7 +419,7 @@ app.post("/recipes/save", (req, res) => {
 		return res.status(400).json({message: "No email specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: idToSave}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: nameToSave, recipeDescription: descToSave}}}, {new: true}, (err, user) => {
 		if (err) {
 			console.log("ERR:", err)
 			return res.status(500).json({message: "Internal server error"});
