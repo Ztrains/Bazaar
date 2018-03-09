@@ -42,7 +42,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var User = require('./models/User');
 var Recipe = require('./models/Recipe');
-//var ml = require('../ml/ml')
+var ml = require('./ml')
 /******************************/
 
 passport.use(new GoogleStrat({
