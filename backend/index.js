@@ -419,6 +419,7 @@ app.post("/recipes/save", (req, res) => {
 
 	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: idToSave}}, {new: true}, (err, user) => {
 		if (err) {
+			console.log("ERR:", err)
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
