@@ -36,6 +36,7 @@ export default class Signup extends React.Component {
 
     if (this.state.username < 1) {
       alert("Username field must be filled");
+      return;
     }
 
     else {

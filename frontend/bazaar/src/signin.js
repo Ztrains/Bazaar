@@ -52,7 +52,10 @@ export default class Login extends React.Component {
     }
     });
   }
-
+  googleFailure = (responce) => {
+    alert('Sign in failed or canceled. Please try again');
+    return;
+  }
 
 
 
@@ -66,7 +69,7 @@ export default class Login extends React.Component {
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                     buttonText="Sign In with Google"
                     onSuccess={this.googSuccess}
-                    onFailure={this.googSuccess}
+                    onFailure={this.googFailure}
                   />
 		       </div>
 
