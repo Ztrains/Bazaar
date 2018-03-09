@@ -42,34 +42,34 @@ var UserSchema = new mongoose.Schema({
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         monday: {
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         tuesday: {

@@ -72,11 +72,10 @@ export default class App extends React.Component {
             <br/>
               <Switch>
                 <Route exact path={"/"} component={Home} />
-		            <Route path={"/signin"} render={()=><SignIn logInCallBack={this.loggingIn} />}/>
-                <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
+		            <Route path={"/signin"} render={()=><SignIn className="grey lighten-4" style={{height: '100vh'}} logInCallBack={this.loggingIn} />}/>
+                <Route path={"/signup"} render={()=><SignUp className="grey lighten-4" style={{height: '100vh'}} logInCallBack={this.loggingIn} />}/>
                 <Route path={"/profile/:username"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
-                <Route exact path={"/recipes"} render={(props)=><RecipeViwer />}/>
                 <Route path={"/recipeEntry"} component={RecipeEntry} />
                 <Route path={'/create'} component={CreateRecipe} />
                 <Route path={'/recipes/:id'} component={ViewRecipe} />

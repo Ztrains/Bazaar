@@ -90,7 +90,7 @@ export default class accountPage extends React.Component {
   }
   changeNameButtonActivate() {
     if (this.state.newName === '' || this.state.newName === " ") {
-      alert("nothing has been written in input box");
+      window.Materialize.toast("nothing has been written in input box", 1500);
       return false;
     }
     //send it to database
@@ -106,11 +106,11 @@ export default class accountPage extends React.Component {
     .then(function(result) {
       console.log(result);
       if (result.message === "User Not Found") {
-        alert("User not found");
+        window.Materialize.toast("User not found");
         return;
       }
       else {
-        alert("username successfully changed");
+        window.Materialize.toast("username successfully changed", 1500);
         window.sessionStorage.removeItem('loggedInName');
         window.sessionStorage.setItem('loggedInName', _this.state.newName);
         _this.setState({username: _this.state.newName});
@@ -121,15 +121,15 @@ export default class accountPage extends React.Component {
   }
   changePhoneButtonActivate = () => {
     if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
-      alert("nothing has been written in input box");
+      window.Materialize.toast("nothing has been written in input box", 1500);
       return false;
     }
     if (isNaN(this.state.phoneNum)) {
-      alert('Phone contains digits other than numbers. If you have dashes, please remove them');
+      window.Materialize.toast('Phone contains digits other than numbers. If you have dashes, please remove them', 1500);
       return;
     }
     if ( this.state.phoneNum.length != 10) {
-      alert('phone number contains too many or to little digits');
+      window.Materialize.toast('phone number contains too many or to little digits', 1500);
       return;
     }
     var temp = this.state.phoneNum;
@@ -148,11 +148,11 @@ export default class accountPage extends React.Component {
     .then(function(result) {
       console.log(result);
       if (result.data.message == "User Not Found") {
-        alert("User not found");
+        window.Materialize.toast("User not found", 1500);
         return;
       }
       else {
-        alert("username successfully changed");
+        window.Materialize.toast("username successfully changed", 1500);
       }
     });
   }
@@ -171,7 +171,7 @@ export default class accountPage extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
-      alert("Dish preferences successfully updated");
+      window.Materialize.toast("Dish preferences successfully updated", 1500);
     });
 
   }
@@ -199,63 +199,112 @@ export default class accountPage extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/remove", Obj)
     .then(function(result) {
       console.log(result);
-      alert('Recipe successfully removed');
+      window.Materialize.toast('Recipe successfully removed', 1500);
     })
   }
   render() {
+    let defaultMessage = "";
+    if (this.state.savedRecipes.length === 0) {
+      defaultMessage = <p>You currently do not have any favorites.</p>
+    }
     return (
       <div className="container">
-        <h1 id="fancytext">{this.state.username}</h1>
-        <br></br>
-        <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
-        <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
-        <input type="tel" className="validate" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
-        <button className="btn btn-primary"  onClick={this.changePhoneButtonActivate}>Change Phone Number</button>
-        <p>{this.state.email}</p>
-        <h4>Meal Preferences</h4>
-        <ul>
-          {this.state.preferences.map((prefValue, key) => (
-            <li id="pref">{prefValue}</li>
-          ))}
+        <div className="row">
+          <div className="col s12">
+            <div className="card-panel">
+              <div className="card-action center">
+                <h1>Settings for <b>{this.state.username}</b></h1>
+              </div>
+              <hr />
+              <br />
+              <div className="container">
+                <div className="card-content">
+                  <div className="row center">
+                    <div className="col s9">
+                      <div className="input-field">
+                        <input type="text" id="username" value={this.state.newName} onChange={this.handleNameChange}/>
+                        <label for="username">Change username</label>
+                      </div>
+                    </div>
+                    <div className="col s3 button-column">
+                      <a className="btn waves-effect waves-light red darken-5" onClick={this.changeNameButtonActivate}><b>Change Name</b></a>
+                    </div>
+                  </div>
+                  <div className="row center">
+                    <div className="col s9">
+                      <div className="input-field">
+                        <input type="tel" id="tel" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
+                        <label for="tel">Change Username</label>
+                      </div>
+                    </div>
+                    <div className="col s3 button-column">
+                    <a className="btn waves-effect waves-light red darken-5" onClick={this.changePhoneButtonActivate}><b>Change Phone</b></a>
+                    </div>
+                  </div>
 
-          <Row>
-            <Input type='select' onChange={this.addPref} >
-              <option value="Vegetarian">Vegetarian</option>
-              <option value="Vegan">Vegan</option>
-              <option value="Gluten-Free">Gluten-Free</option>
-              <option value="Lactose-Free">Lactose-Free</option>
-              <option value="Low Carb">Low Carb</option>
-              <option value="Paleo">Paleo</option>
-            </Input>
-            </Row>
-              <button onClick={this.deletePref}>Remove Last Preference</button>
-            <br/>
-            <h4>Notification Options</h4>
-          <Row>
-            <p id="padd">Change how often you recieve your meal plan</p>
-            <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
-              <option value="1">Every Day</option>
-              <option value="2">2 Days</option>
-              <option value="3">3 Days</option>
-              <option value="4">4 Days</option>
-              <option value="5">5 Days</option>
-              <option value="6">6 Days</option>
-              <option value="7">7 Days</option>
-            </Input>
-          </Row>
-          <Row>
-          <p id="padd">Change how you get your calendar</p>
-          <Input type='select' value={this.state.transportMethod} onChange={this.changeTransportMethod}>
-            <option value="email">Email</option>
-            <option value="text">Text</option>
-          </Input>
-          </Row>
-        </ul>
+                  <hr />
 
-        <p>a lot of recipes can go here</p>
-        {this.state.savedRecipes.map((recipe, key) => (
-          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite} addBut={false} calories={recipe.calories}/>
-        ))}
+                  <div className="row">
+                    <div className="col s12">
+                      <h3><b>Meal Preferences</b></h3>
+                      {this.state.preferences.map((prefValue, key) => (
+                        <a className="btn disabled">{prefValue}</a>
+                      ))}
+                      <Row>
+                        <Input type='select' onChange={this.addPref} >
+                          <option value="Vegetarian">Vegetarian</option>
+                          <option value="Vegan">Vegan</option>
+                          <option value="Gluten-Free">Gluten-Free</option>
+                          <option value="Lactose-Free">Lactose-Free</option>
+                          <option value="Low Carb">Low Carb</option>
+                          <option value="Paleo">Paleo</option>
+                        </Input>
+                      </Row>
+                      <a className="btn waves-effect waves-light red darken-5" onClick={this.deletePref}><b>Remove Last Preference</b></a>
+                    </div>
+                  </div>
+
+                  <hr />
+                  <div className="row">
+                    <div className="col s12">
+                      <h3><b>Notification Options</b></h3>
+                      <h5>Change how often you recieve your meal plan</h5>
+                        <Row>
+                          <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
+                            <option value="1">Every Day</option>
+                            <option value="2">2 Days</option>
+                            <option value="3">3 Days</option>
+                            <option value="4">4 Days</option>
+                            <option value="5">5 Days</option>
+                            <option value="6">6 Days</option>
+                            <option value="7">7 Days</option>
+                          </Input>
+                        </Row>
+                        <h5>Change how you get your calendar</h5>
+                        <Row>
+                          <Input type='select' value={this.state.transportMethod} onChange={this.changeTransportMethod}>
+                            <option value="email">Email</option>
+                            <option value="text">Text</option>
+                          </Input>
+                        </Row>
+                    </div>
+                  </div>
+
+                  <hr />
+                  <div className="row">
+                    <div className="col s12">
+                      <h3><b>Favorites</b></h3>
+                      {defaultMessage}
+                      {this.state.savedRecipes.map((recipe, key) => (
+                        <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite} addBut={false}/>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

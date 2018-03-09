@@ -430,6 +430,8 @@ app.post("/profile/update_preferences", (req, res) => {
 		if (!user) {
 			return res.status(400).json({message: "User not found 5"});
 		}
+
+		return res.status(200).json({message: "Success", data: user.preferences});
 	});
 });
 

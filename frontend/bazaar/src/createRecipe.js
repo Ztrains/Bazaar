@@ -66,11 +66,11 @@ export default class viewRecipe extends React.Component {
 
   handleAddIngredient = () => {
     if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name == '') {
-      alert('ingredient field not filled');
+      window.Materialize.toast('ingredient field not filled', 1500);
       return;
     }
     if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].quantity == '') {
-      alert("quantity field not filled");
+      window.Materialize.toast("quantity field not filled", 1500);
       return;
     }
     this.setState({
@@ -122,35 +122,35 @@ export default class viewRecipe extends React.Component {
 
   submit = () => {
     if (this.state.name.length < 1) {
-      alert("recipe must have name");
+      window.Materialize.toast("recipe must have name", 1500);
       return;
     }
     if (this.state.description.length < 1) {
-      alert("recipe must have a description");
+      window.Materialize.toast("recipe must have a description", 1500);
       return;
     }
     if (this.state.ingredients.length < 1 || (this.state.ingredients.length == 1 && (this.state.ingredients[0].name === '' || this.state.ingredients[0].description === ''))) {
-      alert("recipe must have ingedients");
+      window.Materialize.toast("recipe must have ingedients", 1500);
       return;
     }
     if (this.state.steps.length < 1 || (this.state.steps.length == 1 && this.state.steps[0].step == '')) {
-      alert("recipe must have steps");
+      window.Materialize.toast("recipe must have steps", 1500);
       return;
     }
     if (this.state.calories.length < 1) {
-      alert("recipe must have a calorie count");
+      window.Materialize.toast("recipe must have a calorie count", 1500);
       return;
     }
     if (this.state.servingSize.length < 1) {
-      alert("recipe must have a recommended serving size");
+      window.Materialize.toast("recipe must have a recommended serving size", 1500);
       return;
     }
     if (this.state.preferences.length < 1) {
-      alert("recipe must have characteristic tags");
+      window.Materialize.toast("recipe must have characteristic tags", 1500);
       return;
     }
     if (isNaN(this.state.calories)) {
-      alert("The calorie count must be a number");
+      window.Materialize.toast("The calorie count must be a number", 1500);
     }
     var Obj = {
       accessToken: window.sessionStorage.getItem('token'),
@@ -169,15 +169,26 @@ export default class viewRecipe extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/new", Obj)
     .then(function(results) {
       console.log(results);
+<<<<<<< HEAD
       alert("recipe successfully created");
       //history.push("/recipes/" + results.data.recipe._id);
+=======
+      window.Materialize.toast("recipe successfully created", 1500);
+      history.push("/recipes/" + results.data.recipe._id);
+>>>>>>> dbf8bc7ba8ed6b86d0f33c99a0c1ff5967c9cf17
     });
   }
   render() {
     return(
       <div className="container">
-        <h3 id="fancytext">Create Recipe</h3>
-        <br></br>
+      <div className="row">
+        <div className="col s12">
+          <div className="card-panel">
+            <div className="card-action center">
+              <h1><b>Create Recipe</b></h1>
+            </div>
+            <hr />
+            <br></br>
         <label id="nameInput">Name</label>
         <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
         <label id="descriptionInputH"><b>Description</b></label>
@@ -263,6 +274,9 @@ export default class viewRecipe extends React.Component {
           </ul>
           <button id="createRecipeBtn" onClick={this.submit} className="btn-success">Create Recipe</button>
           <br></br>
+          </div>
+        </div>
+      </div>
       </div>
     );
   }
