@@ -33,11 +33,6 @@ var UserSchema = new mongoose.Schema({
     	quantity: String,
     	name: String
     }],
-    /*calendar: [{
-        breakfast: String,
-        lunch: String,
-        dinner: String
-    }],*/
     calendar: {
         sunday: {
             breakfast: String,
