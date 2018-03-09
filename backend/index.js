@@ -322,7 +322,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "Usr naat found"});
 		}
 
 		return res.status(200).json({message: "Successfully updated phone number"});
