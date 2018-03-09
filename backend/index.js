@@ -420,7 +420,7 @@ app.post("/recipes/:id", (req, res) => {
 				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 				var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
 				
-				return res.status(200).json({message: "Success", data: recipe, ml: prediction});
+				//return res.status(200).json({message: "Success", data: recipe, ml: prediction});
 			}
 
 			return res.status(200).json({message: "Success", data: recipe});
