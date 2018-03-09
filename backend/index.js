@@ -411,6 +411,7 @@ app.post("/recipes/:id", (req, res) => {
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {
+				console.log(err);
 				return res.status(500).json({message: "Internal server error: recipe"});
 			}
 			if (!recipe) {
