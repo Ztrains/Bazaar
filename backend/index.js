@@ -608,7 +608,7 @@ app.post("/recipes/new", (req, res) => {
 	}
 
 	var data = newRecipe;
-	getVideos(data.name, (res) => {
+	scraper.getVideos(data.name, (res) => {
 		data.videoId = res;
 		Recipe.create(data, (err, recipe) => {
 			if (err) {
