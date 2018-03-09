@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
+import history from './history.js'
+import RecipeEntry from './recipeEntry';
 import {Form, Row, Select, Input, Button} from 'react-materialize'
 
 
@@ -18,11 +20,13 @@ export default class accountPage extends React.Component {
       userObj: {},
       emailDayPref: '',
       transportMethod: '',
+      savedRecipes: [],
     };
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeNameButtonActivate = this.changeNameButtonActivate.bind(this);
     this.changePhoneButtonActivate = this.changePhoneButtonActivate.bind(this);
+    this.removeFavorite = this.removeFavorite.bind(this);
   }
   componentDidMount() {
     console.log(window.sessionStorage.getItem('token'));
@@ -39,6 +43,7 @@ export default class accountPage extends React.Component {
         phoneNum: results.data.user.phoneNumber,
         emailDayPref: results.data.user.contact.frequency,
         transportMethod: results.data.user.contact.method,
+        savedRecipes: results.data.user.savedRecipes,
         userObj: results.data.user,
       });
     });
@@ -89,17 +94,24 @@ export default class accountPage extends React.Component {
       username: this.state.newName,
       email: this.state.email,
       accessToken: window.sessionStorage.getItem('token'),
+      oldUsername: this.state.username,
     }
     console.log(Obj);
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
     .then(function(result) {
-      if (result.data.message == "User Not Found") {
+      console.log(result);
+      if (result.message === "User Not Found") {
         alert("User not found");
         return;
       }
       else {
         alert("username successfully changed");
+        window.sessionStorage.removeItem('loggedInName');
+        window.sessionStorage.setItem('loggedInName', _this.state.newName);
+        _this.setState({usernmae: _this.state.newName});
+        _this.setState({newName: ''});
+        history.push('/profile/' + window.sessionStorage.getItem('loggedInName'));
       }
     })
   }
@@ -122,15 +134,15 @@ export default class accountPage extends React.Component {
     });
     //send it to database
     var Obj = {
-      phoneNum: this.state.phoneNum,
+      phoneNumber: this.state.phoneNum,
       email: this.state.email,
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    console.log(Obj);
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/updatePhoneNumber", Obj)
     .then(function(result) {
+      console.log(result);
       if (result.data.message == "User Not Found") {
         alert("User not found");
         return;
@@ -138,8 +150,7 @@ export default class accountPage extends React.Component {
       else {
         alert("username successfully changed");
       }
-    })
-    console.log(this.state.username);
+    });
   }
   changeemailDayPref = (event) => {
     this.setState({emailDayPref: event.target.value});
@@ -159,6 +170,30 @@ export default class accountPage extends React.Component {
       alert("Dish preferences successfully updated");
     });
 
+  }
+  removeFavorite(id) {
+    var list = this.state.savedRecipes;
+    if (list.length === 1) {
+      this.setState({savedRecipes: []});
+    }
+    else {
+      for(var i = 0; i < list.length - 1; i++) {
+        if (list[i].recipeID === id) {
+          list.splice(i, 1);
+          this.setState({savedRecipes: list});
+          break;
+        }
+      }
+    }
+    var Obj = {
+      savedRecipes: this.state.savedRecipes,
+      userEmail: window.sessionStorage.getItem('email'),
+      accessToken: window.sessionStorage.getItem('token'),
+    }
+    axios.post("https://bazaar-408.herokuapp.com/recipes/remove", Obj)
+    .then(function(result) {
+      alert('Recipe successfully removed');
+    })
   }
   render() {
     return (
@@ -210,6 +245,9 @@ export default class accountPage extends React.Component {
         </ul>
 
         <p>a lot of recipes can go here</p>
+        {this.state.savedRecipes.map((recipe, key) => (
+          <RecipeEntry id={recipe.recipeID} name={recipe.recipeName} description={recipe.recipeDescription} deleteBut={true} removeCallBack={this.removeFavorite}/>
+        ))}
       </div>
       </div>
     );

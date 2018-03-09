@@ -32,7 +32,7 @@ export default class Calendar extends React.Component {
         <th scope="col">Day Of Week</th>
         <th scope="col">Breakfast</th>
         <th scope="col">Lunch</th>
-        <th scope="col">Snacks</th>
+
         <th scope="col">Dinner</th>
         <th scope="col" className="table-info">Total Calories:</th>
       </tr>
@@ -42,7 +42,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Monday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
       </tr>
@@ -50,7 +50,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Tuesday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td >2000</td>
 
@@ -59,7 +59,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Wednesday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
 
@@ -68,7 +68,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Thursday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
 
@@ -77,7 +77,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Friday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
 
@@ -86,7 +86,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Saturday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
       </tr>
@@ -94,7 +94,7 @@ export default class Calendar extends React.Component {
         <th scope="row">Sunday</th>
         <td>Jelly</td>
         <td>Pudding</td>
-        <td>Bread</td>
+
         <td>Ramen</td>
         <td>2000</td>
       </tr>

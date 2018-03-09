@@ -21,21 +21,20 @@ export default class recipeEntry extends React.Component {
   addFavorite() {
     var newObj = {
       recipeID: this.props.id,
+      recipeName: this.props.name,
+      recipeDescription: this.props.description,
       userEmail: window.sessionStorage.getItem('email'),
     }
     console.log(newObj);
     axios.post("https://bazaar-408.herokuapp.com/recipes/save", newObj)
     .then(function(result) {
       console.log(result);
+      alert('Successfully Saved to Favorites')
     });
 
-    //add to database
   }
-  removeFav() {
-    var Obj = {
-      recipeID: this.props.id,
-      userEmail: window.sessionStorage.getItem('email'),
-    }
+  removeFav(id) {
+    this.props.removeCallBack(id);
   }
   setTimeValue = (event) => {
     this.setState({timeValue: event.target.value});
@@ -49,12 +48,16 @@ export default class recipeEntry extends React.Component {
     var calObj = {
       day: this.state.dayValue,
       time: this.state.timeValue,
+      token: window.sessionStorage.getItem('token'),
+      email: window.sessionStorage.getItem('email'),
+
     }
   }
   render() {
     let button = '';
+    console.log(this.props.deleteBut);
     if (this.props.deleteBut === true) {
-      button = <button onClick={this.removeFav}>Delete</button>
+      button = <button onClick={() => {this.removeFav(this.props.id)}}>Delete</button>
     }
     let opts = "";
     console.log(this.state.showCalOptions);
@@ -79,6 +82,7 @@ export default class recipeEntry extends React.Component {
                 <option value="Dinner">Dinner</option>
               </Input>
               <button onClick={this.addMealToCal}>Add to Meal Calendar</button>
+
             </Row>
     }
     else {
@@ -100,7 +104,7 @@ export default class recipeEntry extends React.Component {
                 <div className="card-action">
                   {opts}
                   <button className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
-
+                  {button}
 
                 </div>
               </div>
