@@ -22,13 +22,21 @@ input[type=username], input[type=email], input[type=password] {
   text-decoration-color: #3b3b3b;
   text-shadow: 2px 2px pink;
 }
+#stepInfo {
+  font-size: 16px;
+  width: 50%;
+  width: 370px;
+
+  color: black;
+  margin-left: 50px;
+}
 #quantField {
   width: 50%;
   font-size: 16px;
+
   color: black;
 }
 #nameField {
-  margin-left: -150px ;
   font-size: 16px;
 }
 #shopListValue {
@@ -76,6 +84,18 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
     width: 100%;
 }
 
+#pref {
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 5px;
+  border: solid;
+  border-width: medium;
+  border-color: grey;
+  background-color: #d1d1e0;
+  width: 100px;
+}
+
 #signintext {
   font-size: 1.5rem;
 }
@@ -107,6 +127,7 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
 h1 {
   padding-bottom: 5px;
 }
+
 
 .table-info {
   background-color: rgba(60, 179, 113, .3);
@@ -206,7 +227,12 @@ button:hover {
 .ingredientList {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 50fr 50fr;
+}
+.ingredientList2 {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 100fr;
 }
 .minusbtn {
   padding-top: 0px;
@@ -215,8 +241,8 @@ button:hover {
   width: 5%;
   padding-right: 30px;
   margin-left: 30px;
-  background-color: grey;
-  height: 35px;
+  background-color: pink;
+  height: 45px;
   text-align: center;
 
 }
@@ -237,4 +263,5 @@ button:hover {
 .btnsmall2 {
   width: 60px;
   background-color: grey;
+  float: float;
 }
