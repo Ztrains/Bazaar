@@ -42,7 +42,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var User = require('./models/User');
 var Recipe = require('./models/Recipe');
-var ml = require('./ml')
+var ml = require('./ml');
+var scraper = require('./video');
 /******************************/
 
 passport.use(new GoogleStrat({
@@ -606,16 +607,20 @@ app.post("/recipes/new", (req, res) => {
 		return res.status(400).json({message: "No recipe in request"});
 	}
 
+	var data = newRecipe;
+	getVideos(data.name, (res) => {
+		data.videoId = res;
+		Recipe.create(data, (err, recipe) => {
+			if (err) {
+				console.log(err);
+				return res.status(500).json({message: "Internal server error"});
+			}
+	
+			return res.status(200).json({message: "Success", recipe: recipe});
+		});
+	});
 	// TODO(Vedant): do a check for the access token to ensure current user is authenticated
 	// before saving recipe
-	Recipe.create(newRecipe, (err, recipe) => {
-		if (err) {
-			console.log(err);
-			return res.status(500).json({message: "Internal server error"});
-		}
-
-		return res.status(200).json({message: "Success", recipe: recipe});
-	});
 });
 
 app.post("/search", (req, res) => {
