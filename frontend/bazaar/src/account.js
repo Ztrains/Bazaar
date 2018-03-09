@@ -10,7 +10,7 @@ export default class accountPage extends React.Component {
     super(props);
     this.state = {
       username: "",
-      preferences: ["Meat", "Pork", "Potatoes", "Eggs"],
+      preferences: [],
       value: "",
       newName: '',
       email: '',
@@ -31,9 +31,9 @@ export default class accountPage extends React.Component {
     .then(function(results) {
       console.log(results);
       _this.setState({
-        userObj: results.user,
-        username: results.user.username,
-        email: results.user.email,
+        username: results.data.user.username,
+        email: results.data.user.email,
+        userObj: results.data.user,
       });
     });
   }
@@ -54,36 +54,31 @@ export default class accountPage extends React.Component {
     })
   };
   handleNameChange(event) {
-    if (this.state.username === '' || this.state.username === " ") {
-      alert("nothing has been written in input box");
-      return false;
-    }
+
     //console.log(event.target.value);
     this.setState({
       newName: event.target.value
     });
   }
-  handleNameChange(event) {
-    if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
-      alert("nothing has been written in input box");
-      return false;
-    }
+  handlePhoneChange(event) {
+
     //console.log(event.target.value);
     this.setState({
       phoneNum: event.target.value
     });
   }
   changeNameButtonActivate() {
-    var temp = this.state.newName;
-    this.setState({
-      username: temp,
-    });
+    if (this.state.newName === '' || this.state.newName === " ") {
+      alert("nothing has been written in input box");
+      return false;
+    }
     //send it to database
     var Obj = {
       username: this.state.newName,
       email: this.state.email,
       accessToken: window.sessionStorage.getItem('token'),
     }
+    console.log(Obj);
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
     .then(function(result) {
@@ -95,9 +90,12 @@ export default class accountPage extends React.Component {
         alert("username successfully changed");
       }
     })
-    console.log(this.state.username);
   }
-  changeNameButtonActivate() {
+  changePhoneButtonActivate() {
+    if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
+      alert("nothing has been written in input box");
+      return false;
+    }
     var temp = this.state.phoneNum;
     this.setState({
       phoneNum: temp,
@@ -105,7 +103,7 @@ export default class accountPage extends React.Component {
     //send it to database
     var Obj = {
       phoneNum: this.state.phoneNum,
-      email: this.state.email,
+      email: this.userObj.email,
       accessToken: window.sessionStorage.getItem('token'),
     }
     var _this = this;
@@ -125,7 +123,7 @@ export default class accountPage extends React.Component {
     return (
       <div className="container">
       <div className="card border-primary text-center">
-        <h2 id="userNameBanner">Example {this.state.username}</h2>
+        <h2 id="userNameBanner">{this.state.username}</h2>
         <input type="text" placeholder="newUsername" value={this.state.newName} onChange={this.handleNameChange}/>
         <button className="btn btn-primary"  onClick={this.changeNameButtonActivate}>Change Username</button>
         <input type="text" placeholder="Phone Number" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>

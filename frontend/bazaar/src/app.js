@@ -47,11 +47,13 @@ export default class App extends React.Component {
     window.sessionStorage.removeItem('token');
     history.push('/');
   }
-  loggingIn = (user, token) => {
+  loggingIn = (user, token, email) => {
     this.setState({loggedInUser: user});
     this.setState({loggedIn: true});
     console.log(token);
+    console.log(email);
     window.sessionStorage.setItem('token', token);
+    window.sessionStorage.setItem('email', email);
 
     var newObj = {
       username: this.state.loggedInUser,

@@ -14,6 +14,7 @@ export default class Login extends React.Component {
     this.state = {
       accessToken: '',
       googleId: '',
+      email: '',
 
     }
     //this.usernameHandle = this.usernameHandle.bind(this);
@@ -31,6 +32,7 @@ export default class Login extends React.Component {
     console.log(responce.profileObj);
     this.setState({googleId: responce.googleId});
     this.setState({accessToken: responce.accessToken});
+    this.setState({email: responce.profileObj.email});
     var tempObj = {
       accessToken: this.state.accessToken,
       googleId: this.state.googleId,
@@ -40,12 +42,12 @@ export default class Login extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
     .then(function(result) {
       console.log(result);
-      if (result.data.message == "user not found") {
+      if (result.data.message == "User not found") {
         alert("username or password is incorrect");
         return false;
       }
       else {
-      _this.props.logInCallBack(result.data.username, _this.state.accessToken);
+      _this.props.logInCallBack(result.data.username, _this.state.accessToken, _this.state.email);
       history.push('/profile/' + result.data.username);
     }
     });
