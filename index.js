@@ -400,7 +400,8 @@ app.post("/recipes/:id", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "No user found"});
+			console.log('no user found')
+			//return res.status(400).json({message: "No user found"});
 		}
 
 		currentUser = user;
