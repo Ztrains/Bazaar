@@ -76,10 +76,10 @@ export default class App extends React.Component {
                 <Route path={"/signup"} render={()=><SignUp logInCallBack={this.loggingIn} />}/>
                 <Route path={"/profile/:username"} component={Account} />
                 <Route path={"/search/:terms"} component={SearchPage}/>
-                <Route path={"/recipes"} render={(props)=><RecipeViwer />}/>
+                <Route exact path={"/recipes"} render={(props)=><RecipeViwer />}/>
                 <Route path={"/recipeEntry"} component={RecipeEntry} />
                 <Route path={'/create'} component={CreateRecipe} />
-                <Route path={'/recipe/:id'} component={ViewRecipe} />
+                <Route path={'/recipes/:id'} component={ViewRecipe} />
                 <Route path={'/:username/list'} component={ShoppingList} />
                 <Route path={'/calendar'} component={Calendar}/>
             </Switch>
