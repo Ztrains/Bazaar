@@ -193,6 +193,7 @@ app.post("/auth/signup", (req, res) => {
 					return res.status(500).json({message: "Internal server error"});
 				}
 
+				console.log("New user created: " + newUser);
 				return res.status(200).json({message: "Success", user: newUser});
 			});
 		} else {
@@ -303,6 +304,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 	let newPhone = req.body.phoneNumber;
 	let token = req.body.token;
 	let email = req.body.email;
+	let usr = req.body.username;
 
 	if (!newPhone) {
 		return res.status(400).json({message: "No new username in request"});
@@ -313,8 +315,10 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 	if (!email) {
 		return res.status(400).json({message: "No email in request"});
 	}
-
-	User.findOneAndUpdate({email: email}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
+	if (!usr) {
+		return res.status(400).json({message: "No username in request"});
+	}
+	User.findOneAndUpdate({$or: [{email: email}, {username: usr}]}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
