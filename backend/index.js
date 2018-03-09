@@ -291,7 +291,7 @@ app.post("/profile/update_username", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found " + oldUsername});
+			return res.status(400).json({message: "Usr not found " + oldUsername});
 		}
 
 		return res.status(200).json({message: "Successfully updated username", data: newUsername});
