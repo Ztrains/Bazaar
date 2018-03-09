@@ -621,6 +621,35 @@ app.post("/recipes/new", (req, res) => {
 	// before saving recipe
 });
 
+app.post("/recipes/:id/newComment", (req, res) => {
+	let usrname = req.body.username;
+	let newComment = req.body.comment;
+	let recipeId = req.params.id;
+	let token = req.body.accessToken;
+
+	if (!usrname) {
+		return res.status(400).json({message: "Missing username in request"});
+	}
+	if (!newComment) {
+		return res.status(400).json({message: "Missing comment in request"});
+	}
+	if (!recipeId) {
+		return res.status(400).json({message: "Missing recipe ID in parameters"});
+	}
+	if (!token) {
+		return res.status(400).json({message: "Missing token in request"});
+	}
+
+	Recipe.findOneAndUpdate({_id: recipeId}, {$push: {comments: {username: usrname, comment: newComment}}}, 
+		{safe: true, upsert: true, new: true}, (err, recipe) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error"});
+			}
+
+			return res.status(200).json({message: "Success", data: recipe});
+	});
+});
+
 app.post("/search", (req, res) => {
 	// Search query will be passed in in URL
 	// remove URL encoding and perform search on DB
