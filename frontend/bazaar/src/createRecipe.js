@@ -88,7 +88,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
-    if (this.state.ingredients.length > 0 && this.state.steps[this.state.steps.length - 1].step == '') {
+    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step == '') {
       return;
     }
     this.setState({
