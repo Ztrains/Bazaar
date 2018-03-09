@@ -59,26 +59,24 @@ export default class Login extends React.Component {
   render() {
     return (
         <div className="container">
-		       <h1>Sign In</h1>
-           <h3>This website uses google to handle authentication. To Use the site, you must first have a google account. Then you can link your google account to Bazaar</h3>
-        	 <div className="clearfix">
-		         <Link to="/">
-		  	        <button type="button" className="cancelbtn">Cancel</button>
-		              </Link>
+		       <h1 id="fancytext">Sign In</h1>
+           <h3 id="signintext">This website uses google to handle authentication. To Use the site, you must first have a google account. Then you can link your google account to Bazaar</h3>
+        	 <div className="container2" id="signin">
                   <GoogleLogin
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                     buttonText="Sign In with Google"
                     onSuccess={this.googSuccess}
                     onFailure={this.googSuccess}
                   />
-
 		       </div>
 
-		       <div className="container2">
 		          <Link to="/signup">
-			           <button type="signin" className="signupbtn">Dont have an account?<font color="#000080"> Sign Up </font></button>
+			           <button type="signin" className="signupbtn">Dont have an account?<font color="#000080"> <b>Sign Up</b> </font></button>
 		          </Link>
-	         </div>
+              <Link to="/">
+                <button type="button" className="cancelbtn">Cancel</button>
+              </Link>
+              <br></br><br></br><br></br><br></br>
 	      </div>
       );
   }

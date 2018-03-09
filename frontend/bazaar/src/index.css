@@ -16,6 +16,14 @@ input[type=username], input[type=email], input[type=password] {
   width: 100%;
   position: absolute;
 }
+#fancytext {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Noto Sans";
+  font-size: 4rem;
+  font-weight: bold;
+  pointer-events: none;
+}
 #center {
   text-align: center;
   font-family: "Noto Sans";
@@ -76,6 +84,10 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
     width: 100%;
 }
 
+#signintext {
+  font-size: 1.5rem;
+}
+
 #title {
   text-align: center;
   color: #black;
@@ -83,11 +95,21 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
 
 #warning {
   text-align: center;
-  color:
 }
 
 #center {
   text-align: center;
+}
+
+#signin {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+#signup {
+  text-align: center;
+  padding-bottom: 20px;
 }
 
 h1 {
@@ -118,9 +140,15 @@ h1 {
 }
 
 .container {
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #F0F0F0;
     padding: 20px;
+}
+
+.container5 {
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    padding: 40px;
 }
 
 .container2 {
@@ -161,7 +189,6 @@ button:hover {
 
 .cancelbtn, .signinbtn {
   float: left;
-  width: 50%;
 }
 
 .googlebtn {
@@ -181,6 +208,7 @@ button:hover {
     clear: both;
     display: table;
     padding-top: 15px;
+    text-align: center;
 }
 
 .ingredientList {
