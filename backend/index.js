@@ -423,7 +423,7 @@ app.post("/recipes/:id", (req, res) => {
 				//return res.status(200).json({message: "Success", data: recipe, ml: prediction});
 			}
 
-			return res.status(200).json({message: "Success", data: recipe});
+			return res.status(200).json({message: "Success", data: recipe, ml: prediction});
 	});
 });
 
