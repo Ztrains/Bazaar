@@ -374,6 +374,7 @@ app.post("/calendar", (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
+		console.log("Sending back user's calendar: " + user.calendar);
 		return res.status(200).json({message: "Success", calendar: user.calendar});
 	});
 });
@@ -819,7 +820,6 @@ app.post('/calendar/update', (req, res) => {
 				return res.status(500).json({message: "Internal server error: Unable to save user data"});
 			}
 
-			console.log(user.calendar);
 			return res.status(200).json({message: "Successfully updated calendar", data: user.calendar});
 		});
 	});
