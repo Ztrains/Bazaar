@@ -1,0 +1,18 @@
+.up {
+  width: 50px;
+  text-shadow: 3px 2px grey;
+}
+
+.down {
+  width: 50px;
+  text-shadow: 3px 2px grey;
+  background-color: red;
+}
+
+.arrange-horizontally > * {
+    display: inline-block;
+    text-align: center;
+}
+.arrange-vertically > * {
+    display: block;
+}

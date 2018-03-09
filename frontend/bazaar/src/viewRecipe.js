@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './updownvote.css'
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {Form, Row, Select, Input, Button} from 'react-materialize'
@@ -115,11 +116,16 @@ export default class viewRecipe extends React.Component {
 
       <div className="container">
         <p>image can go here</p>
-        <h1>{this.state.recipe.name}</h1>
+        <div className="arrange-horizontally">
+          <div className="arrange-vertically">
+          <button className="up" onClick={this.upvote} disabled={this.state.buttonDisabled}>&and;</button>
+          <button className="down" onClick={this.downvote} disabled={this.state.buttonDisabled}>&or;</button>
+          </div>
+          <h1>{this.state.recipe.name}</h1>
+        </div>
         <h2>{this.state.recipe.description}</h2>
         <p>{this.state.votes}</p>
-        <button onClick={this.upvote} disabled={this.state.buttonDisabled}>Upvote Button</button>
-        <button onClick={this.downvote} disabled={this.state.buttonDisabled}>Downvote Button</button>
+
         <FacebookShareButton
           url={window.location.href}
           quote="Look at this tasty recipe!!">
