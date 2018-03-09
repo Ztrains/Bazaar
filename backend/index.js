@@ -668,7 +668,12 @@ app.post('/calendar/update', (req, res) => {
 	let em = req.body.email;
 
 	let toSet = `calendar.${day}.${time}`;
+<<<<<<< HEAD
 	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$update: {toSet: id}}, {new: true}, (err, user) => {
+=======
+	console.log("To be set: " + toSet);
+	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {toSet: id}}, {new: true}, (err, user) => {
+>>>>>>> aa124aef1bdfeadac7cfff3a37e41ab1d6596079
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
