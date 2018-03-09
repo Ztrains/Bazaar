@@ -82,7 +82,7 @@ passport.use(new GoogleStrat({
 						return res.status(500).json({message: "Internal server error"});
 					}
 					if (!user) {
-						return res.status(400).json({message: "User not found :("});
+						return res.status(400).json({message: "User not found 1"});
 					}
 
 					return callback(err, user);
@@ -219,7 +219,7 @@ app.post("/auth/signin", (req, res) => {
 		}
 
 		if (!user) {
-			return res.status(400).json({message : "User not found"});
+			return res.status(400).json({message : "User not found 2"});
 		}
 		
 		User.findOneAndUpdate({$or: [{googleId: req.body.googleId}, {email: req.body.email}]}, {$set: {accessToken: req.body.accessToken}}, {new: true}, (err, user) => {
@@ -228,7 +228,7 @@ app.post("/auth/signin", (req, res) => {
 			}
 
 			if (!user) {
-				return res.status(400).json({message: "User not found"});
+				return res.status(400).json({message: "User not found 3"});
 			}
 
 			return res.status(200).json({message: "Success", username: user.username, email: user.email});
@@ -250,7 +250,7 @@ app.post("/profile/:username", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message : "User not found"});
+			return res.status(400).json({message : "User not found 4"});
 		}
 
 		// TODO(Vedant): try this later when we make sure signin works
@@ -346,7 +346,7 @@ app.post("/profile/update_preferences", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 5"});
 		}
 	});
 });
@@ -364,7 +364,7 @@ app.post("/getShoppingList", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 6"});
 		}
 
 		return res.status(200).json({message: "Success", data: user.shoppingList});
@@ -388,7 +388,7 @@ app.post("/updateShoppingList", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 7"});
 		}
 
 		return res.status(200).json({message: "Success"});
@@ -413,7 +413,7 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({message: "User not found"});
+			return res.status(400).json({message: "User not found 8"});
 		}
 		return res.status(200).json({updatedUser: user});
 	});
@@ -448,7 +448,7 @@ app.post("/recipes/save", (req, res) => {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			return res.status(400).json({ message: "User not found"});
+			return res.status(400).json({ message: "User not found 9"});
 		}
 	})
 });
