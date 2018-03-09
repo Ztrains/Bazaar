@@ -269,7 +269,26 @@ app.post("/profile/update_username", (req, res) => {
 
 app.get("/calendar", (req, res) => {
 	// Return JSON with Google calendar information, requires valid auth middleware
-	res.status(200).json({"message": "send back calendar information here"});
+	if (!req.body.email) {
+		return res.status(400).json({message: "No email specified in request"});
+	}
+	if (!req.body.token) {
+		return res.status(400).json({message: "No token specified in request"});
+	}
+
+	let token = req.body.token;
+	let email = req.body.email;
+	
+	User.findOne({$or: [{email: em}, {token: token}]}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "No user found"});
+		}
+
+		return res.status(200).json({calendar: user.calendar});
+	});
 });
 
 app.post("/profile/updatePhoneNumber", (req, res) => {
