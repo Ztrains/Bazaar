@@ -388,34 +388,35 @@ app.post("/recipes/save", (req, res) => {
 
 app.post("/recipes/:id", (req, res) => {
 	let token = req.body.accessToken;
+	let usrname = req.body.username;
 	var currentUser;
 
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
-	User.findOne(({token: token}), (err, user) => {
+	User.findOne(({username: usrname}), (err, user) => {
 		if (err) {
-			console.log('err:', err);
+			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!user) {
-			console.log('no user found');
+			return res.status(400).json({message: "No user found"});
 		}
 		currentUser = user;
-
 	});
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
-		console.log(recipe);
-
-		if (currentUser) {
-			var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-			var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
+		if (!recipe) {
+			return res.status(400).json({message: "No recipe found"});
 		}
+		console.log(recipe);
 		
+		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+		var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
+
 		return res.status(200).json({message: "Success", data: recipe, ml: prediction});
 	});
 });
