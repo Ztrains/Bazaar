@@ -20,7 +20,8 @@ function getVideos(query, next) {
     return "";
     });
 
-    next(data);
+    console.log(data);
+    // next(data);
 }
 
 module.exports = { getVideos };

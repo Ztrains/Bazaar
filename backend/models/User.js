@@ -76,85 +76,85 @@ var UserSchema = new mongoose.Schema({
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         wednesday: {
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         thursday: {
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         friday: {
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         },
         saturday: {
             breakfast: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             lunch: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             },
             dinner: {
                 id: String,
                 name: String,
-                calorieCount: String
+                calorieCount: Number
             }
         }
     }
