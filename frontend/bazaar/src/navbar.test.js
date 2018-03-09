@@ -31,6 +31,7 @@ it('button shows up after search box has stuff', () => {
                  ));
 });
 
+//This test is still a work in progress
 it ('goes to search page', () => {
   const wrapper = shallow(<NavBar />);
   const input = {
@@ -57,11 +58,3 @@ it('renders profile when logged in', () => {
 
 });
 
-it('testing if search page actually reads in anything', () => {
-  const spy = sinon.spy(SearchPage.prototype.componentWillReceiveProps);
-
-  const wrapper = shallow(<SearchPage terms="memes"/>); 
-  expect(spy.calledOnce).to.equal(false);
-  wrapper.setProps({ foo: 'foo' });
-  expect(spy.calledOnce).to.equal(true);
-});

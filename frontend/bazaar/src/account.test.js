@@ -15,7 +15,7 @@ it('shows username', () => {
 
 it('Correcly displays the updated username', () => {
   const wrapper = shallow(<Profile />);
-  wrapper.find('username').simulate('change', {target: {value: "bitch"}});
-  expect(wrapper.find('username').props().value).to.equal('bitch');
+  wrapper.find('username').simulate('change', {target: {value: "test"}});
+  expect(wrapper.find('username').props().value).to.equal('test');
   console.log(wrapper.find('username').props().value);
 });

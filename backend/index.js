@@ -391,13 +391,15 @@ app.post("/recipes/:id", (req, res) => {
 	let usrname = req.body.username;
 	let currentUser;
 
+	console.log(`\nTHE ENTIRE REQUEST IS ${req.body.username}\n`)
+
 	if (!req.params.id) {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
 	User.findOne(({username: usrname}), (err, user) => {
 		if (err) {
-			return res.status(500).json({message: "Internal server error"});
+			return res.status(500).json({message: "Internal server error: username"});
 		}
 		if (!user) {
 			console.log('no user found')
@@ -409,21 +411,25 @@ app.post("/recipes/:id", (req, res) => {
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {
-				return res.status(500).json({message: "Internal server error"});
+				console.log(err);
+				return res.status(500).json({message: "Internal server error: recipe"});
 			}
 			if (!recipe) {
 				return res.status(400).json({message: "No recipe found"});
 			}
 			
-			console.log(recipe);
+			// console.log(recipe);
+			// console.log(`\nCURRENTUSER IS ${currentUser}\n`)
 			if (currentUser) {
 				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-				var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+				var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
 				
-				//return res.status(200).json({message: "Success", data: recipe, ml: prediction});
+				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
+			}
+			else {
+				return res.status(200).json({message: "Success without ML", data: recipe});
 			}
 
-			return res.status(200).json({message: "Success", data: recipe});
 	});
 });
 
