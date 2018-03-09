@@ -810,7 +810,7 @@ app.post('/calendar/update', (req, res) => {
 			return res.status(400).json({message: "No user found"});
 		}
 
-		console.log("meal is " + meal);
+		console.log("meal is " + meal.id + " " + meal.name + " " + meal.calorieCount);
 		user.calendar[day][time] = meal;
 		console.log("user calendar is " + user.calendar[day][time]);
 
