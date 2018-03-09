@@ -73,13 +73,14 @@ export default class Signup extends React.Component {
           <div className="card-content">
   		    <h1 id="fancytext">Sign Up</h1>
           <br></br>
-          <label id="username"><b>Username</b></label>
+          <label id="usernameH"><b>Username</b></label>
           <input type="username" placeholder="Enter Username" className="form-control" id="username" placeholder="Enter Username" value={this.state.username} onChange={this.usernameHandle}/>
           <p id="warning">By creating an account you agree to our Terms and Privacy.</p>
             <div className="container2" id="signup">
               <GoogleLogin
                 clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                 buttonText="Sign Up with Google"
+                id="googleBtn"
                 onSuccess={this.googSuccess}
                 onFailure={this.googFailure}
                 />

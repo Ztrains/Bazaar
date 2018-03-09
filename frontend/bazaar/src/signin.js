@@ -68,13 +68,14 @@ export default class Login extends React.Component {
                   <GoogleLogin
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                     buttonText="Sign In with Google"
+                    id = "googleBtn"
                     onSuccess={this.googSuccess}
                     onFailure={this.googFailure}
                   />
 		       </div>
 
 		          <Link to="/signup">
-			           <button type="signin" className="signupbtn">Dont have an account?<font color="#000080"> <b>Sign Up</b> </font></button>
+			           <button id="signUpBtn" type="signin" className="signupbtn">Dont have an account?<font color="#000080"> <b>Sign Up</b> </font></button>
 		          </Link>
               <Link to="/">
                 <button type="button" className="cancelbtn">Cancel</button>
