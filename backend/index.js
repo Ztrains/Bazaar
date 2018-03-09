@@ -417,7 +417,7 @@ app.post("/recipes/save", (req, res) => {
 		return res.status(400).json({message: "No email specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$push:{savedRecipes:idToSave}}, {new:true}, (err, user) => {
+	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: idToSave}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -493,7 +493,7 @@ app.post("/recipes/updateVote", (req, res) => {
 		}
 		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 		
-		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new:true}, (err, user) => {
+		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new: true}, (err, user) => {
 			if (err) {
 				console.log('err:', err);
 			}
@@ -668,7 +668,7 @@ app.post('/calendar/update', (req, res) => {
 	let em = req.body.email;
 
 	let toSet = `calendar.${day}.${time}`;
-	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {calendar: {day: {time : id}}}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({$or: [{email: em}, {token: token}]}, {$set: {toSet: id}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
