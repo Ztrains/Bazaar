@@ -302,7 +302,7 @@ app.post("/profile/update_username", (req, res) => {
 
 app.post("/profile/updatePhoneNumber", (req, res) => {
 	let newPhone = req.body.phoneNumber;
-	let token = req.body.token;
+	let token = req.body.accessToken;
 	let email = req.body.email;
 	let usr = req.body.username;
 
@@ -326,7 +326,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 			return res.status(400).json({message: "User not found"});
 		}
 
-		return res.status(200).json({message: "Successfully updated username"});
+		return res.status(200).json({message: "Successfully updated phone number"});
 	});
 });
 
