@@ -74,12 +74,13 @@ export default class Login extends React.Component {
                           clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                           buttonText="Sign In with Google"
                           className="btn red darken-1"
+                          id = "googleBtn"
                           onSuccess={this.googSuccess}
                           onFailure={this.googFailure}
                         />
                         <br />
                       <Link to="/signup">
-                        <a type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
+                        <a id="signUpBtn" type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
                       </Link>
                 </div>
               </div>
