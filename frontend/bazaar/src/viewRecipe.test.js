@@ -10,12 +10,13 @@ beforeEach(() => {
     window.localStorage = global.localStorage;
 }); 
 
+/* If I can ever fix it this params issue
 
 it('Checking to make sure it  renders properly', () => {
     const wrapper = shallow(<ViewRecipe/>);
 });
 
-/*
+
 
 it('Checking comment box', () => {
     const wrapper = shallow(<ViewRecipe/>);
