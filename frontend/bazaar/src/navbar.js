@@ -52,7 +52,11 @@ export default class NavBar extends React.Component {
       <div>
         <nav>
           <div className="nav-wrapper red accent-2">
-          <ul id="nav-mobile" className="left">
+          <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
+          <ul className="left hide-on-med-and-down">
+            {link}
+          </ul>
+          <ul id="nav-mobile" className="side-nav">
             {link}
           </ul>
             <a href="/" className="brand-logo center">Bazaar</a>

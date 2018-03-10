@@ -3,17 +3,19 @@
 #img {
   width: 100%;
   position: absolute;
+
 }
 
-#center {
-  text-align: center;
+.headTitle {
   font-family: "Noto Sans";
   text-decoration-color: #3b3b3b;
   text-shadow: 2px 2px pink;
 }
 
 
-
+#noBtn {
+  margin-right: 5px;
+}
 
 
 

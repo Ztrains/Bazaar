@@ -70,12 +70,12 @@ export default class recipeEntry extends React.Component {
       addBut = '';
     }
     else {
-      addBut = <button id="favBtn" className="btn btn-success float-md-right" onClick={this.addFavorite}> Add to favorites</button>
+      addBut = <button id="favBtn" className="waves-effect waves-light btn red accent-2" onClick={this.addFavorite}> Add to favorites</button>
     }
     let button = '';
     console.log(this.props.deleteBut);
     if (this.props.deleteBut === true) {
-      button = <button onClick={() => {this.removeFav(this.props.id)}}>Delete</button>
+      button = <button className="waves-effect waves-light btn red accent-2" onClick={() => {this.removeFav(this.props.id)}}>Delete</button>
     }
     let opts = "";
     console.log(this.state.showCalOptions);
@@ -99,11 +99,11 @@ export default class recipeEntry extends React.Component {
                 <option value="lunch">Lunch</option>
                 <option value="dinner">Dinner</option>
               </Input>
-              <button id="mealAdderBtn" onClick={this.addMealToCal}>Add to Meal Calendar</button>
+              <button id="mealAdderBtn" className="waves-effect waves-light btn red accent-2" onClick={this.addMealToCal}>Add to Meal Calendar</button>
             </Row>
     }
     else {
-      opts = <button id="noBtn" className="btn btn-success float-md-right" onClick={this.showCalOpt}> Add to Meal Calendar</button>
+      opts = <button id="noBtn" className="waves-effect waves-light btn " onClick={this.showCalOpt}> Add to Meal Calendar</button>
     }
     return(
       <div className="container flex">
@@ -114,14 +114,16 @@ export default class recipeEntry extends React.Component {
 
               <div className="card-stacked">
                 <div className="card-content">
-                  <h3 className="card-title"><Link to={'/recipes/' + this.props.id}><b>{this.props.name}</b></Link></h3>
-                  <p>{this.props.description}</p>
+                  <h3><Link to={'/recipes/' + this.props.id}><b>{this.props.name}</b></Link></h3>
+                  <h5>{this.props.description}</h5>
 
                 </div>
                 <div className="card-action">
+                <div className="container center">
                   {opts}
                   {addBut}
                   {button}
+                </div>
 
                 </div>
               </div>
