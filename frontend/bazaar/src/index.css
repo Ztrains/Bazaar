@@ -12,25 +12,10 @@
   text-shadow: 2px 2px pink;
 }
 
-#stepInfo {
-  font-size: 16px;
-  width: 50%;
-  width: 370px;
 
-  color: black;
-  margin-left: 50px;
-}
 
-#quantField {
-  width: 50%;
-  font-size: 16px;
 
-  color: black;
-}
 
-#nameField {
-  font-size: 16px;
-}
 
 #shopListValue {
   width: 60%;
@@ -190,11 +175,6 @@ input[type=username]:focus, input[type=email]:focus, input[type=password]:focus 
   color: black;
 }
 
-.condensed {
-  font-family: "Roboto";
-  font-weight: 300;
-}
-
 hr {
   border-width: 0.01px 0 0 0;
   border-style: ridge;
@@ -209,4 +189,8 @@ hr {
 
 .disabled {
   margin-right: 5px;
+}
+
+#stepLister {
+  margin-top: 30px;
 }

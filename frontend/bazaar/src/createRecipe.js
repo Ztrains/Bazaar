@@ -184,90 +184,149 @@ export default class viewRecipe extends React.Component {
             </div>
             <hr />
             <br></br>
-        <label id="nameInput">Name</label>
-        <input type="text" placeholder="Enter Recipe Name" className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
-        <label id="descriptionInputH"><b>Description</b></label>
-        <input type="text" placeholder="Enter Description" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
-        <br></br>
-        <label> <b>Ingredients: </b></label>
-        <br></br>
-        {this.state.ingredients.map((ingredient, i) => {
-          return(
-          <div className="ingredientList" id="ingredientList">
-          <div className="arrange-horizontally">
-            <div className="input-field">
-            <input
-              type="text"
-              id="quantField"
-              placeholder="Enter Quantity"
-              value={ingredient.quantity}
-              onChange={this.handleQuantityChange(i)}
-            />
+            <div className="container center">
+              <div className="input-field">
+                <label id="nameInput">Name</label>
+                <input type="text"  className="form-control" id="titleInput" value={this.state.name} onChange={this.nameHandle}/>
+              </div>
+              <div className="input-field">
+                <label id="descriptionInputH"><b>Description</b></label>
+                <input type="text" className="form-control" id="descriptionInput" value={this.state.description} onChange={this.descriptionHandle}/>
+              </div>
             </div>
-            <div className="input-field">
-            <input
-               type="text"
-               id="nameField"
-               placeholder="Enter Next Ingredient"
-               value={ingredient.name}
-               onChange={this.handleIngredientChange(i)} />
+            <hr />
+            <div className="container">
+              <h4><b>Ingredients </b></h4>
+              <br />
             </div>
-             <button onClick={this.handleRemoveIngredient(i)} className="minusbtn" id="minusbtn">-</button>
-          </div>
-          </div>
-        )
-         })}
-         <br></br>
-         <button onClick={this.handleAddIngredient} id ="ingredientBtn" className="btnsmall">Add Ingredient</button>
-         <br></br><br></br>
-         <label> <b>Steps: </b></label>
-         <br></br>
+
+
+
+
+            {this.state.ingredients.map((ingredient, i) => {
+              return(
+            <div className="row">
+            <div className="container center" id="ingredientList">
+              <div className="col s4">
+                <div className="input-field">
+                    <label> <b>Ingredient </b></label>
+                  <input
+                    type="text"
+                    id="quantField"
+                    placeholder="Enter Quantity"
+                    value={ingredient.quantity}
+                    onChange={this.handleQuantityChange(i)}
+                    />
+                </div>
+              </div>
+              <div className="col s6">
+                <div className="input-field">
+                  <input
+                    type="text"
+                    id="nameField"
+                    placeholder="Enter Next Ingredient"
+                    value={ingredient.name}
+                    onChange={this.handleIngredientChange(i)} />
+                </div>
+              </div>
+              <div className="col s2">
+                <div className="input-field">
+                <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveIngredient(i)} id="minusbtn"><b>X</b></button>
+                </div>
+              </div>
+              </div>
+            </div>
+            )
+          })}
+          <div className="row">
+         <div className="container center">
+          <button onClick={this.handleAddIngredient} id ="ingredientBtn" className="waves-effect waves-light btn red accent-2"><b>Add Ingredient</b></button>
+        </div>
+
+        </div>
+        <hr />
+        <div className="container">
+          <h4><b>Steps </b></h4>
+          <br />
+        </div>
+
          {this.state.steps.map((step, i) => {
            return(
-           <div className="ingredientList2" id="ingredientList">
-           <div className="arrange-horizontally">
-           <div className="input-field">
-           <input
-                type="text"
-                placeholder="Enter Next Step"
-                id="stepInfo"
-                value={step.step}
-                onChange={this.handleStepChange(i)} />
+            <div className="row">
+              <div className="container" id="ingredientList">
+                <div className="col s1">
+
+                  <p id="stepLister">{i + 1}.</p>
+                </div>
+                <div className="col s9">
+                  <div className="input-field center">
+                     <label> <b>Step </b></label>
+                    <input
+                      type="text"
+
+                      id="stepInfo"
+                      value={step.step}
+                      onChange={this.handleStepChange(i)} />
+                  </div>
+                  </div>
+                  <div className="col s2">
+                    <div className="input-field center">
+                      <button onClick={this.handleRemoveStep(i)} className="waves-effect waves-light btn red accent-2" id="minusbtn"><b>X</b></button>
+                    </div>
+                  </div>
               </div>
-              <button onClick={this.handleRemoveStep(i)} className="minusbtn" id="minusbtn">-</button>
            </div>
-           </div>
+
          )
           })}
-          <br></br>
-          <button onClick={this.handleAddStep} id="stepBtn" className="btnsmall">Add Step</button>
-          <br></br>
-          <br></br>
-          <label id="servingSizeInputLabel"><b>Recommended Serving Size </b></label>
-          <input type="text" placeholder="Enter Recommended Serving Size" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
-          <br></br>
-          <label id="calorieInputLabel"><b>Calories per Serving </b></label>
-          <input type="text" placeholder="Enter Calories per Serving" id="caloriesInput" value={this.state.calories} onChange={this.calorieChangeHandle} />
-          <br></br>
-          <br></br>
-          <label id="preferencesInput"><b>Dish Tags</b></label>
-          <ul>
-            {this.state.preferences.map((prefValue, key) => (
-              <li id="pref">{prefValue}</li>
-            ))}
-            <Row>
-              <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
-                <option value=""></option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Gluten-Free">Gluten-Free</option>
-                <option value="Lactose-Free">Lactose-Free</option>
-                <option value="Low Carb">Low Carb</option>
-                <option value="Paleo">Paleo</option>
-              </Input>
-            </Row>
-          </ul>
-          <button id="createRecipeBtn" onClick={this.submit} className="btn-success">Create Recipe</button>
+          <div className="row">
+            <div className="container center">
+              <button onClick={this.handleAddStep} id="stepBtn" className="waves-effect waves-light btn red accent-2"><b>Add Step</b></button>
+            </div>
+          </div>
+          <hr />
+          <div className="container">
+            <h4><b>Additional Information </b></h4>
+            <br />
+          </div>
+          <div className="row">
+            <div className="container">
+              <div className="input-field">
+                <label id="servingSizeInputLabel"><b>Recommended Serving Size </b></label>
+                <input type="text" id="servingSizeInput" value={this.state.servingSize} onChange={this.servingChangeHandle} />
+              </div>
+              <div className="input-field">
+                <label id="calorieInputLabel"><b>Calories per Serving </b></label>
+                <input type="text" id="caloriesInput" onChange={this.calorieChangeHandle} />
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div className="container">
+            <label id="preferencesInput"><b>Dish Tags</b></label>
+            <ul>
+
+              {this.state.preferences.map((prefValue, key) => (
+                <a className="btn disabled">{prefValue}</a>
+              ))}
+              <Row>
+                <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
+                  <option value=""></option>
+                  <option value="Vegetarian">Vegetarian</option>
+                  <option value="Vegan">Vegan</option>
+                  <option value="Gluten-Free">Gluten-Free</option>
+                  <option value="Lactose-Free">Lactose-Free</option>
+                  <option value="Low Carb">Low Carb</option>
+                  <option value="Paleo">Paleo</option>
+                </Input>
+              </Row>
+            </ul>
+
+            </div>
+            <div className="container center">
+              <button id="createRecipeBtn" onClick={this.submit} className="waves-effect waves-light btn red accent-2">Create Recipe</button>
+            </div>
+
           <br></br>
           </div>
         </div>
