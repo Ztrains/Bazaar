@@ -4,14 +4,11 @@ import RecipeEntry from './recipeEntry.js';
 import localStorage from 'mock-local-storage';
 import { expect } from 'chai';
 
-
-
+describe("RecipeEntry Tests", () => {
     beforeEach(() => {
-        global.window = {};
+        global.window = {token:'686',email:'gaylord@cs.com'};
         window.localStorage = global.localStorage;
     }); 
-
-
 
     it("renders without crashing", () => {
         const wrapper = shallow(<RecipeEntry />);
@@ -36,7 +33,7 @@ import { expect } from 'chai';
         wrapper.find('#day').simulate('change', {target: {value: 'Monday'}});
         console.log(wrapper.state().dayValue);
         console.log(wrapper.state().timeValue);
-        wrapper.find('#mealAdderBtn').simulate('click');
         expect(wrapper.state().dayValue).equal('Monday');
         expect(wrapper.state().timeValue).equal('Lunch');
     });
+});

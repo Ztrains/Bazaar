@@ -32,6 +32,7 @@ it('button shows up after search box has stuff', () => {
 });
 
 //This test is still a work in progress
+/* Decided to test this function manuely 
 it ('goes to search page', () => {
   const wrapper = shallow(<NavBar />);
   const input = {
@@ -44,7 +45,7 @@ it ('goes to search page', () => {
   console.log(wrapper.state('searchBoxValue'));
   wrapper.find('#search').simulate('keypress', {key: 'Enter'});
   //expect(SearchPage.prototype.componentDidMount.calledOnce).toEqual(true);
-});
+});*/
 
 it ('does not render profile button is not logged in',() => {
   const wrapper = shallow(<NavBar />);

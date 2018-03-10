@@ -207,7 +207,7 @@ export default class viewRecipe extends React.Component {
         <Row>
                <h4>Select Day and Time</h4>
 
-                 <Input type='select' defaultValue='sunday' onChange={this.setDayValue} >
+                 <Input id="dayVal" type='select' defaultValue='sunday' onChange={this.setDayValue} >
                    <option value="sunday">Sunday</option>
                    <option value="monday">Monday</option>
                    <option value="tuesday">Tuesday</option>
@@ -218,7 +218,7 @@ export default class viewRecipe extends React.Component {
                  </Input>
 
 
-               <Input type='select' defaultValue='breakfast' onChange={this.setTimeValue} >
+               <Input id="timeVal" type='select' defaultValue='breakfast' onChange={this.setTimeValue} >
                  <option value="breakfast">Breakfast</option>
                  <option value="lunch">Lunch</option>
                  <option value="dinner">Dinner</option>
