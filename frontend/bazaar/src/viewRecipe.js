@@ -32,6 +32,7 @@ export default class viewRecipe extends React.Component {
           username: '',
           comment: '',
         } ],
+        upvotes: 0,
       },
       commentBox: '',
       commentList: [],
@@ -76,13 +77,16 @@ export default class viewRecipe extends React.Component {
       return;
     }
     let temp = this.state.votes;
-    this.setState({votes: temp + 1});
+    temp = temp + 1;
+    this.setState({votes: temp});
     this.setState({buttonDisabled: true});
     var Obj = {
-      voteCount: this.state.votes,
+      voteCount: temp,
       recipeId: this.props.match.params.id,
       accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
     }
+    console.log(Obj);
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
       console.log(result);
@@ -100,7 +104,7 @@ export default class viewRecipe extends React.Component {
     this.setState({votes: temp});
     this.setState({buttonDisabled: true});
     var Obj = {
-      voteCount: this.state.votes,
+      voteCount: temp,
       recipeId: this.props.match.params.id,
       vote: 'dislike'
     }
@@ -188,7 +192,7 @@ export default class viewRecipe extends React.Component {
             <h1><b>{this.state.recipe.name}</b></h1>
             <h3>{this.state.recipe.description}</h3>
             {this.state.prediction &&
-              <h6 style={{"font-family": "Noto Sans", color: "#ff5252"}}>We think that you may {this.state.prediction.toLowerCase()} this.</h6> 
+              <h6 style={{"font-family": "Noto Sans", color: "#ff5252"}}>We think that you may {this.state.prediction.toLowerCase()} this.</h6>
             }
           </div>
         </div>
@@ -262,7 +266,7 @@ export default class viewRecipe extends React.Component {
                <button className="btn waves-effect waves-light red accent-2" style={{"margin-top": "15px"}} onClick={this.addMealToCal}><b>Add to Meal Calendar</b></button>
               </div>
              </div>
-        
+
         <div className="center">
         <YouTube
           videoId={this.state.recipe.videoId}

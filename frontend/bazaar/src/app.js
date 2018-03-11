@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import NavBar from './navbar.js';
-
+import axios from 'axios';
 import RecipeViwer from './recipeViewer.js';
 import RecipeEntry from './recipeEntry.js';
 import SignIn from './signin.js';
@@ -43,6 +43,17 @@ export default class App extends React.Component {
     }
     this.setState({loggedIn: false});
     this.setState({loggedInUser: ''});
+    var Obj = {
+      username: window.sessionStorage.getItem('loggedInName'),
+    };
+    axios.post("https://bazaar-408.herokuapp.com/logout", Obj)
+    .then(function(result) {
+      console.log(result);
+      window.Materialize.toast("Logout successfull", 1500);
+    })
+    .catch(function(error) {
+      window.Materialize.toast("Logout unsuccessful", 1500);
+    });
     window.sessionStorage.removeItem('loggedInName');
     window.sessionStorage.removeItem('token');
     history.push('/');
