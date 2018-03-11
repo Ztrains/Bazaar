@@ -612,8 +612,6 @@ app.post("/recipes/updateVote", (req, res) => {
 
 			return res.status(200).json({message: "Success", data: recipe});
 		});
-
-		return res.status(200).json({message: "Success", data: recipe});
 	});
 });
 
