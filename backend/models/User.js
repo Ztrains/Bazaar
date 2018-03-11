@@ -26,6 +26,7 @@ var UserSchema = new mongoose.Schema({
         recipeName: String,
         recipeDescription: String,
     }],
+    votedRecipes: [String],
     mlDishData: [[Number]],
     mlDishRatings: [String],
     preferences: [String],

@@ -151,6 +151,7 @@ app.post("/auth/signup", (req, res) => {
 				googleId: req.body.userObj.googleId,
 				imageUrl: req.body.userObj.imageUrl,
 				token: req.body.accessToken,
+				votedRecipes: [],
 				calendar: {
 					sunday: {
 						breakfast: {
@@ -601,7 +602,7 @@ app.post("/recipes/updateVote", (req, res) => {
 
 		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 		console.log("DISH DATA: " + dishData);
-		User.findOneAndUpdate({username: usrname}, {$push: {mlDishRatings: req.body.vote, mlDishData: [dishData]}}, {safe: true, upsert: true, new: true}, (err, user) => {
+		User.findOneAndUpdate({username: usrname}, {$push: {mlDishRatings: req.body.vote, mlDishData: [dishData], votedRecipes: req.body.recipeId}}, {safe: true, upsert: true, new: true}, (err, user) => {
 			if (err) {
 				return res.status(500).json({message: "Internal server error"});
 			}
@@ -816,8 +817,12 @@ app.post("/recipes/:id", (req, res) => {
 					
 					var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 					var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
-
-					return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
+					var voted = user.votedRecipes.indexOf(req.params.id);
+					if (voted === -1) {
+						return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction, voted: false});
+					} else {
+						return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction, voted: true});
+					}
 				});
 			}
 		});

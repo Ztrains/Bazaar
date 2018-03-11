@@ -37,6 +37,7 @@ export default class viewRecipe extends React.Component {
       dayValue: '',
       timeValue: '',
       prediction: '',
+      voted: false,
     };
     this.upvote = this.upvote.bind(this);
     this.downvote = this.downvote.bind(this);
@@ -55,6 +56,9 @@ export default class viewRecipe extends React.Component {
       //_this.setState({ml: result.data.ml});
       if (result.data.ml) {
         _this.setState({prediction: result.data.ml});
+      }
+      if (result.data.voted) {
+        _this.setState({voted: result.data.voted});
       }
     })
     .catch((err) => {
@@ -80,6 +84,7 @@ export default class viewRecipe extends React.Component {
     temp = temp + 1;
     this.setState({votes: temp});
     this.setState({buttonDisabled: true});
+    this.setState({voted: true});
     var Obj = {
       voteCount: temp,
       vote: "like",
@@ -98,7 +103,6 @@ export default class viewRecipe extends React.Component {
 
   }
   downvote() {
-
     if (window.sessionStorage.getItem('loggedInName') === null) {
       window.Materialize.toast("You need to be logged in", 1500);
       return;
@@ -110,6 +114,7 @@ export default class viewRecipe extends React.Component {
     temp = temp - 1;
     this.setState({votes: temp});
     this.setState({buttonDisabled: true});
+    this.setState({voted: true});
     var Obj = {
       voteCount: temp,
       vote: "dislike",
@@ -195,9 +200,13 @@ export default class viewRecipe extends React.Component {
             round
           />
           </FacebookShareButton>
-          <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled}><b>I like it!</b></button>
+          <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled || this.state.voted}><b>I like it!</b></button>
           <p className="count">{this.state.votes}</p>
+<<<<<<< HEAD
           <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled}><b>Eh, no.</b></button>
+=======
+          <button className="btn red accent-2 waves-effect waves-light" style={{"margin-top": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled || this.state.voted}><b>Eh, no.</b></button>
+>>>>>>> 0cfa5b776584be3a088e2c3c22b499db4ce328d5
           </div>
           <div className="row center">
             <h1><b>{this.state.recipe.name}</b></h1>
