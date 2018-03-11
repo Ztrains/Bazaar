@@ -804,34 +804,35 @@ app.post("/recipes/:id", (req, res) => {
 					
 					return res.status(200).json({message: "Success without ML", data: recipe});
 				});
-			}
-			Recipe.findOne({_id: req.params.id}, (err, recipe) => {
-				if (err) {
-					return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
-				}
-				if (!recipe) {
-					return res.status(400).json({message: "No recipe found"});
-				}
-				
-				// var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-				// var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
-				var prediction = "possibly enjoy";
+			} else {
+				Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+					if (err) {
+						return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+					}
+					if (!recipe) {
+						return res.status(400).json({message: "No recipe found"});
+					}
+					
+					var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+					var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+					// var prediction = "possibly enjoy";
 
-				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
-			});
+					return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
+				});
+			}
+		});
+	} else {
+		Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+			}
+			if (!recipe) {
+				return res.status(400).json({message: "No recipe found"});
+			}
+			
+			return res.status(200).json({message: "Success without ML", data: recipe});
 		});
 	}
-
-	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
-		}
-		if (!recipe) {
-			return res.status(400).json({message: "No recipe found"});
-		}
-		
-		return res.status(200).json({message: "Success without ML", data: recipe});
-	});
 });
 
 //sent obj with day as string (e.g. 'Monday'), meal as string (e.g. "breakfast"), 
