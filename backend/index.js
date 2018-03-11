@@ -813,9 +813,10 @@ app.post("/recipes/:id", (req, res) => {
 					return res.status(400).json({message: "No recipe found"});
 				}
 				
-				var dishData = setTimeout(ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags), 3000);
-				var prediction = setTimeout(ml.predict(user.mlDishData, user.mlDishRatings, dishData), 3000);
-				
+				// var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+				// var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+				var prediction = "possibly enjoy";
+
 				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
 			});
 		});
