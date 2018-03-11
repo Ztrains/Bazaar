@@ -202,7 +202,7 @@ export default class viewRecipe extends React.Component {
           </FacebookShareButton>
           <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled || this.state.voted}><b>I like it!</b></button>
           <p className="count">{this.state.votes}</p>
-          <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled}><b>Eh, no.</b></button>
+          <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled || this.state.voted}><b>Eh, no.</b></button>
           </div>
           <div className="row center">
             <h1><b>{this.state.recipe.name}</b></h1>
