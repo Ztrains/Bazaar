@@ -38,9 +38,7 @@ export default class RecipeViewer extends React.Component {
   }
   render() {
     return(
-      <div>
-
-
+      <div class="container">
         <div className="card">
           {this.state.list.map((item, index) => {
             return <RecipeEntry name={item.name} />
