@@ -600,7 +600,7 @@ app.post("/recipes/updateVote", (req, res) => {
 		}
 
 		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-		
+		console.log("ML VOTE: " + req.body.vote);
 		User.findOneAndUpdate({username: usrname}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new: true}, (err, user) => {
 			if (err) {
 				return res.status(500).json({message: "Internal server error"});
