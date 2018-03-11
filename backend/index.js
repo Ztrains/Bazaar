@@ -793,34 +793,44 @@ app.post("/recipes/:id", (req, res) => {
 				return res.status(500).json({message: "Internal server error. Unable to process user find"});
 			}
 			if (!user) {
-				console.log('no user found')
-				// return res.status(400).json({message: "No user found"});
+				console.log('NO USER FOUND')
+				Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+					if (err) {
+						return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+					}
+					if (!recipe) {
+						return res.status(400).json({message: "No recipe found"});
+					}
+					
+					return res.status(200).json({message: "Success without ML", data: recipe});
+				});
 			} else {
-				currentUser = user;
+				Recipe.findOne({_id: req.params.id}, (err, recipe) => {
+					if (err) {
+						return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+					}
+					if (!recipe) {
+						return res.status(400).json({message: "No recipe found"});
+					}
+					
+					var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
+					var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
+					
+					return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
+				});
 			}
 		});
 	}
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
-			if (err) {
-				return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
-			}
-			if (!recipe) {
-				return res.status(400).json({message: "No recipe found"});
-			}
-			
-			// console.log(recipe);
-			// console.log(`\nCURRENTUSER IS ${currentUser}\n`)
-			if (currentUser) {
-				var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
-				var prediction = ml.predict(currentUser.mlDishData, currentUser.mlDishRatings, dishData);
-				
-				return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
-			}
-			else {
-				return res.status(200).json({message: "Success without ML", data: recipe});
-			}
-
+		if (err) {
+			return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
+		}
+		if (!recipe) {
+			return res.status(400).json({message: "No recipe found"});
+		}
+		
+		return res.status(200).json({message: "Success without ML", data: recipe});
 	});
 });
 
