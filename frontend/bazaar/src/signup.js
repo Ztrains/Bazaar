@@ -57,6 +57,8 @@ export default class Signup extends React.Component {
         _this.props.logInCallBack(_this.state.username, _this.state.accessTok, _this.state.userObj.email);
         history.push('/profile/' + _this.state.username);
       }
+      }).catch((err) => {
+		    window.Materialize.toast("Failed. Try again", 1500);        
       });
   }
     //logon();

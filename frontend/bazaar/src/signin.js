@@ -50,6 +50,8 @@ export default class Login extends React.Component {
       _this.props.logInCallBack(result.data.username, _this.state.accessToken, _this.state.email);
       history.push('/profile/' + result.data.username);
     }
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
   }
   googleFailure = (responce) => {

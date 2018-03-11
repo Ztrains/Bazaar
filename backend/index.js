@@ -778,7 +778,6 @@ app.post("/profile/:username", (req, res) => {
 });
 
 app.post("/recipes/:id", (req, res) => {
-	let token = req.body.accessToken;
 	let usrname = req.body.username;
 	let currentUser;
 
@@ -788,17 +787,19 @@ app.post("/recipes/:id", (req, res) => {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
-	User.findOne(({username: usrname}), (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error. Unable to process user find"});
-		}
-		if (!user) {
-			//console.log('no user found')
-			return res.status(400).json({message: "No user found"});
-		}
-
-		currentUser = user;
-	});
+	if (usrname) {
+		User.findOne(({username: usrname}), (err, user) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error. Unable to process user find"});
+			}
+			if (!user) {
+				console.log('no user found')
+				// return res.status(400).json({message: "No user found"});
+			} else {
+				currentUser = user;
+			}
+		});
+	}
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {

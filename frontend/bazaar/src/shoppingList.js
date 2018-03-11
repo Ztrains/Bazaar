@@ -24,7 +24,9 @@ export default class shoppingList extends React.Component {
     .then(function(result) {
       console.log(result.data.data);
       _this.setState({List: result.data.data});
-    })
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
+    });
     //get user list
   }
   handleRemoveItem = (key) => () => {
@@ -75,7 +77,9 @@ export default class shoppingList extends React.Component {
       else {
         window.Materialize.toast("A problem occured. Please try again", 1500);
       }
-    })
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
+    });
   }
   render() {
     return(

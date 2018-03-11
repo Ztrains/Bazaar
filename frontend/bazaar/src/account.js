@@ -40,17 +40,20 @@ export default class accountPage extends React.Component {
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/" + this.props.match.params.username, Obj)
     .then(function(results) {
-      console.log(results);
-      _this.setState({
-        username: results.data.user.username,
-        email: results.data.user.email,
-        phoneNum: results.data.user.phoneNumber,
-        emailDayPref: results.data.user.contact.frequency,
-        transportMethod: results.data.user.contact.method,
-        savedRecipes: results.data.user.savedRecipes,
-        userObj: results.data.user,
+        console.log(results);
+        _this.setState({
+          username: results.data.user.username,
+          email: results.data.user.email,
+          phoneNum: results.data.user.phoneNumber,
+          emailDayPref: results.data.user.contact.frequency,
+          transportMethod: results.data.user.contact.method,
+          savedRecipes: results.data.user.savedRecipes,
+          userObj: results.data.user,
+        });
+      })
+      .catch((error) => {
+        window.Materialize.toast("Failed. Try again", 1500);
       });
-    });
   }
   changeTransportMethod = (event) => {
     this.setState({transportMethod: event.target.value});
@@ -71,8 +74,11 @@ export default class accountPage extends React.Component {
     //send to database
     axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
-      window.Materialize.toast("Dish preferences successfully updated", 2000);
+      window.Materialize.toast("Dish preferences successfully updated", 1500);
     })
+    .catch((error) => {
+      window.Materialize.toast("Failed. Try again", 1500);
+    });
   };
   handleNameChange(event) {
 
@@ -88,6 +94,7 @@ export default class accountPage extends React.Component {
       phoneNum: event.target.value
     });
   }
+  
   changeNameButtonActivate() {
     if (this.state.newName === '' || this.state.newName === " ") {
       window.Materialize.toast("nothing has been written in input box", 1500);
@@ -118,7 +125,11 @@ export default class accountPage extends React.Component {
         history.push('/profile/' + window.sessionStorage.getItem('loggedInName'));
       }
     })
+    .catch((error) => {
+      window.Materialize.toast("Failed. Try again");
+    });
   }
+  
   changePhoneButtonActivate = () => {
     if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
       window.Materialize.toast("nothing has been written in input box", 1500);
@@ -154,12 +165,17 @@ export default class accountPage extends React.Component {
       else {
         window.Materialize.toast("username successfully changed", 1500);
       }
+    })
+    .catch((err) => {
+      window.Materialize.toast("Failed. Try again", 1500);
     });
   }
+  
   changeemailDayPref = (event) => {
     this.setState({emailDayPref: event.target.value});
     //send to database
   }
+
   deletePref = () => {
     var list = this.state.preferences;
     list.splice(list.length - 1, 1);
@@ -172,9 +188,13 @@ export default class accountPage extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
       window.Materialize.toast("Dish preferences successfully updated", 1500);
+    })
+    .catch((err) => {
+      window.Materialize.toast("Failed. Try again", 1500);
     });
 
   }
+
   removeFavorite(id) {
     var list = this.state.savedRecipes;
     /*if (list.length === 1) {
@@ -201,7 +221,11 @@ export default class accountPage extends React.Component {
       console.log(result);
       window.Materialize.toast('Recipe successfully removed', 1500);
     })
+    .catch((err) => {
+      window.Materialize.toast("Failed. Try again", 1500);
+    });
   }
+
   render() {
     let defaultMessage = "";
     if (this.state.savedRecipes.length === 0) {
