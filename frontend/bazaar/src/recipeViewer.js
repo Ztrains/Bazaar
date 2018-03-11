@@ -24,6 +24,8 @@ export default class RecipeViewer extends React.Component {
         list: result.data,
       });
     }
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
   }
   createList() {

@@ -33,6 +33,8 @@ export default class SearchPage extends React.Component {
       }
       _this.setState({resultsList: result.data.data});
       console.log(_this.state.resultsList);
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
     //make database search call
   }

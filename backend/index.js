@@ -509,11 +509,11 @@ app.post("/profile/update_dish_prefs", (req, res) => {
 	return res.json({"name": "Test User", "email_alerts": "true", "text_alerts": "false", "email": "test@test.org"});
 });*/
 
-app.get("/recipes", (req, res) => {
-	// For now we're just reading and returning recipes from a JSON file
-	// In the future, add recipes to DB and work with it from there
-	return res.json(parsed_recipes);
-});
+// app.get("/recipes", (req, res) => {
+// 	// For now we're just reading and returning recipes from a JSON file
+// 	// In the future, add recipes to DB and work with it from there
+// 	return res.json(parsed_recipes);
+// });
 
 app.post("/recipes/save", (req, res) => {
 	// Saves a recipe into a user's favorites based on recipe ID
@@ -529,8 +529,15 @@ app.post("/recipes/save", (req, res) => {
 	if (!userEmail) {
 		return res.status(400).json({message: "No email specified in request"});
 	}
+	if (!nameToSave) {
+		return res.status(400).json({message: "No recipe name in request"});
+	}
+	if (!descToSave) {
+		return res.status(400).json({message: "No recipe description in request"});
+	}
 
-	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: nameToSave, recipeDescription: descToSave}}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: nameToSave, recipeDescription: descToSave}}}, 
+		{new: true}, (err, user) => {
 		if (err) {
 			console.log("ERR:", err)
 			return res.status(500).json({message: "Internal server error"});
@@ -539,12 +546,11 @@ app.post("/recipes/save", (req, res) => {
 			return res.status(400).json({ message: "User not found 9"});
 		}
 
-		return res.status(200).json({message: "Success", data: user});
-	})
+		return res.status(200).json({message: "Success"});
+	});
 });
 
 app.post("/recipes/remove", (req, res) => {
-
 	let newRecipes = req.body.savedRecipes;
 	let userEmail = req.body.userEmail;
 
@@ -568,7 +574,8 @@ app.post("/recipes/remove", (req, res) => {
 });
 
 app.post("/recipes/updateVote", (req, res) => {
-	let token = req.body.token;
+	let token = req.body.accessToken;
+	let usrname = req.body.username;
 	var currentUser;
 
 	if (!req.body.voteCount) {
@@ -577,24 +584,30 @@ app.post("/recipes/updateVote", (req, res) => {
 	if (!req.body.recipeId) {
 		return res.status(400).json({message: "No recipe ID specified"});
 	}
+	if (!req.body.username) {
+		return res.status(400).json({message: "No username specified in request"});
+	}
 
-	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: req.body.voteCount}}, {new: true}, (err, recipe) => {
+	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: parseInt(req.body.voteCount)}}, {new: true}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
 		if (!recipe) {
 			return res.status(400).json({message: "Recipe not found"});
 		}
+
 		var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 		
-		User.findOneAndUpdate({token: token}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new: true}, (err, user) => {
+		User.findOneAndUpdate({username: usrname}, {$push: {mlDishRatings: req.body.vote, mlDishData: dishData}}, {new: true}, (err, user) => {
 			if (err) {
-				console.log('err:', err);
+				return res.status(500).json({message: "Internal server error"});
 			}
 			if (!user) {
-				console.log('no user found');
+				return res.status(400).json({message: "User not found"});
 			}
 			currentUser = user;
+
+			return res.status(200).json({message: "Success", data: recipe});
 		});
 
 		return res.status(200).json({message: "Success", data: recipe});
@@ -682,15 +695,31 @@ app.post("/search", (req, res) => {
 			console.log(err);
 			return res.status(500).json({message: "Internal server error"});
 		}
+		if (!recipes) {
+			return res.status(400).json({message: "No recipes found"});
+		}
 
 		return res.status(200).json({message: "Success", data: recipes});
 	});
 });
 
-app.get("/logout", (req, res) => {
+app.post("/logout", (req, res) => {
+	let usrname = req.body.username;
+	if (!usrname) {
+		return res.status(400).json({message: "Missing username in request"});
+	}
 	req.logout();
 	req.session = null;
-	res.redirect("/");
+	User.findOneAndUpdate({username: usrname}, {token: ""}, {new: true}, (err, user) => {
+		if (err) {
+			return res.status(500).json({message: "Internal server error"});
+		}
+		if (!user) {
+			return res.status(400).json({message: "No user found"});
+		}
+
+		return res.status(200).json({message: "Successfully logged out"});
+	});
 });
 
 app.get('/email/test', (req,res) => {
@@ -749,7 +778,6 @@ app.post("/profile/:username", (req, res) => {
 });
 
 app.post("/recipes/:id", (req, res) => {
-	let token = req.body.accessToken;
 	let usrname = req.body.username;
 	let currentUser;
 
@@ -759,17 +787,19 @@ app.post("/recipes/:id", (req, res) => {
 		return res.status(400).json({message: "Missing recipe ID"});
 	}
 
-	User.findOne(({username: usrname}), (err, user) => {
-		if (err) {
-			return res.status(500).json({message: "Internal server error. Unable to process user find"});
-		}
-		if (!user) {
-			//console.log('no user found')
-			return res.status(400).json({message: "No user found"});
-		}
-
-		currentUser = user;
-	});
+	if (usrname) {
+		User.findOne(({username: usrname}), (err, user) => {
+			if (err) {
+				return res.status(500).json({message: "Internal server error. Unable to process user find"});
+			}
+			if (!user) {
+				console.log('no user found')
+				// return res.status(400).json({message: "No user found"});
+			} else {
+				currentUser = user;
+			}
+		});
+	}
 
 	Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 			if (err) {

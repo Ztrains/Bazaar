@@ -61,6 +61,9 @@ export default class viewRecipe extends React.Component {
         _this.setState({prediction: result.data.ml});
       }
     })
+    .catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
+    });
     //get recipe from id passed in through path
   }
   setTimeValue = (event) => {
@@ -90,6 +93,9 @@ export default class viewRecipe extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
       console.log(result);
+    })
+    .catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
     //send to server
     return;
@@ -111,6 +117,8 @@ export default class viewRecipe extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
       console.log(result);
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
     return;
     //send this to server
@@ -129,11 +137,15 @@ export default class viewRecipe extends React.Component {
      comment: this.state.commentBox,
      accessToken:window.sessionStorage.getItem('token'),
    };
+   
    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
    .then(function(result) {
      console.log(result);
      window.Materialize.toast("Submitted your comment", 1500);
+   }).catch((err) => {
+		window.Materialize.toast("Failed. Try again", 1500);    
    });
+
    var list = this.state.commentList;
    var newObj = {
      username: window.sessionStorage.getItem('loggedInName'),
@@ -159,7 +171,9 @@ export default class viewRecipe extends React.Component {
      axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
      .then(function(result) {
        console.log(result);
-     })
+     }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
+     });
 
 
  }

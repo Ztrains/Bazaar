@@ -31,6 +31,8 @@ export default class recipeEntry extends React.Component {
     .then(function(result) {
       console.log(result);
       window.Materialize.toast('Successfully saved to Favorites', 1500);
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
     });
 
   }
@@ -62,7 +64,9 @@ export default class recipeEntry extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
     .then(function(result) {
       console.log(result);
-    })
+    }).catch((err) => {
+		  window.Materialize.toast("Failed. Try again", 1500);      
+    });
   }
   render() {
     let addBut = '';

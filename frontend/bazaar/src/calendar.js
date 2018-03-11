@@ -143,7 +143,10 @@ export default class Calendar extends React.Component {
       console.log(result);
       _this.setState({calendar: result.data.calendar});
 
-    })
+	})
+	.catch((err) => {
+		window.Materialize.toast("Failed. Try again", 1500);
+	});
   }
   render() {
     return(
