@@ -119,7 +119,14 @@ export default class viewRecipe extends React.Component {
     newList.push(this.state.value);
     this.setState({preferences: newList});
   }
-
+  removeTag = () => {
+    if (this.state.preferences.length === 0) {
+      return;
+    }
+    var list = this.state.preferences;
+    list.splice(list.length - 1, 1);
+    this.setState({preferences: list});
+  }
   submit = () => {
     if (this.state.name.length < 1) {
       window.Materialize.toast("recipe must have name", 1500);
@@ -231,7 +238,7 @@ export default class viewRecipe extends React.Component {
               </div>
               <div className="col s2">
                 <div className="input-field">
-                <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveIngredient(i)} id="minusbtn"><b>X</b></button>
+                  <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveIngredient(i)} id="minusbtn"><b>X</b></button>
                 </div>
               </div>
               </div>
@@ -309,17 +316,20 @@ export default class viewRecipe extends React.Component {
               {this.state.preferences.map((prefValue, key) => (
                 <a className="btn disabled">{prefValue}</a>
               ))}
-              <Row>
-                <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
-                  <option value=""></option>
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
-                  <option value="Gluten-Free">Gluten-Free</option>
-                  <option value="Lactose-Free">Lactose-Free</option>
-                  <option value="Low Carb">Low Carb</option>
-                  <option value="Paleo">Paleo</option>
-                </Input>
-              </Row>
+                <Row>
+                  <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
+                    <option value=""></option>
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Vegan">Vegan</option>
+                    <option value="Gluten-Free">Gluten-Free</option>
+                    <option value="Lactose-Free">Lactose-Free</option>
+                    <option value="Low Carb">Low Carb</option>
+                    <option value="Paleo">Paleo</option>
+                  </Input>
+                </Row>
+              <div className="row">
+                <button className="waves-effect waves-light btn red accent-2" onClick={this.removeTag}>Remove Last Tag</button>
+              </div>
             </ul>
 
             </div>
