@@ -223,7 +223,7 @@ export default class accountPage extends React.Component {
                     <div className="col s9">
                       <div className="input-field">
                         <input type="text" id="username" value={this.state.newName} onChange={this.handleNameChange}/>
-                        <label for="username">Change username</label>
+                        <label for="username">Change Username</label>
                       </div>
                     </div>
                     <div className="col s3 button-column">
@@ -234,7 +234,7 @@ export default class accountPage extends React.Component {
                     <div className="col s9">
                       <div className="input-field">
                         <input type="tel" id="tel" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
-                        <label for="tel">Change Username</label>
+                        <label for="tel">Change Phone Number</label>
                       </div>
                     </div>
                     <div className="col s3 button-column">

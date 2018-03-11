@@ -37,7 +37,7 @@ export default class viewRecipe extends React.Component {
       commentList: [],
       dayValue: '',
       timeValue: '',
-      ml: {},
+      prediction: '',
     };
     this.upvote = this.upvote.bind(this);
     this.downvote = this.downvote.bind(this);
@@ -54,8 +54,11 @@ export default class viewRecipe extends React.Component {
       console.log(result.data.data);
       _this.setState({recipe: result.data.data});
       _this.setState({votes: result.data.data.upvotes});
-      _this.setState({commentList: result.data.data.comments})
+      _this.setState({commentList: result.data.data.comments});
       //_this.setState({ml: result.data.ml});
+      if (result.data.ml) {
+        _this.setState({prediction: result.data.ml});
+      }
     })
     //get recipe from id passed in through path
   }
@@ -125,6 +128,7 @@ export default class viewRecipe extends React.Component {
    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
    .then(function(result) {
      console.log(result);
+     window.Materialize.toast("Submitted your comment", 1500);
    });
    var list = this.state.commentList;
    var newObj = {
@@ -158,26 +162,17 @@ export default class viewRecipe extends React.Component {
   render() {
     let button = '';
     if (this.state.commentBox.length > 0) {
-      button=<Button waves='light' onClick={this.addComment}>Submit</Button>
+      button=<a className="btn waves-effect waves-light red accent-2" onClick={this.addComment}><b>Submit</b></a>
     }
     return(
-
       <div className="container">
-        <p>image can go here</p>
-        <p>We think you may {} this</p>
-        <div className="arrange-horizontally">
-          <div className="arrange-vertically">
-          <button className="up" onClick={this.upvote} disabled={this.state.buttonDisabled}>&and;</button>
-          <p className="count">{this.state.votes}</p>
-          <button className="down" onClick={this.downvote} disabled={this.state.buttonDisabled}>&or;</button>
-          </div>
-          <div className="arrange-vertically" id="left">
-          <h1 id="a">{this.state.recipe.name}</h1>
-          <h2 id="b">{this.state.recipe.description}</h2>
-          </div>
-        </div>
-        <br></br>
-        <FacebookShareButton
+        <div className="row">
+          <div className="col s12">
+            <div className="card-panel">
+        {/* <p>image can go here</p> */}
+        <div>
+          <div className="center">
+          <FacebookShareButton
           url={window.location.href}
           quote="Look at this tasty recipe!!">
           <FacebookIcon
@@ -185,28 +180,69 @@ export default class viewRecipe extends React.Component {
             round
           />
           </FacebookShareButton>
+          <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled}><b>I like it!</b></button>
+          <p className="count">{this.state.votes}</p>
+          <button className="btn red accent-2 waves-effect waves-light" style={{"margin-top": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled}><b>Eh, no.</b></button>
+          </div>
+          <div className="row center">
+            <h1><b>{this.state.recipe.name}</b></h1>
+            <h3>{this.state.recipe.description}</h3>
+            {this.state.prediction &&
+              <h6 style={{"font-family": "Noto Sans", color: "#ff5252"}}>We think that you may {this.state.prediction.toLowerCase()} this.</h6> 
+            }
+          </div>
+        </div>
+        <hr />
+        <div className="row">
+          <div className="col s12">
+            <h4><b>Ingredients</b></h4>
+            <ul>
+            {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
+              <li className="steps"><b>{key + 1}</b>: {prefValue.quantity} {prefValue.name}</li>
+            ))}
+            </ul>
+          </div>
+        </div>
+        <hr />
 
-        <ul>
-        {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
-          <li>{key + 1}: {prefValue.quantity} {prefValue.name}</li>
-        ))}
-        </ul>
-        <ul>
-        {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
-          <li>Step {key + 1}: {prefValue.step}</li>
-        ))}
-        </ul>
-        <ul>
-        {this.state.recipe && this.state.recipe.tags.map((prefValue, key) => (
-          <li>{prefValue}</li>
-        ))}
-        </ul>
-        <p>{this.state.recipe.servingSize}</p>
-        <p>{this.state.recipe.calories}</p>
+        <div className="row">
+          <div className="col s12">
+            <h4><b>Steps</b></h4>
+            <ul>
+            {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
+              <li className="steps"><b>Step {key + 1}</b>: {prefValue.step}</li>
+            ))}
+            </ul>
+          </div>
+        </div>
+        <hr />
 
-        <Row>
-               <h4>Select Day and Time</h4>
+        <div className="row">
+          <div className="col s12">
+            <h4><b>Tags</b></h4>
+            <ul>
+            {this.state.recipe && this.state.recipe.tags.map((prefValue, key) => (
+              <li><a className="btn disabled">{prefValue}</a></li>
+            ))}
+            </ul>
+          </div>
+        </div>
+        <hr />
 
+        <div className="row">
+          <div className="col s12">
+            <h4><b>Other Information</b></h4>
+            <p className="steps"><b>Serving Size</b>: {this.state.recipe.servingSize} servings</p>
+            <p className="steps"><b>Calories</b>: {this.state.recipe.calories}</p>
+            <p className="steps">Created by user <b>{this.state.recipe.createdBy}</b></p>
+          </div>
+        </div>
+        <hr />
+
+
+        <div className="row">
+            <div className="col s12">
+               <h4><b>Select Day and Time</b></h4>
                  <Input id="dayVal" type='select' defaultValue='sunday' onChange={this.setDayValue} >
                    <option value="sunday">Sunday</option>
                    <option value="monday">Monday</option>
@@ -223,28 +259,36 @@ export default class viewRecipe extends React.Component {
                  <option value="lunch">Lunch</option>
                  <option value="dinner">Dinner</option>
                </Input>
-               <button onClick={this.addMealToCal}>Add to Meal Calendar</button>
-             </Row>
-
+               <button className="btn waves-effect waves-light red accent-2" style={{"margin-top": "15px"}} onClick={this.addMealToCal}><b>Add to Meal Calendar</b></button>
+              </div>
+             </div>
+        
+        <div className="center">
         <YouTube
           videoId={this.state.recipe.videoId}
           opts={{height: '480', width:'720',playerVars:{autoplay: 0}}}
           onReady={this._onReady}
         />
-        <br/><br/>
-        <div className="input-field">
-          <input type="text" placeholder="Leave a public review/comment..." value={this.state.commentBox} onChange={this.handleCommentChange}/>
-          {button}
         </div>
-        {this.state.recipe && this.state.recipe.comments.map((obj, key) => (
-          <div id="commentCard" className="card">
-            <div className="card-content">
-              <div id="commentBlock">
-                <h5>{obj.username} said:  </h5>
-                <p>{obj.comment}</p>
-              </div>
+
+        <hr />
+        <div className="row">
+          <div className="col s12">
+            <h4><b>Comments</b></h4>
+            <div className="input-field">
+              <input type="text" id="commentField" value={this.state.commentBox} onChange={this.handleCommentChange}/>
+              <label for="commentField">Leave a comment for {this.state.recipe.name}</label>
+              {button}
             </div>
-          </div>
+            {this.state.recipe && this.state.recipe.comments.map((obj, key) => (
+              <div id="commentCard" className="card">
+                <div className="card-content">
+                  <div id="commentBlock">
+                    <h5>{obj.username} said:  </h5>
+                    <p>{obj.comment}</p>
+                  </div>
+                </div>
+              </div>
         ))}
         {/*{this.state.recipe.comments.map((obj, key) => (
           <div id="commentBlock">
@@ -252,7 +296,11 @@ export default class viewRecipe extends React.Component {
             <h4>{obj.comment}</h4>
           </div>
         ))}*/}
-        <p>Created by {this.state.recipe.createdBy}</p>
+        </div>
+        </div>
+      </div>
+      </div>
+      </div>
       </div>
     );
   }

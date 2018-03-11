@@ -12,12 +12,9 @@
   text-shadow: 2px 2px pink;
 }
 
-
 #noBtn {
   margin-right: 5px;
 }
-
-
 
 #shopListValue {
   font-size: 18px;
@@ -191,4 +188,8 @@ hr {
 
 #stepLister {
   margin-top: 30px;
+}
+
+.steps {
+  font-size: 1.2em;
 }
