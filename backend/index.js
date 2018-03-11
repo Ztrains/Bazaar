@@ -588,7 +588,7 @@ app.post("/recipes/updateVote", (req, res) => {
 		return res.status(400).json({message: "No username specified in request"});
 	}
 
-	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: req.body.voteCount}}, {new: true}, (err, recipe) => {
+	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: parseInt(req.body.voteCount)}}, {new: true}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
