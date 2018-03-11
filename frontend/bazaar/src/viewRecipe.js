@@ -62,7 +62,7 @@ export default class viewRecipe extends React.Component {
       }
     })
     .catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
     //get recipe from id passed in through path
   }
@@ -76,6 +76,10 @@ export default class viewRecipe extends React.Component {
   }
   upvote()  {
     console.log(this.state.buttonDisabled);
+    if (window.sessionStorage.getItem('loggedInName') === null) {
+      window.Materialize.toast("You need to be logged in", 1500);
+      return;
+    }
     if (this.state.buttonDisabled == true) {
       return;
     }
@@ -85,6 +89,7 @@ export default class viewRecipe extends React.Component {
     this.setState({buttonDisabled: true});
     var Obj = {
       voteCount: temp,
+      vote: "like",
       recipeId: this.props.match.params.id,
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
@@ -95,13 +100,18 @@ export default class viewRecipe extends React.Component {
       console.log(result);
     })
     .catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
     //send to server
     return;
 
   }
   downvote() {
+
+    if (window.sessionStorage.getItem('loggedInName') === null) {
+      window.Materialize.toast("You need to be logged in", 1500);
+      return;
+    }
     if (this.state.buttonDisabled == true) {
       return;
     }
@@ -111,14 +121,16 @@ export default class viewRecipe extends React.Component {
     this.setState({buttonDisabled: true});
     var Obj = {
       voteCount: temp,
+      vote: "dislike",
       recipeId: this.props.match.params.id,
-      vote: 'dislike'
+      accessToken: window.sessionStorage.getItem('token'),
+      username: window.sessionStorage.getItem('loggedInName'),
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
       console.log(result);
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
     return;
     //send this to server
@@ -137,13 +149,13 @@ export default class viewRecipe extends React.Component {
      comment: this.state.commentBox,
      accessToken:window.sessionStorage.getItem('token'),
    };
-   
+
    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
    .then(function(result) {
      console.log(result);
      window.Materialize.toast("Submitted your comment", 1500);
    }).catch((err) => {
-		window.Materialize.toast("Failed. Try again", 1500);    
+		window.Materialize.toast("Failed. Try again", 1500);
    });
 
    var list = this.state.commentList;
@@ -172,7 +184,7 @@ export default class viewRecipe extends React.Component {
      .then(function(result) {
        console.log(result);
      }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
      });
 
 
