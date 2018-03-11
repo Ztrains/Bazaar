@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios';
 
@@ -140,7 +139,6 @@ export default class Calendar extends React.Component {
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/calendar", Obj)
     .then(function(result) {
-      console.log(result);
       _this.setState({calendar: result.data.calendar});
 
 	})
@@ -196,7 +194,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.wednesday.lunch.name}</td>
 
 						<td>{this.state.calendar.wednesday.dinner.name}</td>
-						<td>{this.state.calendar.wednesday.breakfast.calorieCount} + {this.state.calendar.wednesday.lunch.calorieCount} + {this.state.calendar.wednesday.dinner.calorieCount}</td>
+						<td>{this.state.calendar.wednesday.breakfast.calorieCount + this.state.calendar.wednesday.lunch.calorieCount + this.state.calendar.wednesday.dinner.calorieCount}</td>
 
 					</tr>
 					<tr>

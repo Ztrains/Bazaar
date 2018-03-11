@@ -1,7 +1,5 @@
 import React from 'react';
 import "./index.css";
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
 import history from './history.js';
 import GoogleLogin from 'react-google-login';
 
@@ -28,8 +26,6 @@ export default class Login extends React.Component {
   }*/
 
   googSuccess = (responce) => {
-    console.log(responce);
-    console.log(responce.profileObj);
     this.setState({googleId: responce.googleId});
     this.setState({accessToken: responce.accessToken});
     this.setState({email: responce.profileObj.email});
@@ -41,7 +37,6 @@ export default class Login extends React.Component {
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
     .then(function(result) {
-      console.log(result);
       if (result.data.message === "User not found") {
         window.Materialize.toast("username or password is incorrect", 1500);
         return false;
@@ -51,7 +46,7 @@ export default class Login extends React.Component {
       history.push('/profile/' + result.data.username);
     }
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
   }
   googleFailure = (responce) => {
@@ -81,9 +76,9 @@ export default class Login extends React.Component {
                           onFailure={this.googFailure}
                         />
                         <hr />
-                      <Link to="/signup">
-                        <a id="signUpBtn" type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
-                      </Link>
+
+                        <a id="signUpBtn" href='/signup' type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
+
                 </div>
               </div>
             </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 //import './index.css';
 import axios from 'axios';
-import {Link, Router} from 'react-router-dom'
-import {Form, Row, Select, Input} from 'react-materialize'
+import {Link} from 'react-router-dom'
+import {Row, Input} from 'react-materialize'
 
 export default class recipeEntry extends React.Component {
   constructor(props) {
@@ -26,13 +26,11 @@ export default class recipeEntry extends React.Component {
       recipeDescription: this.props.description,
       userEmail: window.sessionStorage.getItem('email'),
     }
-    console.log(newObj);
     axios.post("https://bazaar-408.herokuapp.com/recipes/save", newObj)
     .then(function(result) {
-      console.log(result);
       window.Materialize.toast('Successfully saved to Favorites', 1500);
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
 
   }
@@ -41,11 +39,9 @@ export default class recipeEntry extends React.Component {
   }
   setTimeValue = (event) => {
     this.setState({timeValue: event.target.value});
-    console.log(this.state.timeValue);
   }
   setDayValue = (event) => {
     this.setState({dayValue: event.target.value});
-    console.log(this.state.dayValue);
   }
   addMealToCal() {
     var calObj = {
@@ -59,30 +55,25 @@ export default class recipeEntry extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       email: window.sessionStorage.getItem('email'),
     }
-    console.log(calObj);
-    var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
     .then(function(result) {
-      console.log(result);
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
   }
   render() {
     let addBut = '';
-    if (this.props.addBut == false) {
+    if (this.props.addBut === false) {
       addBut = '';
     }
     else {
       addBut = <button id="favBtn" className="waves-effect waves-light btn red accent-2" onClick={this.addFavorite}><b>Add to Favorites</b></button>
     }
     let button = '';
-    console.log(this.props.deleteBut);
     if (this.props.deleteBut === true) {
       button = <button className="waves-effect waves-light btn red accent-2" onClick={() => {this.removeFav(this.props.id)}}><b>Delete</b></button>
     }
     let opts = "";
-    console.log(this.state.showCalOptions);
     if (this.state.showCalOptions === true) {
       opts = <Row>
                 <h3>Select Day and Time</h3>

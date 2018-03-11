@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
 import {Row, Input} from 'react-materialize'
@@ -65,18 +64,17 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddIngredient = () => {
-    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name == '') {
+    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].name === '') {
       window.Materialize.toast('Ingredient field not filled', 1500);
       return;
     }
-    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].quantity == '') {
+    if (this.state.ingredients.length > 0 && this.state.ingredients[this.state.ingredients.length - 1].quantity === '') {
       window.Materialize.toast("Quantity field not filled", 1500);
       return;
     }
     this.setState({
       ingredients: this.state.ingredients.concat([{ name: '', quantity: '' }])
     });
-    console.log(this.state.ingredients);
   }
 
   handleRemoveIngredient = (i) => () => {
@@ -94,7 +92,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
-    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step == '') {
+    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step === '') {
       return;
     }
     this.setState({
@@ -104,7 +102,6 @@ export default class viewRecipe extends React.Component {
     let temp = this.state.step;
     this.setState({step: temp + 1});
     this.setState({buttonDisabled: true});
-    console.log(this.state.steps);
   }
 
   handleRemoveStep = (i) => () => {
@@ -113,7 +110,6 @@ export default class viewRecipe extends React.Component {
     });
   }
   addPref = (event) => {
-    console.log(event.target.value);
     this.setState({value: event.target.value});
     var newList = this.state.preferences;
     newList.push(this.state.value);
@@ -136,11 +132,11 @@ export default class viewRecipe extends React.Component {
       window.Materialize.toast("Recipe must have a description", 1500);
       return;
     }
-    if (this.state.ingredients.length < 1 || (this.state.ingredients.length == 1 && (this.state.ingredients[0].name === '' || this.state.ingredients[0].description === ''))) {
+    if (this.state.ingredients.length < 1 || (this.state.ingredients.length === 1 && (this.state.ingredients[0].name === '' || this.state.ingredients[0].description === ''))) {
       window.Materialize.toast("Recipe must have ingedients", 1500);
       return;
     }
-    if (this.state.steps.length < 1 || (this.state.steps.length == 1 && this.state.steps[0].step == '')) {
+    if (this.state.steps.length < 1 || (this.state.steps.length === 1 && this.state.steps[0].step === '')) {
       window.Materialize.toast("Recipe must have steps", 1500);
       return;
     }
@@ -175,12 +171,11 @@ export default class viewRecipe extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/new", Obj)
     .then(function(results) {
-      console.log(results);
       window.Materialize.toast("recipe successfully created", 1500);
       history.push("/recipes/" + results.data.recipe._id);
     })
     .catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
   }
   render() {
@@ -215,7 +210,7 @@ export default class viewRecipe extends React.Component {
 
             {this.state.ingredients.map((ingredient, i) => {
               return(
-            <div className="row">
+            <div key={i} className="row">
             <div className="container center" id="ingredientList">
               <div className="col s4">
                 <div className="input-field">
@@ -262,7 +257,7 @@ export default class viewRecipe extends React.Component {
 
          {this.state.steps.map((step, i) => {
            return(
-            <div className="row">
+            <div key={i} className="row">
               <div className="container" id="ingredientList">
                 <div className="col s1">
 
@@ -317,10 +312,10 @@ export default class viewRecipe extends React.Component {
             <ul>
 
               {this.state.preferences.map((prefValue, key) => (
-                <a className="btn disabled">{prefValue}</a>
+                <a key={key} className="btn disabled">{prefValue}</a>
               ))}
                 <Row>
-                  <Input id="prefs" type='select' value={this.state.value} onChange={this.addPref} defaultValue='0'>
+                  <Input id="prefs" type='select' onChange={this.addPref} defaultValue='0'>
                     <option value=""></option>
                     <option value="Vegetarian">Vegetarian</option>
                     <option value="Vegan">Vegan</option>

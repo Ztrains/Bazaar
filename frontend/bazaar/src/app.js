@@ -1,14 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import NavBar from './navbar.js';
 import axios from 'axios';
-import RecipeViwer from './recipeViewer.js';
 import RecipeEntry from './recipeEntry.js';
 import SignIn from './signin.js';
 import SignUp from './signup.js';
 import Account from './account.js';
-import RecipePage from './recipePage.js';
 import SearchPage from './search.js';
 import ViewRecipe from './viewRecipe.js';
 import ShoppingList from './shoppingList.js'
@@ -17,7 +14,7 @@ import CreateRecipe from './createRecipe.js';
 import Calendar from './calendar.js';
 import history from './history.js';
 import {Router, Switch} from 'react-router-dom';
-import {Route, Redirect} from 'react-router';
+import {Route} from 'react-router';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -38,7 +35,7 @@ export default class App extends React.Component {
     }
   }
   loggingOut = () => {
-    if (this.state.loggedInUser == '') {
+    if (this.state.loggedInUser === '') {
       return;
     }
     this.setState({loggedIn: false});
@@ -65,10 +62,6 @@ export default class App extends React.Component {
     console.log(email);
     window.sessionStorage.setItem('token', token);
     window.sessionStorage.setItem('email', email);
-
-    var newObj = {
-      username: this.state.loggedInUser,
-    }
     window.sessionStorage.setItem('loggedInName', this.state.loggedInUser);
   }
 

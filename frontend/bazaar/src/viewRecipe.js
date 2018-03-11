@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import './updownvote.css';
 import axios from 'axios';
 import YouTube from 'react-youtube';
-import {Form, Row, Select, Input, Button} from 'react-materialize'
+import {Input} from 'react-materialize'
 import { FacebookShareButton, FacebookIcon} from 'react-share';
 
 export default class viewRecipe extends React.Component {
@@ -25,7 +24,6 @@ export default class viewRecipe extends React.Component {
         tags: [],
         value: '',
         createdBy: '',
-        comments: {},
         contact: {},
         videoId: '',
         comments:[ {
@@ -51,8 +49,6 @@ export default class viewRecipe extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.props.match.params.id, Obj)
     .then(function(result) {
-      console.log(result);
-      console.log(result.data.data);
       _this.setState({recipe: result.data.data});
       _this.setState({votes: result.data.data.upvotes});
       _this.setState({commentList: result.data.data.comments});
@@ -68,19 +64,16 @@ export default class viewRecipe extends React.Component {
   }
   setTimeValue = (event) => {
     this.setState({timeValue: event.target.value});
-    console.log(this.state.timeValue);
   }
   setDayValue = (event) => {
     this.setState({dayValue: event.target.value});
-    console.log(this.state.dayValue);
   }
   upvote()  {
-    console.log(this.state.buttonDisabled);
     if (window.sessionStorage.getItem('loggedInName') === null) {
       window.Materialize.toast("You need to be logged in", 1500);
       return;
     }
-    if (this.state.buttonDisabled == true) {
+    if (this.state.buttonDisabled === true) {
       return;
     }
     let temp = this.state.votes;
@@ -94,10 +87,8 @@ export default class viewRecipe extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    console.log(Obj);
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
-      console.log(result);
     })
     .catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
@@ -112,7 +103,7 @@ export default class viewRecipe extends React.Component {
       window.Materialize.toast("You need to be logged in", 1500);
       return;
     }
-    if (this.state.buttonDisabled == true) {
+    if (this.state.buttonDisabled === true) {
       return;
     }
     let temp = this.state.votes;
@@ -128,7 +119,6 @@ export default class viewRecipe extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
-      console.log(result);
     }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
     });
@@ -143,7 +133,6 @@ export default class viewRecipe extends React.Component {
    this.setState({commentBox: event.target.value});
  }
  addComment = () => {
-   console.log(this.state.commentBox);
    var Obj = {
      username: window.sessionStorage.getItem('loggedInName'),
      comment: this.state.commentBox,
@@ -152,7 +141,6 @@ export default class viewRecipe extends React.Component {
 
    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
    .then(function(result) {
-     console.log(result);
      window.Materialize.toast("Submitted your comment", 1500);
    }).catch((err) => {
 		window.Materialize.toast("Failed. Try again", 1500);
@@ -178,11 +166,8 @@ export default class viewRecipe extends React.Component {
        email: window.sessionStorage.getItem('email'),
        accessToken: window.sessionStorage.getItem('token'),
      };
-     console.log(calObj);
-     var _this = this;
      axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
      .then(function(result) {
-       console.log(result);
      }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
      });
@@ -212,13 +197,13 @@ export default class viewRecipe extends React.Component {
           </FacebookShareButton>
           <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled}><b>I like it!</b></button>
           <p className="count">{this.state.votes}</p>
-          <button className="btn red accent-2 waves-effect waves-light" style={{"margin-top": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled}><b>Eh, no.</b></button>
+          <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled}><b>Eh, no.</b></button>
           </div>
           <div className="row center">
             <h1><b>{this.state.recipe.name}</b></h1>
             <h3>{this.state.recipe.description}</h3>
             {this.state.prediction &&
-              <h6 style={{"font-family": "Noto Sans", color: "#ff5252"}}>We think that you may {this.state.prediction.toLowerCase()} this.</h6>
+              <h6 style={{"fontFamily": "Noto Sans", color: "#ff5252"}}>We think that you may {this.state.prediction.toLowerCase()} this.</h6>
             }
           </div>
         </div>
@@ -228,7 +213,7 @@ export default class viewRecipe extends React.Component {
             <h4><b>Ingredients</b></h4>
             <ul>
             {this.state.recipe && this.state.recipe.ingredients.map((prefValue, key) => (
-              <li className="steps"><b>{key + 1}</b>: {prefValue.quantity} {prefValue.name}</li>
+              <li key={key} className="steps"><b>{key + 1}</b>: {prefValue.quantity} {prefValue.name}</li>
             ))}
             </ul>
           </div>
@@ -240,7 +225,7 @@ export default class viewRecipe extends React.Component {
             <h4><b>Steps</b></h4>
             <ul>
             {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
-              <li className="steps"><b>Step {key + 1}</b>: {prefValue.step}</li>
+              <li key={key} className="steps"><b>Step {key + 1}</b>: {prefValue.step}</li>
             ))}
             </ul>
           </div>
@@ -252,7 +237,7 @@ export default class viewRecipe extends React.Component {
             <h4><b>Tags</b></h4>
             <ul>
             {this.state.recipe && this.state.recipe.tags.map((prefValue, key) => (
-              <li><a className="btn disabled">{prefValue}</a></li>
+              <li key={key}><a className="btn disabled">{prefValue}</a></li>
             ))}
             </ul>
           </div>
@@ -289,7 +274,7 @@ export default class viewRecipe extends React.Component {
                  <option value="lunch">Lunch</option>
                  <option value="dinner">Dinner</option>
                </Input>
-               <button className="btn waves-effect waves-light red accent-2" style={{"margin-top": "15px"}} onClick={this.addMealToCal}><b>Add to Meal Calendar</b></button>
+               <button className="btn waves-effect waves-light red accent-2" style={{"marginTop": "15px"}} onClick={this.addMealToCal}><b>Add to Meal Calendar</b></button>
               </div>
              </div>
 
@@ -307,11 +292,11 @@ export default class viewRecipe extends React.Component {
             <h4><b>Comments</b></h4>
             <div className="input-field">
               <input type="text" id="commentField" value={this.state.commentBox} onChange={this.handleCommentChange}/>
-              <label for="commentField">Leave a comment for {this.state.recipe.name}</label>
+              <label>Leave a comment for {this.state.recipe.name}</label>
               {button}
             </div>
             {this.state.recipe && this.state.recipe.comments.map((obj, key) => (
-              <div id="commentCard" className="card">
+              <div key={key} id="commentCard" className="card">
                 <div className="card-content">
                   <div id="commentBlock">
                     <h5>{obj.username} said:  </h5>

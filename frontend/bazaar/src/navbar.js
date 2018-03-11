@@ -1,9 +1,6 @@
 import React from 'react';
 import './index.css';
-import ReactDOM from 'react-dom';
 import history from './history.js';
-import {Link, Router} from 'react-router-dom';
-import {Navbar, NavItem, Row, Input, Icon} from 'react-materialize'
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -15,7 +12,6 @@ export default class NavBar extends React.Component {
 
   }
   componentDidMount() {
-    console.log(this.props.currUser);
   }
   handleChange = (event) => {
     this.setState({
@@ -30,7 +26,7 @@ export default class NavBar extends React.Component {
     history.push('/search/' + this.state.searchBoxValue);
   }
   handleKey = (e) => {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       history.push('/search/' + this.state.searchBoxValue);
     }
   }
@@ -52,7 +48,7 @@ export default class NavBar extends React.Component {
       <div>
         <nav>
           <div className="nav-wrapper red accent-2">
-          <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
+          <a data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
           <ul className="left hide-on-med-and-down">
             {link}
           </ul>
@@ -64,7 +60,7 @@ export default class NavBar extends React.Component {
             <form className="right">
                 <div className="input-field">
                   <input id="search" type="search" placeholder="Search" value={this.state.searchBoxValue} onChange={this.handleChange} onKeyPress={this.handleKey} required />
-                  <label className="label-icon" forName="search"><i className="material-icons">search</i></label>
+                  <label className="label-icon"><i className="material-icons">search</i></label>
                   <i className="material-icons">close</i>
                 </div>
               </form>

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
 
@@ -22,19 +21,16 @@ export default class shoppingList extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/getShoppingList", Obj)
     .then(function(result) {
-      console.log(result.data.data);
       _this.setState({List: result.data.data});
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
     //get user list
   }
   handleRemoveItem = (key) => () => {
-      console.log(this.state.List);
       var newList = this.state.List;
       newList.splice(key, 1);
       this.setState({List: newList});
-      console.log(this.state.List);
   }
   handleNewChange = (event) => {
     this.setState({newItem: event.target.value});
@@ -58,11 +54,10 @@ export default class shoppingList extends React.Component {
   }
   submit = () => {
     this.setState({isSubmit: true});
-    var shouldReturn = this.addItem(shouldReturn);
-    if (shouldReturn == true) {
+    var shouldReturn = this.addItem();
+    if (shouldReturn === true) {
       return;
     }
-    var _this = this;
     this.setState({isSubmit: false});
     var Obj = {
       accessToken: window.sessionStorage.getItem('token'),
@@ -78,7 +73,7 @@ export default class shoppingList extends React.Component {
         window.Materialize.toast("A problem occured. Please try again", 1500);
       }
     }).catch((err) => {
-		  window.Materialize.toast("Failed. Try again", 1500);      
+		  window.Materialize.toast("Failed. Try again", 1500);
     });
   }
   render() {
@@ -117,13 +112,13 @@ export default class shoppingList extends React.Component {
                   <div className="col s4" id="newAddDiv">
                     <div className="input-field">
                       <input type='text' id="shopQuantAdd" value={this.state.newQuant} onChange={this.handleNewQuant} />
-                      <label for="shopQuantAdd">Quantity</label>
+                      <label>Quantity</label>
                     </div>
                   </div>
                   <div className="col s6">
                     <div id="shopAddDiv" className="input-field">
                       <input id="shopListAdd" type="text" value={this.state.newItem} onChange={this.handleNewChange}/>
-                      <label for="shopListAdd">Item</label>
+                      <label>Item</label>
                     </div>
                   </div>
                   <div className="col s2">

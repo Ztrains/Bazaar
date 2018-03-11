@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios'
 import history from './history.js'
 import RecipeEntry from './recipeEntry';
-import {Form, Row, Select, Input, Button} from 'react-materialize'
+import {Row, Input} from 'react-materialize'
 
 
 export default class accountPage extends React.Component {
@@ -33,14 +32,12 @@ export default class accountPage extends React.Component {
 
   }
   componentDidMount() {
-    console.log(window.sessionStorage.getItem('token'));
     var Obj =  {
       accessToken: window.sessionStorage.getItem('token'),
     }
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/" + this.props.match.params.username, Obj)
     .then(function(results) {
-        console.log(results);
         _this.setState({
           username: results.data.user.username,
           email: results.data.user.email,
@@ -60,7 +57,6 @@ export default class accountPage extends React.Component {
     //send to database
   }
   addPref = (event) => {
-    console.log(event.target.value);
     this.setState({value: event.target.value});
     var newList = this.state.preferences;
     newList.push(this.state.value);
@@ -94,7 +90,7 @@ export default class accountPage extends React.Component {
       phoneNum: event.target.value
     });
   }
-  
+
   changeNameButtonActivate() {
     if (this.state.newName === '' || this.state.newName === " ") {
       window.Materialize.toast("nothing has been written in input box", 1500);
@@ -107,11 +103,9 @@ export default class accountPage extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       oldUsername: this.state.username,
     }
-    console.log(Obj);
     var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
     .then(function(result) {
-      console.log(result);
       if (result.message === "User Not Found") {
         window.Materialize.toast("User not found");
         return;
@@ -129,7 +123,7 @@ export default class accountPage extends React.Component {
       window.Materialize.toast("Failed. Try again");
     });
   }
-  
+
   changePhoneButtonActivate = () => {
     if (this.state.phoneNum === '' || this.state.phoneNum === " ") {
       window.Materialize.toast("nothing has been written in input box", 1500);
@@ -139,7 +133,7 @@ export default class accountPage extends React.Component {
       window.Materialize.toast('Phone contains digits other than numbers. If you have dashes, please remove them', 1500);
       return;
     }
-    if ( this.state.phoneNum.length != 10) {
+    if ( this.state.phoneNum.length !== 10) {
       window.Materialize.toast('phone number contains too many or to little digits', 1500);
       return;
     }
@@ -154,11 +148,9 @@ export default class accountPage extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    var _this = this;
     axios.post("https://bazaar-408.herokuapp.com/profile/updatePhoneNumber", Obj)
     .then(function(result) {
-      console.log(result);
-      if (result.data.message == "User Not Found") {
+      if (result.data.message === "User Not Found") {
         window.Materialize.toast("User not found", 1500);
         return;
       }
@@ -170,7 +162,7 @@ export default class accountPage extends React.Component {
       window.Materialize.toast("Failed. Try again", 1500);
     });
   }
-  
+
   changeemailDayPref = (event) => {
     this.setState({emailDayPref: event.target.value});
     //send to database
@@ -201,7 +193,7 @@ export default class accountPage extends React.Component {
       this.setState({savedRecipes: [], });
     }
     else {*/
-      console.log("in for loop");
+
       for(var i = 0; i < list.length; i++) {
         if (list[i].recipeID === id) {
           list.splice(i, 1);
@@ -210,7 +202,7 @@ export default class accountPage extends React.Component {
         }
       }
     //}
-    console.log(this.state.savedRecipes);
+
     var Obj = {
       savedRecipes: this.state.savedRecipes,
       userEmail: window.sessionStorage.getItem('email'),
@@ -218,7 +210,6 @@ export default class accountPage extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/recipes/remove", Obj)
     .then(function(result) {
-      console.log(result);
       window.Materialize.toast('Recipe successfully removed', 1500);
     })
     .catch((err) => {
@@ -247,7 +238,7 @@ export default class accountPage extends React.Component {
                     <div className="col s9">
                       <div className="input-field">
                         <input type="text" id="username" value={this.state.newName} onChange={this.handleNameChange}/>
-                        <label for="username">Change Username</label>
+                        <label>Change Username</label>
                       </div>
                     </div>
                     <div className="col s3 button-column">
@@ -257,8 +248,8 @@ export default class accountPage extends React.Component {
                   <div className="row center">
                     <div className="col s9">
                       <div className="input-field">
-                        <input type="tel" id="tel" value={this.state.phoneNum} onChange={this.handlePhoneChange}/>
-                        <label for="tel">Change Phone Number</label>
+                        <input type="tel" id="tel" onChange={this.handlePhoneChange}/>
+                        <label>Change Phone Number</label>
                       </div>
                     </div>
                     <div className="col s3 button-column">
@@ -294,7 +285,7 @@ export default class accountPage extends React.Component {
                       <h3><b>Notification Options</b></h3>
                       <h5>Change how often you recieve your meal plan</h5>
                         <Row>
-                          <Input type='select' value={this.state.emailDayPref} onChange={this.changeemailDayPref}>
+                          <Input type='select' onChange={this.changeemailDayPref}>
                             <option value="1">Every Day</option>
                             <option value="2">2 Days</option>
                             <option value="3">3 Days</option>
