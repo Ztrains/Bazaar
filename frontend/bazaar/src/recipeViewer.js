@@ -16,7 +16,7 @@ export default class RecipeViewer extends React.Component {
     .then(function(result) {
       console.log(result);
       if (result === null) {
-        alert("there is no data");
+        window.Materialize.toast("there is no data");
 
       }
       else {

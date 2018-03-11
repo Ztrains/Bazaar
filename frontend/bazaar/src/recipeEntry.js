@@ -30,7 +30,7 @@ export default class recipeEntry extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/recipes/save", newObj)
     .then(function(result) {
       console.log(result);
-      alert('Successfully Saved to Favorites')
+      window.Materialize.toast('Successfully Saved to Favorites')
     });
 
   }

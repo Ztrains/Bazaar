@@ -20,7 +20,6 @@
 
 
 #shopListValue {
-  width: 60%;
   font-size: 18px;
   font-weight: bold;
   color: black;
@@ -29,17 +28,14 @@
 #shopListAdd {
   font-size: 18px;
   color: black;
-  width: 60%;
 }
 
 #shopQuantAdd {
   font-size: 18px;
-  width: 30%;
 }
 
 #shopListQuant {
   font-size: 18px;
-  width: 30%;
   color: black;
 }
 

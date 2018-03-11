@@ -42,11 +42,11 @@ export default class shoppingList extends React.Component {
   }
   addItem() {
     if (this.state.newItem.length < 1) {
-      alert('Must add item to box');
+      window.Materialize.toast('Must add item to box', 1500);
       return true;
     }
     if (this.state.newQuant.length < 1) {
-      alert('Must add quantity to item');
+      window.Materialize.toast('Must add quantity to item', 1500);
       return true;
     }
     var newList = this.state.List;
@@ -69,38 +69,72 @@ export default class shoppingList extends React.Component {
     }
     axios.post("https://bazaar-408.herokuapp.com/updateShoppingList", Obj)
     .then(function(result) {
-      alert("List successfully submitted");
+      if (result.data.message === "Success") {
+        window.Materialize.toast("List successfully submitted", 1500);
+      }
+      else {
+        window.Materialize.toast("List was not submitted. Please try again", 1500);
+      }
     })
   }
   render() {
     return(
-        <div className="container">
-        <h1 id="fancytext">  Shopping List</h1>
-        <br></br>
-        <ul>
-        {this.state.List.map((prefValue, key) => (
-          <div>
-            <div className="input-field">
-              <input id="shopListQuant" value={prefValue.quantity} disabled />
-            </div>
-            <div className="input-field">
-              <input id="shopListValue" value={prefValue.name} disabled />
-              <button className="minusbtn" onClick={this.handleRemoveItem(key)}>-</button>
+      <div className="container">
+        <div className="row">
+          <div className="col s12">
+            <div className="card-panel">
+              <div className="card-action center">
+                <h1><b>Shopping List</b></h1>
+              </div>
+              <hr />
+              {this.state.List.map((prefValue, key) => (
+              <div className="row">
+                <div className="container center">
+                  <div className="col s4">
+                    <div className="input-field">
+                      <input id="shopListQuant" value={prefValue.quantity} disabled />
+                    </div>
+                  </div>
+                  <div className="col s6">
+                    <div className="input-field">
+                      <input id="shopListValue" value={prefValue.name} disabled />
+                    </div>
+                  </div>
+                  <div className="col s2">
+                    <div className="input-field">
+                      <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveItem(key)}>X</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+              <hr />
+              <div className="row">
+                <div className="container">
+                  <div className="col s4" id="newAddDiv">
+                    <div className="input-field">
+                      <input type='text' id="shopQuantAdd" placeholder="Add Quantity of Item" value={this.state.newQuant} onChange={this.handleNewQuant} />
+                    </div>
+                  </div>
+                  <div className="col s6">
+                    <div id="shopAddDiv" className="input-field">
+                      <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
+                    </div>
+                  </div>
+                  <div className="col s2">
+                    <div className="input-field">
+                      <button className="waves-effect waves-light btn red accent-2" onClick={this.addItem}>Add Item</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="container center">
+                <button className="waves-effect waves-light btn red accent-2" onClick={this.submit}>Submit List</button>
+              </div>
             </div>
           </div>
-        ))}
-        </ul>
-          <div id="newAddDiv">
-            <div className="input-field">
-              <input type='text' id="shopQuantAdd" placeholder="Add Quantity of Item" value={this.state.newQuant} onChange={this.handleNewQuant} />
-            </div>
-            <div id="shopAddDiv" className="input-field">
-              <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
-              <button className="btn btn-primary" onClick={this.addItem}>Add Item</button>
-            </div>
-          </div>
-          <button className="listSubmitButton" onClick={this.submit}>Submit List</button>
         </div>
+      </div>
     );
   }
 }

@@ -35,7 +35,7 @@ export default class Signup extends React.Component {
     this.setState({accessTok: responce.accessToken});
 
     if (this.state.username < 1) {
-      alert("Username field must be filled");
+      window.Materialize.toast("Username field must be filled", 1500);
       return;
     }
 
@@ -50,7 +50,7 @@ export default class Signup extends React.Component {
       .then(function(result) {
         console.log(result);
         if (result.message == "user not found") {
-          alert("username is already in database. Please try again");
+          window.Materialize.toast("username is already in database. Please try again", 1500);
           return false;
         }
         else {
@@ -62,7 +62,7 @@ export default class Signup extends React.Component {
     //logon();
   }
   googFailure = (responce) => {
-    alert('Failure to authenticate with Google. Please try again.');
+    window.Materialize.toast('Failure to authenticate with Google. Please try again.', 1500);
     return;
   }
 
@@ -96,12 +96,10 @@ export default class Signup extends React.Component {
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                     buttonText="Sign Up with Google"
                     className="btn red darken-1"
-                    id = "googleBtn"
                     onSuccess={this.googSuccess}
                     onFailure={this.googFailure}
                     />
                   <br />
-                  <hr />
                   <Link to="/signin">
                     <a type="button" className="waves-effect waves-light btn red accent-2">Go Back</a>
                   </Link>

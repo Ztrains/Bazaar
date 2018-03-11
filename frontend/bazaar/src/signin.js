@@ -43,7 +43,7 @@ export default class Login extends React.Component {
     .then(function(result) {
       console.log(result);
       if (result.data.message === "User not found") {
-        alert("username or password is incorrect");
+        window.Materialize.toast("username or password is incorrect", 1500);
         return false;
       }
       else {
@@ -53,7 +53,7 @@ export default class Login extends React.Component {
     });
   }
   googleFailure = (responce) => {
-    alert('Sign in failed or canceled. Please try again');
+    window.Materialize.toast('Sign in failed or canceled. Please try again', 1500);
     return;
   }
 

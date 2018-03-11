@@ -28,7 +28,7 @@ export default class SearchPage extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/search?q=" + this.props.match.params.terms)
     .then(function(result) {
       if (!result.data || result.data.length < 1) {
-        alert("No recipes found based on query");
+        window.Materialize.toast("No recipes found based on query");
         return;
       }
       _this.setState({resultsList: result.data.data});
