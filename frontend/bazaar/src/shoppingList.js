@@ -42,7 +42,7 @@ export default class shoppingList extends React.Component {
   }
   addItem() {
     if (this.state.newItem.length < 1) {
-      window.Materialize.toast('Must add item to box', 1500);
+      window.Materialize.toast('No items to submit!', 1500);
       return true;
     }
     if (this.state.newQuant.length < 1) {
@@ -70,10 +70,10 @@ export default class shoppingList extends React.Component {
     axios.post("https://bazaar-408.herokuapp.com/updateShoppingList", Obj)
     .then(function(result) {
       if (result.data.message === "Success") {
-        window.Materialize.toast("List successfully submitted", 1500);
+        window.Materialize.toast("Success!", 1500);
       }
       else {
-        window.Materialize.toast("List was not submitted. Please try again", 1500);
+        window.Materialize.toast("A problem occured. Please try again", 1500);
       }
     })
   }
@@ -102,34 +102,35 @@ export default class shoppingList extends React.Component {
                   </div>
                   <div className="col s2">
                     <div className="input-field">
-                      <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveItem(key)}>X</button>
+                      <button className="waves-effect waves-light btn red accent-2" onClick={this.handleRemoveItem(key)}><b>X</b></button>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-              <hr />
               <div className="row">
                 <div className="container">
                   <div className="col s4" id="newAddDiv">
                     <div className="input-field">
-                      <input type='text' id="shopQuantAdd" placeholder="Add Quantity of Item" value={this.state.newQuant} onChange={this.handleNewQuant} />
+                      <input type='text' id="shopQuantAdd" value={this.state.newQuant} onChange={this.handleNewQuant} />
+                      <label for="shopQuantAdd">Quantity</label>
                     </div>
                   </div>
                   <div className="col s6">
                     <div id="shopAddDiv" className="input-field">
-                      <input id="shopListAdd" type="text" placeholder="Add new Item" value={this.state.newItem} onChange={this.handleNewChange}/>
+                      <input id="shopListAdd" type="text" value={this.state.newItem} onChange={this.handleNewChange}/>
+                      <label for="shopListAdd">Item</label>
                     </div>
                   </div>
                   <div className="col s2">
                     <div className="input-field">
-                      <button className="waves-effect waves-light btn red accent-2" onClick={this.addItem}>Add Item</button>
+                      <button className="waves-effect waves-light btn red accent-2" onClick={this.addItem}><b>Add Item</b></button>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="container center">
-                <button className="waves-effect waves-light btn red accent-2" onClick={this.submit}>Submit List</button>
+                <button className="waves-effect waves-light btn red accent-2" onClick={this.submit}><b>Submit</b></button>
               </div>
             </div>
           </div>

@@ -310,7 +310,7 @@ export default class viewRecipe extends React.Component {
           </div>
           <hr />
           <div className="container">
-            <label id="preferencesInput"><b>Dish Tags</b></label>
+            <h4 id="preferencesInput"><b>Dish Tags</b></h4>
             <ul>
 
               {this.state.preferences.map((prefValue, key) => (
@@ -334,7 +334,7 @@ export default class viewRecipe extends React.Component {
 
             </div>
             <div className="container center">
-              <button id="createRecipeBtn" onClick={this.submit} className="waves-effect waves-light btn red accent-2">Create Recipe</button>
+              <button id="createRecipeBtn" onClick={this.submit} className="waves-effect waves-light btn red accent-2"><b>Create Recipe</b></button>
             </div>
 
           <br></br>
