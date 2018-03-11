@@ -155,7 +155,7 @@ export default class accountPage extends React.Component {
         return;
       }
       else {
-        window.Materialize.toast("username successfully changed", 1500);
+        window.Materialize.toast("phone number successfully changed", 1500);
       }
     })
     .catch((err) => {
