@@ -26,6 +26,8 @@ function formatDishData(calories,servingSize,upvotes,steps,tags) {
 	return dishData;
 }
 
+console.log(formatDishData("20", "30", 1223, ["a","b"], ["Vegetarian"]));
+
 module.exports = {
 	predict: predict,
 	formatDishData: formatDishData
