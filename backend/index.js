@@ -587,6 +587,9 @@ app.post("/recipes/updateVote", (req, res) => {
 	if (!req.body.username) {
 		return res.status(400).json({message: "No username specified in request"});
 	}
+	if (!req.body.vote) {
+		return res.status(400).json({message: "No vote specified in request"});
+	}
 
 	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: parseInt(req.body.voteCount)}}, {new: true}, (err, recipe) => {
 		if (err) {
@@ -793,7 +796,7 @@ app.post("/recipes/:id", (req, res) => {
 				return res.status(500).json({message: "Internal server error. Unable to process user find"});
 			}
 			if (!user) {
-				console.log('NO USER FOUND')
+				console.log('NO USER FOUND');
 				Recipe.findOne({_id: req.params.id}, (err, recipe) => {
 					if (err) {
 						return res.status(500).json({message: "Internal server error. Unable to process recipe find"});
@@ -815,7 +818,6 @@ app.post("/recipes/:id", (req, res) => {
 					
 					var dishData = ml.formatDishData(recipe.calories, recipe.servingSize, recipe.upvotes, recipe.steps, recipe.tags);
 					var prediction = ml.predict(user.mlDishData, user.mlDishRatings, dishData);
-					// var prediction = "possibly enjoy";
 
 					return res.status(200).json({message: "Success with ML", data: recipe, ml: prediction});
 				});
