@@ -101,7 +101,7 @@ export default class Signup extends React.Component {
                     onSuccess={this.googSuccess}
                     onFailure={this.googFailure}
                     />
-                  <br />
+                  <hr />
                   <Link to="/signin">
                     <a type="button" className="waves-effect waves-light btn red accent-2">Go Back</a>
                   </Link>
