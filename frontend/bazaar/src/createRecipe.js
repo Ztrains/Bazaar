@@ -146,10 +146,6 @@ export default class viewRecipe extends React.Component {
       window.Materialize.toast("Recipe must have a recommended serving size", 1500);
       return;
     }
-    if (this.state.preferences.length < 1) {
-      window.Materialize.toast("Recipe must have characteristic tags", 1500);
-      return;
-    }
     if (isNaN(this.state.calories)) {
       window.Materialize.toast("The calorie count must be a number", 1500);
     }
