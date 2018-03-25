@@ -878,7 +878,7 @@ app.post('/calendar/update', (req, res) => {
 		}
 
 		// console.log("meal is " + meal.id + " " + meal.name + " " + meal.calorieCount);
-		user.calendar[day][time] = meal;
+		user.calendar[day]["lunch"] = meal;
 		// console.log("user calendar is " + user.calendar[day][time]);
 
 		user.save((err) => {
