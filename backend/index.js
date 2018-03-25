@@ -468,6 +468,7 @@ app.post("/updateShoppingList", (req, res) => {
 		return res.status(400).json({message: "Missing updated shopping list"});
 	}
 
+	return res.status(200).json({message: "Success"});
 	User.findOneAndUpdate({username: req.body.username}, {$set: {shoppingList: req.body.shoppingList}}, {new: true}, 
 		(err, user) => {
 		if (err) {
@@ -878,7 +879,7 @@ app.post('/calendar/update', (req, res) => {
 		}
 
 		// console.log("meal is " + meal.id + " " + meal.name + " " + meal.calorieCount);
-		user.calendar[day]["lunch"] = meal;
+		user.calendar[day][time] = meal;
 		// console.log("user calendar is " + user.calendar[day][time]);
 
 		user.save((err) => {
