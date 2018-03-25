@@ -238,7 +238,7 @@ app.post("/auth/signup", (req, res) => {
 							calorieCount: ""
 						}
 					},
-					friday: {
+					/*friday: {
 						breakfast: {
 							id: "",
 							name: "",
@@ -254,7 +254,7 @@ app.post("/auth/signup", (req, res) => {
 							name: "",
 							calorieCount: ""
 						}
-					},
+					},*/
 					saturday: {
 						breakfast: {
 							id: "",
@@ -342,7 +342,7 @@ app.post("/profile/update_username", (req, res) => {
 		res.status(400).json({message: "Missing old username"});
 	}
 
-	User.findOneAndUpdate({username: oldUsername}, {$set: {username: newUsername}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({username: oldUsername}, {$set: {username: 'IlovePurdueCS'}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
