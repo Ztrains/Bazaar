@@ -35,7 +35,7 @@ export default class Login extends React.Component {
       email: responce.profileObj.email,
     };
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/auth/signin/", tempObj)
+    axios.post("https://bugged-backend.herokuapp.com/auth/signin/", tempObj)
     .then(function(result) {
       if (result.data.message === "User not found") {
         window.Materialize.toast("username or password is incorrect", 1500);

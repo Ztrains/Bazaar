@@ -42,7 +42,7 @@ export default class Signup extends React.Component {
         userObj: this.state.userObj,
       };
       var _this = this
-      axios.post("https://bazaar-408.herokuapp.com/auth/signup/", tempObj)
+      axios.post("https://bugged-backend.herokuapp.com/auth/signup/", tempObj)
       .then(function(result) {
         if (result.message === "user not found") {
           window.Materialize.toast("username is already in database. Please try again", 1500);

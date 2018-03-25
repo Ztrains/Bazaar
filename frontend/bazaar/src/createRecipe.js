@@ -92,9 +92,7 @@ export default class viewRecipe extends React.Component {
   }
 
   handleAddStep = () => {
-    if (this.state.steps.length > 0 && this.state.steps[this.state.steps.length - 1].step === '') {
-      return;
-    }
+
     this.setState({
       steps: this.state.steps.concat([{ step: '' }])
     });
@@ -120,7 +118,7 @@ export default class viewRecipe extends React.Component {
       return;
     }
     var list = this.state.preferences;
-    list.splice(list.length - 1, 1);
+    list.splice(0, 1);
     this.setState({preferences: list});
   }
   submit = () => {
@@ -169,9 +167,9 @@ export default class viewRecipe extends React.Component {
         votes: 0
       }
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/new", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/recipes/new", Obj)
     .then(function(results) {
-      window.Materialize.toast("recipe successfully created", 1500);
+      window.Materialize.toast("Failed. Try again", 1500);
       history.push("/recipes/" + results.data.recipe._id);
     })
     .catch((err) => {

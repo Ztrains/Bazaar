@@ -22,7 +22,7 @@ export default class SearchPage extends React.Component {
   }
   componentDidMount(){
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/search?q=" + this.props.match.params.terms)
+    axios.post("https://bugged-backend.herokuapp.com/search?q=" + this.props.match.params.terms)
     .then(function(result) {
       if (!result.data || result.data.length < 1) {
         window.Materialize.toast("No recipes found based on query");

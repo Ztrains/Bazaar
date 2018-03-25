@@ -137,7 +137,7 @@ export default class Calendar extends React.Component {
       username: window.sessionStorage.getItem('loggedInName'),
     }
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/calendar", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/calendar", Obj)
     .then(function(result) {
       _this.setState({calendar: result.data.calendar});
 
@@ -169,7 +169,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.sunday.lunch.name}</td>
 
 						<td>{this.state.calendar.sunday.dinner.name}</td>
-						<td>{this.state.calendar.sunday.breakfast.calorieCount + this.state.calendar.sunday.lunch.calorieCount + this.state.calendar.sunday.dinner.calorieCount}</td>
+						<td>{0}</td>
 					</tr>
 					<tr>
 						<th scope="row">Monday</th>
@@ -177,7 +177,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.monday.lunch.name}</td>
 
 						<td>{this.state.calendar.monday.dinner.name}</td>
-						<td>{this.state.calendar.monday.breakfast.calorieCount + this.state.calendar.monday.lunch.calorieCount + this.state.calendar.monday.dinner.calorieCount}</td>
+						<td>{0}</td>
 					</tr>
 					<tr>
 						<th scope="row">Tuesday</th>
@@ -185,7 +185,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.tuesday.lunch.name}</td>
 
 						<td>{this.state.calendar.tuesday.dinner.name}</td>
-						<td>{this.state.calendar.tuesday.breakfast.calorieCount + this.state.calendar.tuesday.lunch.calorieCount + this.state.calendar.tuesday.dinner.calorieCount}</td>
+						<td>{0}</td>
 
 					</tr>
 					<tr>
@@ -194,16 +194,16 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.wednesday.lunch.name}</td>
 
 						<td>{this.state.calendar.wednesday.dinner.name}</td>
-						<td>{this.state.calendar.wednesday.breakfast.calorieCount + this.state.calendar.wednesday.lunch.calorieCount + this.state.calendar.wednesday.dinner.calorieCount}</td>
+						<td>{0}</td>
 
 					</tr>
 					<tr>
 						<th scope="row">Thursday</th>
-						<td>{this.state.calendar.thursday.breakfast.name}</td>
-						<td>{this.state.calendar.thursday.lunch.name}</td>
+						<td>{this.state.calendar.wednesday.breakfast.name}</td>
+						<td>{this.state.calendar.wednesday.lunch.name}</td>
 
-						<td>{this.state.calendar.thursday.dinner.name}</td>
-						<td>{this.state.calendar.thursday.breakfast.calorieCount + this.state.calendar.thursday.lunch.calorieCount + this.state.calendar.thursday.dinner.calorieCount}</td>
+						<td>{this.state.calendar.wednesday.dinner.name}</td>
+						<td>{0}</td>
 
 					</tr>
 					<tr>
@@ -212,7 +212,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.friday.lunch.name}</td>
 
 						<td>{this.state.calendar.friday.dinner.name}</td>
-						<td>{this.state.calendar.friday.breakfast.calorieCount + this.state.calendar.friday.lunch.calorieCount + this.state.calendar.friday.dinner.calorieCount}</td>
+						<td>{0}</td>
 
 					</tr>
 					<tr>
@@ -221,7 +221,7 @@ export default class Calendar extends React.Component {
 						<td>{this.state.calendar.saturday.lunch.name}</td>
 
 						<td>{this.state.calendar.saturday.dinner.name}</td>
-						<td>{this.state.calendar.saturday.breakfast.calorieCount + this.state.calendar.saturday.lunch.calorieCount + this.state.calendar.saturday.dinner.calorieCount}</td>
+						<td>{0}</td>
 					</tr>
 
 					</tbody>
