@@ -150,7 +150,7 @@ export default class accountPage extends React.Component {
     }
     axios.post("https://bugged-backend.herokuapp.com/profile/updatePhoneNumber", Obj)
     .then(function(result) {
-      if (result.data.mess"Lunch"age === "User Not Found") {
+      if (result.data.message === "User Not Found") {
         window.Materialize.toast("User not found", 1500);
         return;
       }
