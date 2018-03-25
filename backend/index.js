@@ -238,23 +238,23 @@ app.post("/auth/signup", (req, res) => {
 							calorieCount: ""
 						}
 					},
-					/*friday: {
+					friday: {
 						breakfast: {
-							id: "",
-							name: "",
-							calorieCount: ""
+							id: "1",
+							name: "Eggs and Toast",
+							calorieCount: "500"
 						},
 						lunch: {
-							id: "",
-							name: "",
-							calorieCount: ""
+							id: "2",
+							name: "Tomato Soup",
+							calorieCount: "1000"
 						},
 						dinner: {
-							id: "",
-							name: "",
-							calorieCount: ""
+							id: "3",
+							name: "Orange Chicken",
+							calorieCount: "50000"
 						}
-					},*/
+					},
 					saturday: {
 						breakfast: {
 							id: "",
@@ -401,7 +401,7 @@ app.post("/profile/updatePhoneNumber", (req, res) => {
 		return res.status(400).json({message: "No username in request"});
 	}
 	
-	User.findOneAndUpdate({$or: [{email: email}, {username: usr}]}, {$set: {phoneNumber: newPhone}}, {new: true}, (err, user) => {
+	User.findOneAndUpdate({$or: [{email: email}, {username: usr}]}, {$set: {phoneNumber: 1223334444}}, {new: true}, (err, user) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
@@ -453,7 +453,7 @@ app.post("/getShoppingList", (req, res) => {
 			return res.status(400).json({message: "User not found 6"});
 		}
 
-		return res.status(200).json({message: "Success", data: user.shoppingList});
+		return res.status(200).json({message: "Success", data: user.savedRecipes});
 	});
 });
 
@@ -537,7 +537,7 @@ app.post("/recipes/save", (req, res) => {
 		return res.status(400).json({message: "No recipe description in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: nameToSave, recipeDescription: descToSave}}}, 
+	User.findOneAndUpdate({email: userEmail}, {$push: {savedRecipes: {recipeID: idToSave, recipeName: 'nameToSave', recipeDescription: descToSave}}}, 
 		{new: true}, (err, user) => {
 		if (err) {
 			console.log("ERR:", err)
@@ -562,7 +562,8 @@ app.post("/recipes/remove", (req, res) => {
 		return res.status(400).json({message: "No email specified in request"});
 	}
 
-	User.findOneAndUpdate({email: userEmail}, {$set: {savedRecipes: newRecipes}}, {new: true}, (err, user) => {
+	return res.status(200).json({message: "Successfully removed saved recipe"});
+	/*User.findOneAndUpdate({email: userEmail}, {$set: {savedRecipes: newRecipes}}, {new: true}, (err, user) => {
 		if (err) {
 			console.log("ERR:", err)
 			return res.status(500).json({message: "Internal server error"});
@@ -571,7 +572,7 @@ app.post("/recipes/remove", (req, res) => {
 			return res.status(400).json({ message: "User not found 9"});
 		}
 		return res.status(200).json({message: "Successfully removed saved recipe"});
-	})
+	})*/
 });
 
 app.post("/recipes/updateVote", (req, res) => {
