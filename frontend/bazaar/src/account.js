@@ -36,7 +36,7 @@ export default class accountPage extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
     }
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/profile/" + this.props.match.params.username, Obj)
+    axios.post("https://bugged-backend.herokuapp.com/profile/" + this.props.match.params.username, Obj)
     .then(function(results) {
         _this.setState({
           username: results.data.user.username,
@@ -68,7 +68,7 @@ export default class accountPage extends React.Component {
       email: this.state.email,
     }
     //send to database
-    axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
       window.Materialize.toast("Dish preferences successfully updated", 1500);
     })
@@ -104,7 +104,7 @@ export default class accountPage extends React.Component {
       oldUsername: this.state.username,
     }
     var _this = this;
-    axios.post("https://bazaar-408.herokuapp.com/profile/update_username", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/profile/update_username", Obj)
     .then(function(result) {
       if (result.message === "User Not Found") {
         window.Materialize.toast("User not found");
@@ -148,9 +148,9 @@ export default class accountPage extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/profile/updatePhoneNumber", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/profile/updatePhoneNumber", Obj)
     .then(function(result) {
-      if (result.data.message === "User Not Found") {
+      if (result.data.mess"Lunch"age === "User Not Found") {
         window.Materialize.toast("User not found", 1500);
         return;
       }
@@ -165,19 +165,20 @@ export default class accountPage extends React.Component {
 
   changeemailDayPref = (event) => {
     this.setState({emailDayPref: event.target.value});
+    window.Materialize.toast('Unable to update information', 1500);
     //send to database
   }
 
   deletePref = () => {
     var list = this.state.preferences;
-    list.splice(list.length - 1, 1);
+    list.splice(0, 1);
     this.setState({preferences: list});
     var Obj = {
       prefs: this.state.preferences,
       accessToken: window.sessionStorage.getItem('token'),
       email: this.state.email,
     }
-    axios.post("https://bazaar-408.herokuapp.com/profile/update_dish_prefs", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/profile/update_dish_prefs", Obj)
     .then(function(result) {
       window.Materialize.toast("Dish preferences successfully updated", 1500);
     })
@@ -208,7 +209,7 @@ export default class accountPage extends React.Component {
       userEmail: window.sessionStorage.getItem('email'),
       accessToken: window.sessionStorage.getItem('token'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/remove", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/recipes/remove", Obj)
     .then(function(result) {
       window.Materialize.toast('Recipe successfully removed', 1500);
     })

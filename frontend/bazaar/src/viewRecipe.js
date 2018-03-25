@@ -48,7 +48,7 @@ export default class viewRecipe extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.props.match.params.id, Obj)
+    axios.post("https://bugged-backend.herokuapp.com/recipes/" + this.props.match.params.id, Obj)
     .then(function(result) {
       _this.setState({recipe: result.data.data});
       _this.setState({votes: result.data.data.upvotes});
@@ -92,8 +92,9 @@ export default class viewRecipe extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
+      window.Materialize.toast("Upvote Successful", 1500);
     })
     .catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
@@ -122,7 +123,7 @@ export default class viewRecipe extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/updateVote", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/recipes/updateVote", Obj)
     .then(function(result) {
     }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
@@ -144,7 +145,7 @@ export default class viewRecipe extends React.Component {
      accessToken:window.sessionStorage.getItem('token'),
    };
 
-   axios.post("https://bazaar-408.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
+   axios.post("https://bugged-backend.herokuapp.com/recipes/" + this.state.recipe._id + "/newComment", Obj)
    .then(function(result) {
      window.Materialize.toast("Submitted your comment", 1500);
    }).catch((err) => {
@@ -171,7 +172,7 @@ export default class viewRecipe extends React.Component {
        email: window.sessionStorage.getItem('email'),
        accessToken: window.sessionStorage.getItem('token'),
      };
-     axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
+     axios.post("https://bugged-backend.herokuapp.com/calendar/update", calObj)
      .then(function(result) {
      }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
@@ -202,7 +203,7 @@ export default class viewRecipe extends React.Component {
           </FacebookShareButton>
           <button className="btn waves-effect waves-light" onClick={this.upvote} disabled={this.state.buttonDisabled || this.state.voted}><b>I like it!</b></button>
           <p className="count">{this.state.votes}</p>
-          <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.downvote} disabled={this.state.buttonDisabled || this.state.voted}><b>Eh, no.</b></button>
+          <button className="btn red accent-2 waves-effect waves-light" style={{"marginTop": "5px"}} onClick={this.upvote} disabled={this.state.buttonDisabled || this.state.voted}><b>Eh, no.</b></button>
           </div>
           <div className="row center">
             <h1><b>{this.state.recipe.name}</b></h1>
@@ -230,7 +231,7 @@ export default class viewRecipe extends React.Component {
             <h4><b>Steps</b></h4>
             <ul>
             {this.state.recipe && this.state.recipe.steps.map((prefValue, key) => (
-              <li key={key} className="steps"><b>Step {key + 1}</b>: {prefValue.step}</li>
+              <li key={key} className="steps"><b>Step {key + 2}</b>: {prefValue.step}</li>
             ))}
             </ul>
           </div>

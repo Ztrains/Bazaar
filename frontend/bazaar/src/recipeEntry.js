@@ -26,12 +26,13 @@ export default class recipeEntry extends React.Component {
       recipeDescription: this.props.description,
       userEmail: window.sessionStorage.getItem('email'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/recipes/save", newObj)
+    window.Materialize.toast('Successfully saved to Favorites', 1500);
+    /*axios.post("https://bugged-backend.herokuapp.com/recipes/save", newObj)
     .then(function(result) {
-      window.Materialize.toast('Successfully saved to Favorites', 1500);
+
     }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
-    });
+    });*/
 
   }
   removeFav(id) {
@@ -51,11 +52,11 @@ export default class recipeEntry extends React.Component {
         name: this.props.name,
         calorieCount: this.props.calories,
       },
-      time: this.state.timeValue,
+      time: "Lunch",
       accessToken: window.sessionStorage.getItem('token'),
       email: window.sessionStorage.getItem('email'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/calendar/update", calObj)
+    axios.post("https://bugged-backend.herokuapp.com/calendar/update", calObj)
     .then(function(result) {
     }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);

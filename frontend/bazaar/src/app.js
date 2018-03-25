@@ -38,8 +38,8 @@ export default class App extends React.Component {
     if (this.state.loggedInUser === '') {
       return;
     }
-    this.setState({loggedIn: false});
-    this.setState({loggedInUser: ''});
+    /*this.setState({loggedIn: false});
+    this.setState({loggedInUser: ''});*/
     var Obj = {
       username: window.sessionStorage.getItem('loggedInName'),
     };
@@ -51,8 +51,8 @@ export default class App extends React.Component {
     .catch(function(error) {
       window.Materialize.toast("Logout unsuccessful", 1500);
     });
-    window.sessionStorage.removeItem('loggedInName');
-    window.sessionStorage.removeItem('token');
+    //window.sessionStorage.removeItem('loggedInName');
+    //window.sessionStorage.removeItem('token');
     history.push('/');
   }
   loggingIn = (user, token, email) => {

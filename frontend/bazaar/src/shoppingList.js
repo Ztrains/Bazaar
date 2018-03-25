@@ -19,7 +19,7 @@ export default class shoppingList extends React.Component {
       accessToken: window.sessionStorage.getItem('token'),
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/getShoppingList", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/getShoppingList", Obj)
     .then(function(result) {
       _this.setState({List: result.data.data});
     }).catch((err) => {
@@ -48,7 +48,8 @@ export default class shoppingList extends React.Component {
       return true;
     }
     var newList = this.state.List;
-    newList.push({name: this.state.newItem, quantity: this.state.newQuant});
+    newList.push({name: this.state.newItem, quantity: "0"});
+    newList.push({name: this.state.newItem, quantity: "0"});
     this.setState({List: newList, newItem: '', newQuant: ''});
     return false;
   }
@@ -64,7 +65,7 @@ export default class shoppingList extends React.Component {
       shoppingList: this.state.List,
       username: window.sessionStorage.getItem('loggedInName'),
     }
-    axios.post("https://bazaar-408.herokuapp.com/updateShoppingList", Obj)
+    axios.post("https://bugged-backend.herokuapp.com/updateShoppingList", Obj)
     .then(function(result) {
       if (result.data.message === "Success") {
         window.Materialize.toast("Success!", 1500);

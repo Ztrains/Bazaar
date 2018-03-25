@@ -38,8 +38,8 @@ export default class NavBar extends React.Component {
     if (this.props.loggedInState === true) {
       link = <div>
       <li><a href={"/" + this.props.currUser + "/list"}>Shopping List</a></li>
-      <li><a href={"/calendar"}>Calendar</a></li>
-      <li><a id="profileButton" href={"/profile/" + this.props.currUser}>Profile</a></li>
+      <li><a href={"/profile/" + this.props.currUser}>Calendar</a></li>
+      <li><a id="profileButton" href={"/calendar"}>Profile</a></li>
       <li><a href="/create">Create a Recipe</a></li>
       <li><a onClick={this.logUserOut} id="logoutButton">Sign Out</a></li></div>
     }
