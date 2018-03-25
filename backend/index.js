@@ -579,7 +579,8 @@ app.post("/recipes/updateVote", (req, res) => {
 	let token = req.body.accessToken;
 	let usrname = req.body.username;
 	var currentUser;
-	let voteCount = Math.floor(Math.random() * 1000);
+
+	return res.status(200).json({message: "Success", data: recipe});
 
 	if (!req.body.voteCount) {
 		return res.status(400).json({message: "No vote count specified"});
@@ -594,7 +595,7 @@ app.post("/recipes/updateVote", (req, res) => {
 		return res.status(400).json({message: "No vote specified in request"});
 	}
 
-	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: voteCount}}, {new: true}, (err, recipe) => {
+	Recipe.findOneAndUpdate({_id: req.body.recipeId}, {$set: {upvotes: req.body.voteCount}}, {new: true}, (err, recipe) => {
 		if (err) {
 			return res.status(500).json({message: "Internal server error"});
 		}
