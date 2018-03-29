@@ -39,3 +39,6 @@ it('Checking to make sure the upvote/downvote button changes are properly shwon'
     expect(wrapper.find('').props().value).to.equal('69');
     console.log(wrapper.find('').props().value);
 });*/
+it('tested manually', () => {
+
+});

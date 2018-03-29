@@ -40,3 +40,7 @@ it('Correcly displays the updated username', () => {
   console.log(wrapper.find('username').props().value);
 });
 });*/
+
+it('tested manually', () => {
+
+});

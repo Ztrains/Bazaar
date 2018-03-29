@@ -77,7 +77,7 @@ export default class Login extends React.Component {
                         />
                         <hr />
 
-                        <a id="signUpBtn" href='/signup' type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
+                        <a id='signUpBtn' href='/signup' type="signin" className="waves-effect waves-light btn red accent-2">Don't have an account? <b>Sign Up</b></a>
 
                 </div>
               </div>

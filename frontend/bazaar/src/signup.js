@@ -93,6 +93,7 @@ export default class Signup extends React.Component {
                     clientId="262029223990-abrrj5s77qqus5biigr0j4c0fmkqs0ta.apps.googleusercontent.com"
                     buttonText="Sign Up with Google"
                     className="btn red darken-1"
+                    id = "googleBtn"
                     onSuccess={this.googSuccess}
                     onFailure={this.googFailure}
                     />
