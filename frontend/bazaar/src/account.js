@@ -97,7 +97,7 @@ export default class accountPage extends React.Component {
       return false;
     }
     //send it to database
-    buggedName = "test" + this.state.newName
+    var buggedName = "test" + this.state.newName;
     var Obj = {
       username: buggedName,
       email: this.state.email,
@@ -115,7 +115,7 @@ export default class accountPage extends React.Component {
         window.Materialize.toast("username successfully changed", 1500);
         window.sessionStorage.removeItem('loggedInName');
         window.sessionStorage.setItem('loggedInName', buggedName);
-        _this.setState({username: _this.state.newName});
+        _this.setState({username: buggedName});
         _this.setState({newName: ''});
         history.push('/profile/' + window.sessionStorage.getItem('loggedInName'));
       }
