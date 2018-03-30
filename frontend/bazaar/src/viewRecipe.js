@@ -174,6 +174,7 @@ export default class viewRecipe extends React.Component {
      };
      axios.post("https://bugged-backend.herokuapp.com/calendar/update", calObj)
      .then(function(result) {
+       window.Materialize.toast("Successfully added to calendar", 1500);
      }).catch((err) => {
 		  window.Materialize.toast("Failed. Try again", 1500);
      });

@@ -97,8 +97,9 @@ export default class accountPage extends React.Component {
       return false;
     }
     //send it to database
+    buggedName = "test" + this.state.newName
     var Obj = {
-      username: this.state.newName,
+      username: buggedName,
       email: this.state.email,
       accessToken: window.sessionStorage.getItem('token'),
       oldUsername: this.state.username,
@@ -113,7 +114,7 @@ export default class accountPage extends React.Component {
       else {
         window.Materialize.toast("username successfully changed", 1500);
         window.sessionStorage.removeItem('loggedInName');
-        window.sessionStorage.setItem('loggedInName', _this.state.newName);
+        window.sessionStorage.setItem('loggedInName', buggedName);
         _this.setState({username: _this.state.newName});
         _this.setState({newName: ''});
         history.push('/profile/' + window.sessionStorage.getItem('loggedInName'));
@@ -249,7 +250,7 @@ export default class accountPage extends React.Component {
                   <div className="row center">
                     <div className="col s9">
                       <div className="input-field">
-                        <input type="tel" id="tel" onChange={this.handlePhoneChange}/>
+                        <input type="tel" id="tel" onChange={this.handlePhoneChange} value={this.state.phoneNum}/>
                         <label>Change Phone Number</label>
                       </div>
                     </div>
@@ -286,7 +287,7 @@ export default class accountPage extends React.Component {
                       <h3><b>Notification Options</b></h3>
                       <h5>Change how often you recieve your meal plan</h5>
                         <Row>
-                          <Input type='select' onChange={this.changeemailDayPref}>
+                          <Input type='select' onChange={this.changeemailDayPref} value={this.state.emailDayPref}>
                             <option value="1">Every Day</option>
                             <option value="2">2 Days</option>
                             <option value="3">3 Days</option>

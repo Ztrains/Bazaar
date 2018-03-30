@@ -255,7 +255,7 @@ export default class viewRecipe extends React.Component {
               <div className="container" id="ingredientList">
                 <div className="col s1">
 
-                  <p id="stepLister">{i + 1}.</p>
+                  <p id="stepLister">{i + 2}.</p>
                 </div>
                 <div className="col s9">
                   <div className="input-field center">
